@@ -1,0 +1,5 @@
+*.os
+.sconsign.dblite
+bin/
+cmake-build-debug/
+.idea/
