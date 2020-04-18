@@ -1,0 +1,159 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "IsoPositionable",
+"class": "BasePlaceholder",
+"language": "GDScript",
+"path": "res://addons/IsometricMap/Scripts/BasePlaceholder.gd"
+}, {
+"base": "BasePlaceholder",
+"class": "CharacterPlaceholder",
+"language": "GDScript",
+"path": "res://addons/IsometricMap/Scripts/CharacterPlaceholder.gd"
+}, {
+"base": "Tree",
+"class": "FileTree",
+"language": "GDScript",
+"path": "res://addons/IsometricMap/widget/files_tree.gd"
+}, {
+"base": "Reference",
+"class": "Grid3D",
+"language": "GDScript",
+"path": "res://addons/IsometricMap/Scripts/ressource/grid_3d.gd"
+}, {
+"base": "Node2D",
+"class": "GridCursor",
+"language": "GDScript",
+"path": "res://addons/IsometricMap/Scripts/grid_cursor.gd"
+}, {
+"base": "IsoPositionable",
+"class": "IsoMap",
+"language": "GDScript",
+"path": "res://addons/IsometricMap/Scripts/iso_map.gd"
+}, {
+"base": "Node2D",
+"class": "IsoPositionable",
+"language": "GDScript",
+"path": "res://addons/IsometricMap/Scripts/iso_positionable.gd"
+}, {
+"base": "Resource",
+"class": "IsoPreviewGenerator",
+"language": "GDScript",
+"path": "res://addons/IsometricMap/Scripts/iso_preview_generator.gd"
+}, {
+"base": "IsoPositionable",
+"class": "IsoTile",
+"language": "GDScript",
+"path": "res://addons/IsometricMap/Scripts/ressource/IsoTile.gd"
+}, {
+"base": "TabContainer",
+"class": "IsometricAssetSelector",
+"language": "GDScript",
+"path": "res://addons/IsometricMap/widget/isometric_asset_selector.gd"
+}, {
+"base": "Resource",
+"class": "IsometricMap",
+"language": "GDScript",
+"path": "res://addons/IsometricMap/Scripts/ressource/IsometricMap.gd"
+}, {
+"base": "EditorInspectorPlugin",
+"class": "IsometricMapInspector",
+"language": "GDScript",
+"path": "res://addons/IsometricMap/isometric_map_inspector.gd"
+}, {
+"base": "Node",
+"class": "MapEditionHandler",
+"language": "GDScript",
+"path": "res://addons/IsometricMap/map_edition_handler.gd"
+}, {
+"base": "LineEdit",
+"class": "NumericLineEdit",
+"language": "GDScript",
+"path": "res://addons/IsometricMap/widget/numeric_line_edit.gd"
+}, {
+"base": "EditorInspectorPlugin",
+"class": "PlaceholderInspector",
+"language": "GDScript",
+"path": "res://addons/IsometricMap/placeholder_inspector.gd"
+}, {
+"base": "Resource",
+"class": "PlaceholderType",
+"language": "GDScript",
+"path": "res://addons/IsometricMap/Scripts/ressource/placeholder_type.gd"
+}, {
+"base": "Resource",
+"class": "PlaceholderTypes",
+"language": "GDScript",
+"path": "res://addons/IsometricMap/Scripts/ressource/placeholder_types.gd"
+}, {
+"base": "Node2D",
+"class": "StairSelector",
+"language": "GDScript",
+"path": "res://addons/IsometricMap/Scripts/stair_selector.gd"
+}, {
+"base": "BasePlaceholder",
+"class": "TilePlaceholder",
+"language": "GDScript",
+"path": "res://addons/IsometricMap/Scripts/TilePlaceholder.gd"
+}, {
+"base": "IsometricMap",
+"class": "TilesetResource",
+"language": "GDScript",
+"path": "res://addons/IsometricMap/Scripts/ressource/TilesetResource.gd"
+} ]
+_global_script_class_icons={
+"BasePlaceholder": "",
+"CharacterPlaceholder": "",
+"FileTree": "",
+"Grid3D": "",
+"GridCursor": "",
+"IsoMap": "",
+"IsoPositionable": "",
+"IsoPreviewGenerator": "",
+"IsoTile": "",
+"IsometricAssetSelector": "",
+"IsometricMap": "",
+"IsometricMapInspector": "",
+"MapEditionHandler": "",
+"NumericLineEdit": "",
+"PlaceholderInspector": "",
+"PlaceholderType": "",
+"PlaceholderTypes": "",
+"StairSelector": "",
+"TilePlaceholder": "",
+"TilesetResource": ""
+}
+
+[application]
+
+config/name="Isometric Map Editor"
+run/main_scene="res://Scenes/examples/maps/ExampleMap.tscn"
+config/icon="res://icon.png"
+
+[autoload]
+
+MapSettings="*res://addons/IsometricMap/Scripts/map_setting.gd"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "IsometricMap", "godot-plugin-refresher" )
+
+[input]
+
+move_z_volume={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":90,"unicode":0,"echo":false,"script":null)
+ ]
+}
+
+[rendering]
+
+environment/default_environment="res://default_env.tres"

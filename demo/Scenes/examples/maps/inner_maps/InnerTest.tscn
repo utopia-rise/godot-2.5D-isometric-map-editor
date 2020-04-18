@@ -1,0 +1,85 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://addons/IsometricMap/Scripts/iso_map.gd" type="Script" id=1]
+[ext_resource path="res://addons/IsometricMap/Scripts/TilePlaceholder.gd" type="Script" id=2]
+[ext_resource path="res://addons/IsometricMap/prefab/types/default.tres" type="Resource" id=3]
+[ext_resource path="res://Scenes/examples/tiles/floor.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/examples/tiles/cubetower.tscn" type="PackedScene" id=5]
+[ext_resource path="res://addons/IsometricMap/Scripts/ressource/IsoTile.gd" type="Script" id=6]
+
+[node name="InnerTest" type="Node2D"]
+script = ExtResource( 1 )
+aabb = AABB( 0, 0, 0, 5, 10, 5 )
+
+[node name="Node2D3" type="Node2D" parent="."]
+script = ExtResource( 2 )
+iso_position = Vector2( 0, 0 )
+aabb = AABB( 0, 0, 0, 4, 9, 1 )
+placeholder_type = ExtResource( 3 )
+slope_type = 0
+user_data = {
+
+}
+
+[node name="IsoTile" type="Node2D" parent="." instance=ExtResource( 5 )]
+position = Vector2( 512, 254.017 )
+z_index = 2
+script = ExtResource( 6 )
+iso_position = Vector2( 512, 256 )
+aabb = AABB( 4, 0, 0, 1, 1, 1 )
+
+[node name="IsoTile3" type="Node2D" parent="." instance=ExtResource( 5 )]
+position = Vector2( -512, 768 )
+z_index = 18
+script = ExtResource( 6 )
+iso_position = Vector2( -512, 768 )
+aabb = AABB( 4, 8, 0, 1, 1, 1 )
+
+[node name="IsoTile2" type="Node2D" parent="." instance=ExtResource( 4 )]
+position = Vector2( -384, 704 )
+z_index = 16
+script = ExtResource( 6 )
+iso_position = Vector2( -384, 704 )
+aabb = AABB( 4, 7, 0, 1, 1, 1 )
+
+[node name="IsoTile4" type="Node2D" parent="." instance=ExtResource( 4 )]
+position = Vector2( -256, 640 )
+z_index = 14
+script = ExtResource( 6 )
+iso_position = Vector2( -256, 640 )
+aabb = AABB( 4, 6, 0, 1, 1, 1 )
+
+[node name="IsoTile5" type="Node2D" parent="." instance=ExtResource( 4 )]
+position = Vector2( -126.017, 576 )
+z_index = 12
+script = ExtResource( 6 )
+iso_position = Vector2( -128, 576 )
+aabb = AABB( 4, 5, 0, 1, 1, 1 )
+
+[node name="IsoTile6" type="Node2D" parent="." instance=ExtResource( 4 )]
+position = Vector2( 0, 512 )
+z_index = 10
+script = ExtResource( 6 )
+iso_position = Vector2( 0, 512 )
+aabb = AABB( 4, 4, 0, 1, 1, 1 )
+
+[node name="IsoTile7" type="Node2D" parent="." instance=ExtResource( 4 )]
+position = Vector2( 128, 448 )
+z_index = 8
+script = ExtResource( 6 )
+iso_position = Vector2( 128, 448 )
+aabb = AABB( 4, 3, 0, 1, 1, 1 )
+
+[node name="IsoTile8" type="Node2D" parent="." instance=ExtResource( 4 )]
+position = Vector2( 256, 384 )
+z_index = 6
+script = ExtResource( 6 )
+iso_position = Vector2( 256, 384 )
+aabb = AABB( 4, 2, 0, 1, 1, 1 )
+
+[node name="IsoTile9" type="Node2D" parent="." instance=ExtResource( 4 )]
+position = Vector2( 384, 320 )
+z_index = 4
+script = ExtResource( 6 )
+iso_position = Vector2( 384, 320 )
+aabb = AABB( 4, 1, 0, 1, 1, 1 )

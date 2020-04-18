@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scenes/examples/tiles/floor.tscn" type="PackedScene" id=1]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+void vertex() {
+  // Animate Sprite moving in big circle around its location
+  VERTEX.y += cos(TIME)* 100.0;
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+
+[node name="IsoTile" instance=ExtResource( 1 )]
+position = Vector2( 339.075, 137.791 )
+
+[node name="floor_E" parent="." index="0"]
+material = SubResource( 2 )

@@ -1,0 +1,62 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/IsometricMap/widget/isometric_asset_selector.gd" type="Script" id=1]
+[ext_resource path="res://addons/IsometricMap/widget/files_tree.gd" type="Script" id=2]
+
+[node name="IsometricAssetsSelector" type="TabContainer"]
+margin_top = 2.0
+margin_right = 664.0
+margin_bottom = 600.0
+tab_align = 0
+script = ExtResource( 1 )
+
+[node name="Tiles" type="Tabs" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Tiles"]
+margin_right = 650.0
+margin_bottom = 562.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TilesTree" type="Tree" parent="Tiles/ScrollContainer"]
+margin_right = 650.0
+margin_bottom = 562.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+hide_root = true
+drop_mode_flags = 1
+script = ExtResource( 2 )
+
+[node name="Maps" type="Tabs" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Maps"]
+margin_right = 649.0
+margin_bottom = 561.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MapsTree" type="Tree" parent="Maps/ScrollContainer"]
+margin_right = 649.0
+margin_bottom = 561.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+hide_root = true
+drop_mode_flags = 1
+script = ExtResource( 2 )

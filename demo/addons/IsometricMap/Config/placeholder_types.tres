@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=5 format=2]
+
+[ext_resource path="res://addons/IsometricMap/Scripts/ressource/placeholder_types.gd" type="Script" id=1]
+[ext_resource path="res://addons/IsometricMap/prefab/types/default.tres" type="Resource" id=2]
+[ext_resource path="res://Scenes/examples/maps/types/water.tres" type="Resource" id=3]
+[ext_resource path="res://Scenes/examples/maps/types/ground.tres" type="Resource" id=4]
+
+
+[resource]
+script = ExtResource( 1 )
+values = [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ) ]
