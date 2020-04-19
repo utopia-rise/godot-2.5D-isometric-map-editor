@@ -1,6 +1,5 @@
-#include "isometric_positionable.h"
-#include "../isometric_utils.h"
-#include "../isometric_settings.h"
+#include "IsometricPositionable.h"
+#include "../IsometricServer.h"
 
 using namespace godot;
 
@@ -33,7 +32,7 @@ void IsometricPositionable::_exit_tree() {
 Transform2D IsometricPositionable::getHexagoneCoordinates() {
     auto orthoPosition = aabb.position;
     auto size = aabb.size;
-    auto upperPoint = Vector3(orthoPosition.x, orthoPosition.y, orthoPosition.z + IsometricSettings::zRatio * size.z);
+    auto upperPoint = Vector3(orthoPosition.x, orthoPosition.y, orthoPosition.z + (float) IsometricServer::Z_RATIO * size.z);
     auto lowerPoint = Vector3(orthoPosition.x + size.x, orthoPosition.y + size.y, orthoPosition.z);
     auto leftPoint = Vector3(orthoPosition.x, orthoPosition.y + size.y, orthoPosition.z);
     auto rightPoint = Vector3(orthoPosition.x + size.x, orthoPosition.y, orthoPosition.z);
@@ -73,7 +72,7 @@ AABB IsometricPositionable::getAABB() {
 
 void IsometricPositionable::setAABB(AABB ab) {
     aabb = ab;
-    this->set_position(IsometricUtils::getScreenCoordFrom3D(ab.position));
+    this->set_position(IsometricServer::getScreenCoordFrom3D(ab.position));
     isoPosition = get_position();
     onResize(ab.size);
 }

@@ -1,4 +1,4 @@
-#include "isometric_map.h"
+#include "IsometricMap.h"
 
 using namespace godot;
 
