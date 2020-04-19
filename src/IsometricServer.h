@@ -4,10 +4,13 @@
 
 #include <core/Vector2.hpp>
 #include <core/Vector3.hpp>
+#include <core/Transform2D.hpp>
+#include <core/AABB.hpp>
 
 namespace godot {
 
-#define deg2rad(deg) deg / 180 * Math_PI
+#define DEG2RAD(deg) deg / 180 * Math_PI
+#define ISO_GROUP "positionables"
 
     class IsometricServer {
     private:
@@ -28,6 +31,8 @@ namespace godot {
 
         static Vector2 getScreenCoordFrom3D(Vector3 pos);
         static Vector3 get3DCoordFromScreen(Vector2 pos, real_t orthZ);
+        static bool doHexagoneOverlap(Transform2D hex1, Transform2D hex2);
+        static bool isBoxInFront(AABB box, AABB other);
     };
 }
 

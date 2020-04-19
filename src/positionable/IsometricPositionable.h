@@ -26,6 +26,9 @@ namespace godot {
     private:
         AABB aabb;
         int zOrderSize;
+        bool rendered = false;
+        bool temporary = true;
+        int debugZ = 0;
 
         PoolVector2Array leftPoints;
         PoolVector2Array rightPoints;
@@ -50,9 +53,15 @@ namespace godot {
         void setAABB(AABB ab);
         int getZOrderSize();
         void setZOrderSize(int size);
+        bool isRendered();
+        void setRendered(bool isRendered);
+        bool isTemporary();
+        void setTemporary(bool temporary);
+        int getDebugZ();
+        void setDebugZ(int debugZ);
 
         virtual void onResize(Vector3 size);
-        virtual void gridUpdated(int stair);
+        virtual void onGridUpdated(int stair);
         virtual void onSelect(bool isSelected);
     };
 }

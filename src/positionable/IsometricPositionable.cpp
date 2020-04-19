@@ -13,7 +13,7 @@ void IsometricPositionable::_register_methods() {
     register_method("get_hexagone_coordinates", &IsometricPositionable::getHexagoneCoordinates);
     register_method("drawOutline", &IsometricPositionable::drawOutline);
     register_method("_on_resize", &IsometricPositionable::onResize);
-    register_method("_grid_updated", &IsometricPositionable::gridUpdated);
+    register_method("_grid_updated", &IsometricPositionable::onGridUpdated);
     register_method("_on_select", &IsometricPositionable::onSelect);
 
     register_property("iso_position", &IsometricPositionable::isoPosition, Vector2());
@@ -89,6 +89,14 @@ void IsometricPositionable::setZOrderSize(int size) {
     zOrderSize = size;
 }
 
+bool IsometricPositionable::isRendered() {
+    return rendered;
+}
+
+void IsometricPositionable::setRendered(bool isRendered) {
+    this->rendered = isRendered;
+}
+
 void IsometricPositionable::updateZOrderSize(int change) {
     auto parent = Object::cast_to<IsometricPositionable>(this->get_parent());
     if (parent) {
@@ -100,10 +108,26 @@ void IsometricPositionable::onResize(godot::Vector3 size) {
 
 }
 
-void IsometricPositionable::gridUpdated(int stair) {
+void IsometricPositionable::onGridUpdated(int stair) {
 
 }
 
 void IsometricPositionable::onSelect(bool isSelected) {
 
+}
+
+bool IsometricPositionable::isTemporary() {
+    return temporary;
+}
+
+void IsometricPositionable::setTemporary(bool temporary) {
+    this->temporary = temporary;
+}
+
+int IsometricPositionable::getDebugZ() {
+    return debugZ;
+}
+
+void IsometricPositionable::setDebugZ(int debugZ) {
+    this->debugZ = debugZ;
 }

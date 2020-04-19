@@ -6,7 +6,7 @@ int IsometricServer::TILE_WIDTH = 256;
 int IsometricServer::TILE_HEIGHT = 128;
 int IsometricServer::ANGLE = 30;
 
-int IsometricServer::E_Z = (int) ((TILE_HEIGHT / sin(deg2rad((float) ANGLE)) / sqrt(2)) * cos(deg2rad((float) ANGLE)));
+int IsometricServer::E_Z = (int) ((TILE_HEIGHT / sin(DEG2RAD((float) ANGLE)) / sqrt(2)) * cos(DEG2RAD((float) ANGLE)));
 int IsometricServer::Z_RATIO = IsometricServer::E_Z / TILE_HEIGHT;
 
 int IsometricServer::getTileWidth() {
@@ -58,5 +58,34 @@ Vector2 IsometricServer::getScreenCoordFrom3D(Vector3 pos) {
 }
 
 int IsometricServer::calculateEz() {
-    return (int) ((TILE_HEIGHT / sin(deg2rad((float) ANGLE)) / sqrt(2)) * cos(deg2rad((float) ANGLE)));
+    return (int) ((TILE_HEIGHT / sin(DEG2RAD((float) ANGLE)) / sqrt(2)) * cos(DEG2RAD((float) ANGLE)));
+}
+
+bool IsometricServer::doHexagoneOverlap(Transform2D hex1, Transform2D hex2) {
+    return !(hex1.get_axis(0).x >= hex2.get_axis(0).y || hex2.get_axis(0).x >= hex1.get_axis(0).y)
+    && !(hex1.get_axis(1).x >= hex2.get_axis(1).y || hex2.get_axis(1).x >= hex1.get_axis(1).y)
+    && !(hex1.get_origin().x >= hex2.get_origin().y || hex2.get_origin().x >= hex1.get_origin().y);
+}
+
+bool IsometricServer::isBoxInFront(AABB box, AABB other) {
+    Vector3 boxEnd = box.position + box.size;
+    Vector3 otherEnd = other.position + other.size;
+    if (boxEnd.x <= other.position.x) {
+        return false;
+    } else if (otherEnd.x <= box.position.x) {
+        return true;
+    }
+
+    if (boxEnd.y <= other.position.y) {
+        return false;
+    } else if (otherEnd.y <= box.position.y) {
+        return true;
+    }
+
+    if (boxEnd.z <= other.position.z) {
+        return false;
+    } else if (otherEnd.z <= box.position.z) {
+        return true;
+    }
+    return false;
 }
