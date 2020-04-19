@@ -1,7 +1,7 @@
-#ifndef ISOMETRICMAPEDITOR_ISOMETRIC_MAP_H
-#define ISOMETRICMAPEDITOR_ISOMETRIC_MAP_H
+#ifndef ISOMETRICMAPEDITOR_ISOMETRICMAP_H
+#define ISOMETRICMAPEDITOR_ISOMETRICMAP_H
 
-#include "isometric_positionable.h"
+#include "IsometricPositionable.h"
 
 namespace godot {
     class IsometricMap : public IsometricPositionable {
@@ -16,4 +16,4 @@ namespace godot {
     };
 }
 
-#endif //ISOMETRICMAPEDITOR_ISOMETRIC_MAP_H
+#endif //ISOMETRICMAPEDITOR_ISOMETRICMAP_H

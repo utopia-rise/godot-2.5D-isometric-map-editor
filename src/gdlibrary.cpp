@@ -1,4 +1,5 @@
-#include "positionable/isometric_positionable.h"
+#include "positionable/IsometricPositionable.h"
+#include "_IsometricServer.h"
 
 using namespace godot;
 
@@ -13,5 +14,6 @@ extern "C" void GDN_EXPORT iso_map_gdnative_terminate(godot_gdnative_terminate_o
 extern "C" void GDN_EXPORT iso_map_nativescript_init(void *handle){
     Godot::nativescript_init(handle);
     register_class<IsometricPositionable>();
+    register_class<_IsometricServer>();
 }
 
