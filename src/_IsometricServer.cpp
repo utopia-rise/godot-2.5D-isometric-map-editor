@@ -13,33 +13,33 @@ void _IsometricServer::_register_methods() {
 }
 
 int _IsometricServer::getTileWidth() {
-    return IsometricServer::getTileWidth();
+    return IsometricServer::getInstance().getTileWidth();
 }
 
-void _IsometricServer::setTileWidth(int tile_width) {
-    IsometricServer::setTileWidth(tile_width);
+void _IsometricServer::setTileWidth(int tileWidth) {
+    IsometricServer::getInstance().setTileWidth(tileWidth);
 }
 
 int _IsometricServer::getTileHeight() {
-    return IsometricServer::getTileWidth();
+    return IsometricServer::getInstance().getTileWidth();
 }
 
-void _IsometricServer::setTileHeight(int tile_height) {
-    IsometricServer::setTileHeight(tile_height);
+void _IsometricServer::setTileHeight(int tileHeight) {
+    IsometricServer::getInstance().setTileHeight(tileHeight);
 }
 
 int _IsometricServer::getAngle() {
-    return IsometricServer::getTileHeight();
+    return IsometricServer::getInstance().getTileHeight();
 }
 
 void _IsometricServer::setAngle(int angle) {
-    IsometricServer::setAngle(angle);
+    IsometricServer::getInstance().setAngle(angle);
 }
 
 Vector2 _IsometricServer::getScreenCoordFrom3D(Vector3 pos) {
-    return IsometricServer::getScreenCoordFrom3D(pos);
+    return IsometricServer::getInstance().getScreenCoordFrom3D(pos);
 }
 
 Vector3 _IsometricServer::get3DCoordFromScreen(Vector2 pos, real_t orthZ) {
-    return IsometricServer::get3DCoordFromScreen(pos, orthZ);
+    return IsometricServer::getInstance().get3DCoordFromScreen(pos, orthZ);
 }

@@ -2,47 +2,57 @@
 
 using namespace godot;
 
-int IsometricServer::TILE_WIDTH = 256;
-int IsometricServer::TILE_HEIGHT = 128;
-int IsometricServer::ANGLE = 30;
+IsometricServer::IsometricServer() = default;
 
-int IsometricServer::E_Z = (int) ((TILE_HEIGHT / sin(DEG2RAD((float) ANGLE)) / sqrt(2)) * cos(DEG2RAD((float) ANGLE)));
-int IsometricServer::Z_RATIO = IsometricServer::E_Z / TILE_HEIGHT;
+IsometricServer::~IsometricServer() = default;
 
-int IsometricServer::getTileWidth() {
-    return TILE_WIDTH;
+IsometricServer &IsometricServer::getInstance() {
+    static IsometricServer instance;
+    return instance;
 }
 
-void IsometricServer::setTileWidth(int tile_width) {
-    TILE_WIDTH = tile_width;
-    //TODO calculate TILE_HEIGHT
+int IsometricServer::getTileWidth() {
+    return tileWidth;
+}
+
+void IsometricServer::setTileWidth(int tW) {
+    tileWidth = tW;
+    //TODO calculate tileHeight
 }
 
 int IsometricServer::getTileHeight() {
-    return TILE_HEIGHT;
-    //TODO remove and calculate with ANGLE and TILE_WIDTH
+    return tileHeight;
+    //TODO remove and calculate with angle and tileWidth
 }
 
-void IsometricServer::setTileHeight(int tile_height) {
-    tile_height = tile_height;
-    //TODO remove and calculate with ANGLE and TILE_WIDTH
+void IsometricServer::setTileHeight(int tH) {
+    tileHeight = tH;
+    //TODO remove and calculate with angle and tileWidth
 }
 
 int IsometricServer::getAngle() {
-    return ANGLE;
+    return angle;
 }
 
-void IsometricServer::setAngle(int angle) {
-    ANGLE = angle;
+void IsometricServer::setAngle(int agl) {
+    angle = agl;
     calculateEz();
-    //TODO calculate TILE_HEIGHT
+    //TODO calculate tileHeight
+}
+
+int IsometricServer::getEZ() {
+    return eZ;
+}
+
+int IsometricServer::getZRatio() {
+    return zRatio;
 }
 
 Vector3 IsometricServer::get3DCoordFromScreen(Vector2 pos, real_t orthZ) {
     auto isoX = pos.x;
     auto isoY = pos.y;
-    real_t orthX = isoX / (float) TILE_WIDTH + (isoY + orthZ * (float) E_Z) / (float) TILE_HEIGHT;
-    real_t orthY = (isoY + orthZ * (float) E_Z) / (float) TILE_HEIGHT - isoX / (float) TILE_WIDTH;
+    real_t orthX = isoX / (float) tileWidth + (isoY + orthZ * (float) eZ) / (float) tileHeight;
+    real_t orthY = (isoY + orthZ * (float) eZ) / (float) tileHeight - isoX / (float) tileWidth;
     return {
             ::roundf(orthX),
             ::roundf(orthY),
@@ -52,13 +62,13 @@ Vector3 IsometricServer::get3DCoordFromScreen(Vector2 pos, real_t orthZ) {
 
 Vector2 IsometricServer::getScreenCoordFrom3D(Vector3 pos) {
     return {
-            (pos.x - pos.y) * (float) TILE_WIDTH * 0.5f,
-            (pos.x + pos.y) * (float) TILE_HEIGHT * 0.5f
+            (pos.x - pos.y) * (float) tileWidth * 0.5f,
+            (pos.x + pos.y) * (float) tileHeight * 0.5f
     };
 }
 
 int IsometricServer::calculateEz() {
-    return (int) ((TILE_HEIGHT / sin(DEG2RAD((float) ANGLE)) / sqrt(2)) * cos(DEG2RAD((float) ANGLE)));
+    return (int) ((tileHeight / sin(DEG2RAD((float) angle)) / sqrt(2)) * cos(DEG2RAD((float) angle)));
 }
 
 bool IsometricServer::doHexagoneOverlap(Transform2D hex1, Transform2D hex2) {

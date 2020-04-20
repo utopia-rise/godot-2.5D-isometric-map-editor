@@ -14,25 +14,36 @@ namespace godot {
 
     class IsometricServer {
     private:
-        static int calculateEz();
+        IsometricServer();
+        ~IsometricServer();
+        int calculateEz();
+
     public:
-        static int TILE_WIDTH;
-        static int TILE_HEIGHT;
-        static int ANGLE;
-        static int E_Z;
-        static int Z_RATIO;
+        IsometricServer(const IsometricServer &) = delete;
+        IsometricServer &operator=(const IsometricServer &) = delete;
 
-        static int getTileWidth();
-        static void setTileWidth(int tile_width);
-        static int getTileHeight();
-        static void setTileHeight(int tile_height);
-        static int getAngle();
-        static void setAngle(int angle);
+        int tileWidth = 256;
+        int tileHeight = 128;
+        int angle = 30;
+        int eZ = (int) ((tileHeight / sin(DEG2RAD((float) angle)) / sqrt(2)) * cos(DEG2RAD((float) angle)));;
+        float zRatio = (float) eZ / tileHeight;
 
-        static Vector2 getScreenCoordFrom3D(Vector3 pos);
-        static Vector3 get3DCoordFromScreen(Vector2 pos, real_t orthZ);
-        static bool doHexagoneOverlap(Transform2D hex1, Transform2D hex2);
-        static bool isBoxInFront(AABB box, AABB other);
+        static IsometricServer &getInstance();
+
+        int getTileWidth();
+        void setTileWidth(int tW);
+        int getTileHeight();
+        void setTileHeight(int tH);
+        int getAngle();
+        void setAngle(int agl);
+
+        int getEZ();
+        int getZRatio();
+
+        Vector2 getScreenCoordFrom3D(Vector3 pos);
+        Vector3 get3DCoordFromScreen(Vector2 pos, real_t orthZ);
+        bool doHexagoneOverlap(Transform2D hex1, Transform2D hex2);
+        bool isBoxInFront(AABB box, AABB other);
     };
 }
 

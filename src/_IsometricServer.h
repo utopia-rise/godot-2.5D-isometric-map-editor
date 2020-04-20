@@ -16,9 +16,9 @@ namespace godot {
         static void _register_methods();
 
         int getTileWidth();
-        void setTileWidth(int tile_width);
+        void setTileWidth(int tileWidth);
         int getTileHeight();
-        void setTileHeight(int tile_height);
+        void setTileHeight(int tileHeight);
         int getAngle();
         void setAngle(int angle);
 
