@@ -3,6 +3,13 @@
 
 using namespace godot;
 
+void IsometricMap::_register_methods() {
+    register_method("_init", &IsometricMap::_init);
+    register_method("_process", &IsometricMap::_process);
+    register_method("_on_resize", &IsometricMap::_onResize);
+    register_method("_on_grid_updated", &IsometricMap::_onGridUpdated);
+}
+
 void IsometricMap::_init() {
     grid3D.updateArraySize(this->getAABB().size, true);
 }
@@ -11,22 +18,17 @@ void IsometricMap::_process(float delta) {
     generateTopologicalRenderGraph();
 }
 
-void IsometricMap::setDrawTile(bool b) {
-    drawTiles = b;
-    update();
-}
-
-void IsometricMap::onResize(Vector3 size) {
+void IsometricMap::_onResize(Vector3 size) {
     grid3D.updateArraySize(size);
     editionGrid3D.updateArraySize(size);
 }
 
-void IsometricMap::onGridUpdated(int stair) {
+void IsometricMap::_onGridUpdated(int stair) {
     Array children = get_children();
     for (int i = 0; i < children.size(); i++) {
         IsometricPositionable *isometricPositionable = children[i];
         if (isometricPositionable) {
-            isometricPositionable->onGridUpdated(stair);
+            isometricPositionable->_onGridUpdated(stair);
         }
     }
 }

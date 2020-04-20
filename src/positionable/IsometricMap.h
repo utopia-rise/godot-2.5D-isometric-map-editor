@@ -20,13 +20,13 @@ namespace godot {
         Array getPositionableBehind(IsometricPositionable *isoNode);
         void addIsoPositionable(IsometricPositionable *isometricPositionable);
         void removeIsoPositionable(IsometricPositionable *isometricPositionable);
-
     public:
+        static void _register_methods();
+
         void _init();
         void _process(float delta);
-        void setDrawTile(bool b);
-        void onResize(Vector3 size) override;
-        void onGridUpdated(int stair) override;
+        void _onResize(Vector3 size) override;
+        void _onGridUpdated(int stair) override;
     };
 }
 

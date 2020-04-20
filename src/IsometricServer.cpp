@@ -11,7 +11,7 @@ IsometricServer &IsometricServer::getInstance() {
     return instance;
 }
 
-int IsometricServer::getTileWidth() {
+int IsometricServer::getTileWidth() const {
     return tileWidth;
 }
 
@@ -20,7 +20,7 @@ void IsometricServer::setTileWidth(int tW) {
     //TODO calculate tileHeight
 }
 
-int IsometricServer::getTileHeight() {
+int IsometricServer::getTileHeight() const {
     return tileHeight;
     //TODO remove and calculate with angle and tileWidth
 }
@@ -30,7 +30,7 @@ void IsometricServer::setTileHeight(int tH) {
     //TODO remove and calculate with angle and tileWidth
 }
 
-int IsometricServer::getAngle() {
+int IsometricServer::getAngle() const {
     return angle;
 }
 
@@ -40,15 +40,15 @@ void IsometricServer::setAngle(int agl) {
     //TODO calculate tileHeight
 }
 
-int IsometricServer::getEZ() {
+int IsometricServer::getEZ() const {
     return eZ;
 }
 
-int IsometricServer::getZRatio() {
+float IsometricServer::getZRatio() const {
     return zRatio;
 }
 
-Vector3 IsometricServer::get3DCoordFromScreen(Vector2 pos, real_t orthZ) {
+Vector3 IsometricServer::get3DCoordFromScreen(Vector2 pos, real_t orthZ) const {
     auto isoX = pos.x;
     auto isoY = pos.y;
     real_t orthX = isoX / (float) tileWidth + (isoY + orthZ * (float) eZ) / (float) tileHeight;
@@ -60,14 +60,14 @@ Vector3 IsometricServer::get3DCoordFromScreen(Vector2 pos, real_t orthZ) {
     };
 }
 
-Vector2 IsometricServer::getScreenCoordFrom3D(Vector3 pos) {
+Vector2 IsometricServer::getScreenCoordFrom3D(Vector3 pos) const {
     return {
             (pos.x - pos.y) * (float) tileWidth * 0.5f,
             (pos.x + pos.y) * (float) tileHeight * 0.5f
     };
 }
 
-int IsometricServer::calculateEz() {
+int IsometricServer::calculateEz() const {
     return (int) ((tileHeight / sin(DEG2RAD((float) angle)) / sqrt(2)) * cos(DEG2RAD((float) angle)));
 }
 

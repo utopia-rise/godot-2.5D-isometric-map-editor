@@ -46,22 +46,22 @@ namespace godot {
         void _enter_tree();
         void _exit_tree();
 
-        Transform2D getHexagoneCoordinates();
+        Transform2D getHexagoneCoordinates() const;
         void drawOutline();
 
         AABB getAABB();
         void setAABB(AABB ab);
-        int getZOrderSize();
+        int getZOrderSize() const;
         void setZOrderSize(int size);
-        bool isRendered();
+        bool isRendered() const;
         void setRendered(bool isRendered);
-        bool isTemporary();
-        void setTemporary(bool temporary);
-        int getDebugZ();
-        void setDebugZ(int debugZ);
+        bool isTemporary() const;
+        void setTemporary(bool temp);
+        int getDebugZ() const;
+        void setDebugZ(int dZ);
 
-        virtual void onResize(Vector3 size);
-        virtual void onGridUpdated(int stair);
+        virtual void _onResize(Vector3 size);
+        virtual void _onGridUpdated(int stair);
         virtual void onSelect(bool isSelected);
     };
 }

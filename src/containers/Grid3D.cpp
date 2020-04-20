@@ -1,7 +1,3 @@
-//
-// Created by piertho on 19/04/2020.
-//
-
 #include "Grid3D.h"
 
 using namespace godot;
@@ -15,7 +11,6 @@ void Grid3D::updateArraySize(godot::Vector3 size, bool reset) {
     Array oldArray = internalArray;
     int oldWidth = width;
     int oldDepth = depth;
-    int oldHeight = height;
 
     //Set new values
     width = (int) size.x;
@@ -52,7 +47,7 @@ void Grid3D::reset() {
 }
 
 Object *Grid3D::getData(Vector3 position) {
-    return position.x >= 0 && position.x < width && position.y >= 0 && position.y < depth && position.z >= 0 && position.z < height
+    return (int) position.x >= 0 && (int) position.x < width && (int) position.y >= 0 && (int) position.y < depth && (int) position.z >= 0 && (int) position.z < height
     ? (Object *) internalArray[(int) position.x + width * (int) position.y + width * depth * (int) position.z]
     : nullptr;
 }
@@ -62,16 +57,56 @@ void Grid3D::setData(Vector3 position, Object *data) {
 }
 
 bool Grid3D::insertBox(AABB aabb, Object *data, bool remove) {
-    //TODO
+    Vector3 position = aabb.position;
+    Vector3 size = aabb.size;
+    int index = getId(position);
+    int endX = (int) position.x + (int) size.x;
+    int endY = (int) position.y + (int) size.y;
+    int endZ = (int) position.z + (int) size.z;
+
+    if (endX > width || endY > depth || endZ > height) {
+        return false;
+    }
+
+    Vector3 planeSquareAndJumps = planeSquareAndJumpsFrom(size);
+
+    internalArray[index] = remove ? nullptr : data;
+    for (int i = 1; i < (int) size.x * (int) size.y * (int) size.z; i++) {
+        index += Grid3D::indexIncrementFrom(planeSquareAndJumps, size);
+        internalArray[index] = remove ? nullptr : data;
+    }
+    return true;
+}
+
+bool Grid3D::isOverlapping(AABB aabb) const {
+    int index = getId(aabb.position);
+    Vector3 size = aabb.size;
+
+    Vector3 planeSquareAndJumps = planeSquareAndJumpsFrom(size);
+    Object *element = internalArray[index];
+    if (element) {
+        return true;
+    }
+    for (int i = 1; i < (int) size.x * (int) size.y * (int) size.z; i++) {
+        index += Grid3D::indexIncrementFrom(planeSquareAndJumps, size);
+        element = internalArray[index];
+        if (element) {
+            return true;
+        }
+    }
     return false;
 }
 
-bool Grid3D::isOverlapping(AABB aabb) {
-    //TODO
+bool Grid3D::has(Object *object) const {
+    for (int i = 0; i < internalArray.size(); i++) {
+        if ((Object *) internalArray[i] == object) {
+            return true;
+        }
+    }
     return false;
 }
 
-int Grid3D::getWidth() {
+int Grid3D::getWidth() const {
     return width;
 }
 
@@ -83,7 +118,7 @@ void Grid3D::setWidth(int w) {
     });
 }
 
-int Grid3D::getDepth() {
+int Grid3D::getDepth() const {
     return depth;
 }
 
@@ -95,7 +130,7 @@ void Grid3D::setDepth(int d) {
     });
 }
 
-int Grid3D::getHeight() {
+int Grid3D::getHeight() const {
     return height;
 }
 
@@ -111,7 +146,7 @@ Array Grid3D::getInternalArray() {
     return internalArray;
 }
 
-void Grid3D::setInternalArray(Array array) {
+void Grid3D::setInternalArray(const Array& array) {
     internalArray = array;
 }
 
@@ -124,14 +159,34 @@ void Grid3D::forEach(void (*fptr)(Object *)) {
     }
 }
 
-bool Grid3D::isInRange(int x, int y, int z) {
+bool Grid3D::isInRange(int x, int y, int z) const {
     return x < width && y < depth && z < height;
 }
 
-Vector3 Grid3D::getPosition3D(int id) {
+int Grid3D::getId(Vector3 position) const {
+    return (int) position.x + width * (int) position.y + width * depth * (int) position.z;
+}
+
+Vector3 Grid3D::getPosition3D(int id) const {
     return {
         (real_t) (id % width),
         (real_t) ((id / width) % depth),
-        (real_t) id / (width * depth)
+        (real_t) id / ((real_t) width * (real_t) depth)
     };
+}
+
+Vector3 Grid3D::planeSquareAndJumpsFrom(Vector3 size) const {
+    return {
+        size.x * size.y,
+        (real_t ) width - size.x,
+        (real_t ) width * ((float) depth - size.y)
+    };
+}
+
+int Grid3D::indexIncrementFrom(Vector3 planeSquareAndJumps, Vector3 size) {
+    int increment = 0;
+    increment += increment % (int) size.x == 0 ? (int) planeSquareAndJumps.x : 0;
+    increment += increment % (int) planeSquareAndJumps.x == 0 ? (int) planeSquareAndJumps.z : 0;
+    increment += 1;
+    return increment;
 }
