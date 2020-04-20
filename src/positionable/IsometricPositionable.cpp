@@ -12,8 +12,8 @@ void IsometricPositionable::_register_methods() {
     register_method("_exit_tree", &IsometricPositionable::_exit_tree);
     register_method("get_hexagone_coordinates", &IsometricPositionable::getHexagoneCoordinates);
     register_method("drawOutline", &IsometricPositionable::drawOutline);
-    register_method("_on_resize", &IsometricPositionable::onResize);
-    register_method("_grid_updated", &IsometricPositionable::gridUpdated);
+    register_method("_on_resize", &IsometricPositionable::_onResize);
+    register_method("_grid_updated", &IsometricPositionable::_onGridUpdated);
     register_method("_on_select", &IsometricPositionable::onSelect);
 
     register_property("iso_position", &IsometricPositionable::isoPosition, Vector2());
@@ -29,10 +29,10 @@ void IsometricPositionable::_exit_tree() {
     updateZOrderSize(-zOrderSize);
 }
 
-Transform2D IsometricPositionable::getHexagoneCoordinates() {
+Transform2D IsometricPositionable::getHexagoneCoordinates() const {
     auto orthoPosition = aabb.position;
     auto size = aabb.size;
-    auto upperPoint = Vector3(orthoPosition.x, orthoPosition.y, orthoPosition.z + (float) IsometricServer::Z_RATIO * size.z);
+    auto upperPoint = Vector3(orthoPosition.x, orthoPosition.y, orthoPosition.z + (float) IsometricServer::getInstance().zRatio * size.z);
     auto lowerPoint = Vector3(orthoPosition.x + size.x, orthoPosition.y + size.y, orthoPosition.z);
     auto leftPoint = Vector3(orthoPosition.x, orthoPosition.y + size.y, orthoPosition.z);
     auto rightPoint = Vector3(orthoPosition.x + size.x, orthoPosition.y, orthoPosition.z);
@@ -72,12 +72,12 @@ AABB IsometricPositionable::getAABB() {
 
 void IsometricPositionable::setAABB(AABB ab) {
     aabb = ab;
-    this->set_position(IsometricServer::getScreenCoordFrom3D(ab.position));
+    this->set_position(IsometricServer::getInstance().getScreenCoordFrom3D(ab.position));
     isoPosition = get_position();
-    onResize(ab.size);
+    _onResize(ab.size);
 }
 
-int IsometricPositionable::getZOrderSize() {
+int IsometricPositionable::getZOrderSize() const {
     return zOrderSize;
 }
 
@@ -89,6 +89,14 @@ void IsometricPositionable::setZOrderSize(int size) {
     zOrderSize = size;
 }
 
+bool IsometricPositionable::isRendered() const {
+    return rendered;
+}
+
+void IsometricPositionable::setRendered(bool isRendered) {
+    this->rendered = isRendered;
+}
+
 void IsometricPositionable::updateZOrderSize(int change) {
     auto parent = Object::cast_to<IsometricPositionable>(this->get_parent());
     if (parent) {
@@ -96,14 +104,30 @@ void IsometricPositionable::updateZOrderSize(int change) {
     }
 }
 
-void IsometricPositionable::onResize(godot::Vector3 size) {
+void IsometricPositionable::_onResize(godot::Vector3 size) {
 
 }
 
-void IsometricPositionable::gridUpdated(int stair) {
+void IsometricPositionable::_onGridUpdated(int stair) {
 
 }
 
 void IsometricPositionable::onSelect(bool isSelected) {
 
+}
+
+bool IsometricPositionable::isTemporary() const {
+    return temporary;
+}
+
+void IsometricPositionable::setTemporary(bool temp) {
+    this->temporary = temp;
+}
+
+int IsometricPositionable::getDebugZ() const {
+    return debugZ;
+}
+
+void IsometricPositionable::setDebugZ(int dZ) {
+    this->debugZ = dZ;
 }
