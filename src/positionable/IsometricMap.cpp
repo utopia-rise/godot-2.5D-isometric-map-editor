@@ -6,21 +6,27 @@ using namespace godot;
 void IsometricMap::_register_methods() {
     register_method("_init", &IsometricMap::_init);
     register_method("_process", &IsometricMap::_process);
+
+    register_method("add_iso_positionable", &IsometricMap::addIsoPositionable);
+    register_method("remove_iso_positionable", &IsometricMap::removeIsoPositionable);
+    register_method("get_positionable_at", &IsometricMap::getPositionableAt);
+    register_method("is_overlapping", &IsometricMap::isOverlapping);
+
     register_method("_on_resize", &IsometricMap::_onResize);
     register_method("_on_grid_updated", &IsometricMap::_onGridUpdated);
 }
 
 void IsometricMap::_init() {
-    grid3D.updateArraySize(this->getAABB().size, true);
+    IsometricPositionable::_init();
 }
 
 void IsometricMap::_process(float delta) {
     generateTopologicalRenderGraph();
 }
 
-void IsometricMap::_onResize(Vector3 size) {
-    grid3D.updateArraySize(size);
-    editionGrid3D.updateArraySize(size);
+void IsometricMap::_onResize() {
+    grid3D.updateArraySize(getSize3D());
+    editionGrid3D.updateArraySize(getSize3D());
 }
 
 void IsometricMap::_onGridUpdated(int stair) {
@@ -92,6 +98,7 @@ void IsometricMap::addIsoPositionable(IsometricPositionable *isometricPositionab
     const AABB &aabb = isometricPositionable->getAABB();
     grid3D.setData(aabb.position, isometricPositionable);
     editionGrid3D.insertBox(aabb, isometricPositionable);
+    add_child(isometricPositionable);
     isometricPositionable->add_to_group(ISO_GROUP, false);
 }
 
@@ -104,4 +111,12 @@ void IsometricMap::removeIsoPositionable(IsometricPositionable *isometricPositio
         isometricPositionable->remove_from_group(ISO_GROUP);
     }
     isometricPositionable->update();
+}
+
+IsometricPositionable *IsometricMap::getPositionableAt(Vector3 pos, bool onlyLeftUpperCorner) {
+    return (IsometricPositionable *)(onlyLeftUpperCorner ? grid3D.getData(pos) : editionGrid3D.getData(pos));
+}
+
+bool IsometricMap::isOverlapping(IsometricPositionable *positionable) {
+    return editionGrid3D.isOverlapping(positionable->getAABB());
 }

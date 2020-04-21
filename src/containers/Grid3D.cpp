@@ -68,11 +68,9 @@ bool Grid3D::insertBox(AABB aabb, Object *data, bool remove) {
         return false;
     }
 
-    Vector3 planeSquareAndJumps = planeSquareAndJumpsFrom(size);
-
     internalArray[index] = remove ? nullptr : data;
     for (int i = 1; i < (int) size.x * (int) size.y * (int) size.z; i++) {
-        index += Grid3D::indexIncrementFrom(planeSquareAndJumps, size);
+        index += Grid3D::indexIncrementFrom(planeSquareAndJumpsFrom(size), size, i);
         internalArray[index] = remove ? nullptr : data;
     }
     return true;
@@ -82,13 +80,12 @@ bool Grid3D::isOverlapping(AABB aabb) const {
     int index = getId(aabb.position);
     Vector3 size = aabb.size;
 
-    Vector3 planeSquareAndJumps = planeSquareAndJumpsFrom(size);
     Object *element = internalArray[index];
     if (element) {
         return true;
     }
     for (int i = 1; i < (int) size.x * (int) size.y * (int) size.z; i++) {
-        index += Grid3D::indexIncrementFrom(planeSquareAndJumps, size);
+        index += Grid3D::indexIncrementFrom(planeSquareAndJumpsFrom(size), size, i);
         element = internalArray[index];
         if (element) {
             return true;
@@ -183,10 +180,10 @@ Vector3 Grid3D::planeSquareAndJumpsFrom(Vector3 size) const {
     };
 }
 
-int Grid3D::indexIncrementFrom(Vector3 planeSquareAndJumps, Vector3 size) {
+int Grid3D::indexIncrementFrom(Vector3 planeSquareAndJumps, Vector3 size, int iteration) {
     int increment = 0;
-    increment += increment % (int) size.x == 0 ? (int) planeSquareAndJumps.x : 0;
-    increment += increment % (int) planeSquareAndJumps.x == 0 ? (int) planeSquareAndJumps.z : 0;
+    increment += (iteration % (int) size.x) == 0 ? (int) planeSquareAndJumps.y : 0;
+    increment += (iteration % (int) planeSquareAndJumps.x) == 0 ? (int) planeSquareAndJumps.z : 0;
     increment += 1;
     return increment;
 }

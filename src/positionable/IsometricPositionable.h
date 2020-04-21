@@ -43,6 +43,7 @@ namespace godot {
 
         ~IsometricPositionable();
         static void _register_methods();
+        void  _init();
         void _enter_tree();
         void _exit_tree();
 
@@ -51,6 +52,10 @@ namespace godot {
 
         AABB getAABB();
         void setAABB(AABB ab);
+        Vector3 getPosition3D();
+        void setPosition3D(Vector3 pos);
+        Vector3 getSize3D();
+        void setSize3D(Vector3 s);
         int getZOrderSize() const;
         void setZOrderSize(int size);
         bool isRendered() const;
@@ -60,7 +65,7 @@ namespace godot {
         int getDebugZ() const;
         void setDebugZ(int dZ);
 
-        virtual void _onResize(Vector3 size);
+        virtual void _onResize();
         virtual void _onGridUpdated(int stair);
         virtual void onSelect(bool isSelected);
     };

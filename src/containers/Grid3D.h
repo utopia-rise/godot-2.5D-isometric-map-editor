@@ -25,7 +25,7 @@ namespace godot {
         Vector3 getPosition3D(int id) const;
         Vector3 planeSquareAndJumpsFrom(Vector3 size) const;
 
-        static int indexIncrementFrom(Vector3 planeSquareAndJumps, Vector3 size);
+        static int indexIncrementFrom(Vector3 planeSquareAndJumps, Vector3 size, int iteration);
     public:
         Grid3D();
         ~Grid3D();

@@ -1,0 +1,14 @@
+[general]
+
+singleton=false
+load_once=true
+symbol_prefix="iso_map_"
+reloadable=true
+
+[entry]
+
+Windows.64="res://addons/IsometricMap/libs/windows/libGodotIsoMapEditor.windows.release.64.dll"
+
+[dependencies]
+
+Windows.64=[  ]
