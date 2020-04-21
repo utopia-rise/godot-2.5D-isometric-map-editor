@@ -93,9 +93,12 @@ Array IsometricMap::getPositionableBehind(IsometricPositionable *isoNode) {
 }
 
 void IsometricMap::addIsoPositionable(IsometricPositionable *isometricPositionable) {
+    const Vector3 &mapSize = getAABB().size;
+    const AABB &aabb = isometricPositionable->getAABB();
+    const Vector3 pos = aabb.position;
+    if (pos.x >= mapSize.x || pos.y >= mapSize.y || pos.z >= mapSize.z || editionGrid3D.isOverlapping(aabb)) return;
     isometricPositionable->setTemporary(false);
     isometricPositionable->setDebugZ(0);
-    const AABB &aabb = isometricPositionable->getAABB();
     grid3D.setData(aabb.position, isometricPositionable);
     editionGrid3D.insertBox(aabb, isometricPositionable);
     add_child(isometricPositionable);
@@ -103,8 +106,11 @@ void IsometricMap::addIsoPositionable(IsometricPositionable *isometricPositionab
 }
 
 void IsometricMap::removeIsoPositionable(IsometricPositionable *isometricPositionable) {
-    remove_child(isometricPositionable);
+    const Vector3 &mapSize = getAABB().size;
     const AABB &aabb = isometricPositionable->getAABB();
+    const Vector3 pos = aabb.position;
+    if (pos.x >= mapSize.x || pos.y >= mapSize.y || pos.z >= mapSize.z) return;
+    remove_child(isometricPositionable);
     grid3D.setData(aabb.position, nullptr);
     editionGrid3D.insertBox(aabb, isometricPositionable, true);
     if (isometricPositionable->is_in_group(ISO_GROUP)) {
