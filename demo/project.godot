@@ -77,7 +77,7 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "IsometricServer",
 "language": "NativeScript",
-"path": "res://addons/IsometricMap/GdnsScripts/IsomerticServer.gdns"
+"path": "res://addons/IsometricMap/GdnsScripts/IsometricServer.gdns"
 }, {
 "base": "Node",
 "class": "MapEditionHandler",
@@ -147,6 +147,7 @@ config/icon="res://icon.png"
 [autoload]
 
 MapSettings="*res://addons/IsometricMap/Scripts/map_setting.gd"
+IsometricServer="*res://addons/IsometricMap/IsometricServer.tscn"
 
 [editor_plugins]
 

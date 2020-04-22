@@ -12,6 +12,8 @@ void _IsometricServer::_register_methods() {
     register_method("get_3d_coord_from_screen", &_IsometricServer::get3DCoordFromScreen);
 }
 
+void _IsometricServer::_init() {}
+
 int _IsometricServer::getTileWidth() {
     return IsometricServer::getInstance().getTileWidth();
 }
@@ -21,7 +23,7 @@ void _IsometricServer::setTileWidth(int tileWidth) {
 }
 
 int _IsometricServer::getTileHeight() {
-    return IsometricServer::getInstance().getTileWidth();
+    return IsometricServer::getInstance().getTileHeight();
 }
 
 void _IsometricServer::setTileHeight(int tileHeight) {
@@ -29,7 +31,7 @@ void _IsometricServer::setTileHeight(int tileHeight) {
 }
 
 int _IsometricServer::getAngle() {
-    return IsometricServer::getInstance().getTileHeight();
+    return IsometricServer::getInstance().getAngle();
 }
 
 void _IsometricServer::setAngle(int angle) {

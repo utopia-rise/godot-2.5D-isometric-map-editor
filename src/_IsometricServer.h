@@ -15,6 +15,8 @@ namespace godot {
     public:
         static void _register_methods();
 
+        void _init();
+
         int getTileWidth();
         void setTileWidth(int tileWidth);
         int getTileHeight();

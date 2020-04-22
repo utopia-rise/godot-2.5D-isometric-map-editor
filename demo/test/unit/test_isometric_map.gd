@@ -15,14 +15,7 @@ func test_assert_map_init_values():
 	assert_eq(test_map.size3d, Vector3(1.0, 1.0, 1.0), "Isometric map initial size should be " + str(expected_size) + ".")
 	assert_eq(test_map.get_positionable_at(expected_position), null, "Nothing should be found at " + str(expected_position))
 
-func test_assert_set_map_position():
-	var expected_value = Vector3(3.0, 2.0, 2.0)
-	var expected_iso_position = Vector2(128, 320)
-	test_map.position3d = expected_value
-	assert_eq(test_map.position3d, expected_value, "Map position should be " + str(expected_value) + ".")
-	assert_eq(test_map.iso_position, expected_iso_position, "Map iso_position should be " + str(128, 320) + ".")
-
-func test_assert_add_remove_iso_positionable():
+func test_should_add_remove_iso_positionable():
 	test_map.size3d = Vector3(10, 10, 10)
 	var inner_map = IsometricMap.new()
 	inner_map.size3d = Vector3(5, 5, 5)
@@ -39,7 +32,7 @@ func test_assert_add_remove_iso_positionable():
 	assert_eq(inner_map.get_parent(), null)
 	inner_map.queue_free()
 
-func test_assert_should_not_add_iso_positionable_out_of_map():
+func test_should_not_add_iso_positionable_out_of_map():
 	test_map.size3d = Vector3 (2, 2, 2)
 	var inner_map = IsometricMap.new()
 	inner_map.position3d = Vector3(2, 0, 0)
@@ -53,7 +46,7 @@ func test_assert_should_not_add_iso_positionable_out_of_map():
 	assert_eq(test_map.get_children().size(), 0, "Should not find any positionable as child in map.")
 	inner_map.queue_free()
 
-func test_assert_should_not_add_overlapping_iso_positionable():
+func test_should_not_add_overlapping_iso_positionable():
 	test_map.size3d = Vector3(10, 10, 10)
 	var inner_map = IsometricMap.new()
 	inner_map.size3d = Vector3(5, 5, 5)
@@ -62,6 +55,6 @@ func test_assert_should_not_add_overlapping_iso_positionable():
 	var overlapping_map = IsometricMap.new()
 	overlapping_map.position3d = Vector3(2, 2, 2)
 	test_map.add_iso_positionable(overlapping_map)
-	assert_eq(test_map.get_children().size(), 1, "Should find only one positionable as child in map.")
+	assert_eq(overlapping_map.get_parent(), null, "Overlapping map should not have parent")
 	overlapping_map.queue_free()
 	inner_map.queue_free()
