@@ -67,7 +67,7 @@ namespace godot {
 
         virtual void _onResize();
         virtual void _onGridUpdated(int stair);
-        virtual void onSelect(bool isSelected);
+        virtual void _onSelect(bool isSelected);
     };
 }
 

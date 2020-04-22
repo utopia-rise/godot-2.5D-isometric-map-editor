@@ -1,9 +1,9 @@
 extends "res://addons/gut/test.gd"
 
-var test_positionable: IsometricMap
+var test_positionable: IsometricPositionable
 
 func before_each():
-	test_positionable = IsometricMap.new()
+	test_positionable = IsometricPositionable.new()
 
 func after_all():
 	test_positionable.queue_free()

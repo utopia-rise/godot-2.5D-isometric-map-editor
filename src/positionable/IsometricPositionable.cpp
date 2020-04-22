@@ -8,13 +8,14 @@ IsometricPositionable::IsometricPositionable() = default;
 IsometricPositionable::~IsometricPositionable() = default;
 
 void IsometricPositionable::_register_methods() {
+    register_method("_init", &IsometricPositionable::_init);
     register_method("_enter_tree", &IsometricPositionable::_enter_tree);
     register_method("_exit_tree", &IsometricPositionable::_exit_tree);
     register_method("get_hexagone_coordinates", &IsometricPositionable::getHexagoneCoordinates);
     register_method("drawOutline", &IsometricPositionable::drawOutline);
     register_method("_on_resize", &IsometricPositionable::_onResize);
-    register_method("_grid_updated", &IsometricPositionable::_onGridUpdated);
-    register_method("_on_select", &IsometricPositionable::onSelect);
+    register_method("_on_grid_updated", &IsometricPositionable::_onGridUpdated);
+    register_method("_on_select", &IsometricPositionable::_onSelect);
 
     register_property("iso_position", &IsometricPositionable::isoPosition, Vector2());
     register_property("aabb", &IsometricPositionable::setAABB, &IsometricPositionable::getAABB, AABB(Vector3(), Vector3(1, 1, 1)));
@@ -138,7 +139,7 @@ void IsometricPositionable::_onGridUpdated(int stair) {
 
 }
 
-void IsometricPositionable::onSelect(bool isSelected) {
+void IsometricPositionable::_onSelect(bool isSelected) {
 
 }
 
