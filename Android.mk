@@ -21,8 +21,12 @@ LOCAL_CPP_FEATURES := rtti exceptions
 LOCAL_LDLIBS := -llog
 
 LOCAL_SRC_FILES := \
-src/godot_fmod.cpp \
 src/gdlibrary.cpp \
+src/IsometricServer.cpp \
+src/_IsometricServer.cpp \
+src/positionable/IsometricPositionable.cpp \
+src/positionable/IsometricMap.cpp \
+src/containers/Grid3D.cpp \
 
 LOCAL_C_INCLUDES := \
 ../godot-cpp/godot_headers \
