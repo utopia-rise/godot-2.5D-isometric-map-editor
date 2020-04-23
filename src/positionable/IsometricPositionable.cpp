@@ -29,7 +29,7 @@ void IsometricPositionable::_init() {
 }
 
 void IsometricPositionable::_enter_tree() {
-    zOrderSize = 1;
+    setZOrderSize(1);
     updateZOrderSize(zOrderSize);
 }
 

@@ -60,12 +60,12 @@ void IsometricMap::generateTopologicalRenderGraph() {
 
 void IsometricMap::renderIsoNode(IsometricPositionable *isoNode) {
     isoNode->setRendered(true);
-    int maxZSize;
+    int maxZSize = 0;
     Array isoNodes = getPositionableBehind(isoNode);
     for (int i = 0; i < isoNodes.size(); i++) {
         IsometricPositionable *positionable = isoNodes[i];
         if (positionable) {
-            if (positionable->isRendered()) {
+            if (!positionable->isRendered()) {
                 renderIsoNode(positionable);
             }
             int positionableZOrderSize = positionable->getZOrderSize();
