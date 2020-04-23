@@ -6,21 +6,27 @@ using namespace godot;
 void IsometricMap::_register_methods() {
     register_method("_init", &IsometricMap::_init);
     register_method("_process", &IsometricMap::_process);
+
+    register_method("add_iso_positionable", &IsometricMap::addIsoPositionable);
+    register_method("remove_iso_positionable", &IsometricMap::removeIsoPositionable);
+    register_method("get_positionable_at", &IsometricMap::getPositionableAt);
+    register_method("is_overlapping", &IsometricMap::isOverlapping);
+
     register_method("_on_resize", &IsometricMap::_onResize);
     register_method("_on_grid_updated", &IsometricMap::_onGridUpdated);
 }
 
 void IsometricMap::_init() {
-    grid3D.updateArraySize(this->getAABB().size, true);
+    IsometricPositionable::_init();
 }
 
 void IsometricMap::_process(float delta) {
     generateTopologicalRenderGraph();
 }
 
-void IsometricMap::_onResize(Vector3 size) {
-    grid3D.updateArraySize(size);
-    editionGrid3D.updateArraySize(size);
+void IsometricMap::_onResize() {
+    grid3D.updateArraySize(getSize3D());
+    editionGrid3D.updateArraySize(getSize3D());
 }
 
 void IsometricMap::_onGridUpdated(int stair) {
@@ -54,12 +60,12 @@ void IsometricMap::generateTopologicalRenderGraph() {
 
 void IsometricMap::renderIsoNode(IsometricPositionable *isoNode) {
     isoNode->setRendered(true);
-    int maxZSize;
+    int maxZSize = 0;
     Array isoNodes = getPositionableBehind(isoNode);
     for (int i = 0; i < isoNodes.size(); i++) {
         IsometricPositionable *positionable = isoNodes[i];
         if (positionable) {
-            if (positionable->isRendered()) {
+            if (!positionable->isRendered()) {
                 renderIsoNode(positionable);
             }
             int positionableZOrderSize = positionable->getZOrderSize();
@@ -87,21 +93,36 @@ Array IsometricMap::getPositionableBehind(IsometricPositionable *isoNode) {
 }
 
 void IsometricMap::addIsoPositionable(IsometricPositionable *isometricPositionable) {
+    const Vector3 &mapSize = getAABB().size;
+    const AABB &aabb = isometricPositionable->getAABB();
+    const Vector3 pos = aabb.position;
+    if (pos.x >= mapSize.x || pos.y >= mapSize.y || pos.z >= mapSize.z || editionGrid3D.isOverlapping(aabb)) return;
     isometricPositionable->setTemporary(false);
     isometricPositionable->setDebugZ(0);
-    const AABB &aabb = isometricPositionable->getAABB();
     grid3D.setData(aabb.position, isometricPositionable);
     editionGrid3D.insertBox(aabb, isometricPositionable);
+    add_child(isometricPositionable);
     isometricPositionable->add_to_group(ISO_GROUP, false);
 }
 
 void IsometricMap::removeIsoPositionable(IsometricPositionable *isometricPositionable) {
-    remove_child(isometricPositionable);
+    const Vector3 &mapSize = getAABB().size;
     const AABB &aabb = isometricPositionable->getAABB();
+    const Vector3 pos = aabb.position;
+    if (pos.x >= mapSize.x || pos.y >= mapSize.y || pos.z >= mapSize.z) return;
+    remove_child(isometricPositionable);
     grid3D.setData(aabb.position, nullptr);
     editionGrid3D.insertBox(aabb, isometricPositionable, true);
     if (isometricPositionable->is_in_group(ISO_GROUP)) {
         isometricPositionable->remove_from_group(ISO_GROUP);
     }
     isometricPositionable->update();
+}
+
+IsometricPositionable *IsometricMap::getPositionableAt(Vector3 pos, bool onlyLeftUpperCorner) {
+    return (IsometricPositionable *)(onlyLeftUpperCorner ? grid3D.getData(pos) : editionGrid3D.getData(pos));
+}
+
+bool IsometricMap::isOverlapping(IsometricPositionable *positionable) {
+    return editionGrid3D.isOverlapping(positionable->getAABB());
 }

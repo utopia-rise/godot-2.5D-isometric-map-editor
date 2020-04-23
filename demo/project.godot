@@ -59,15 +59,25 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/IsometricMap/widget/isometric_asset_selector.gd"
 }, {
-"base": "Resource",
+"base": "",
 "class": "IsometricMap",
-"language": "GDScript",
-"path": "res://addons/IsometricMap/Scripts/ressource/IsometricMap.gd"
+"language": "NativeScript",
+"path": "res://addons/IsometricMap/GdnsScripts/positionable/IsometricMap.gdns"
 }, {
 "base": "EditorInspectorPlugin",
 "class": "IsometricMapInspector",
 "language": "GDScript",
 "path": "res://addons/IsometricMap/isometric_map_inspector.gd"
+}, {
+"base": "",
+"class": "IsometricPositionable",
+"language": "NativeScript",
+"path": "res://addons/IsometricMap/GdnsScripts/positionable/IsometricPositionable.gdns"
+}, {
+"base": "",
+"class": "IsometricServer",
+"language": "NativeScript",
+"path": "res://addons/IsometricMap/GdnsScripts/IsometricServer.gdns"
 }, {
 "base": "Node",
 "class": "MapEditionHandler",
@@ -103,11 +113,6 @@ _global_script_classes=[ {
 "class": "TilePlaceholder",
 "language": "GDScript",
 "path": "res://addons/IsometricMap/Scripts/TilePlaceholder.gd"
-}, {
-"base": "IsometricMap",
-"class": "TilesetResource",
-"language": "GDScript",
-"path": "res://addons/IsometricMap/Scripts/ressource/TilesetResource.gd"
 } ]
 _global_script_class_icons={
 "BasePlaceholder": "",
@@ -122,14 +127,15 @@ _global_script_class_icons={
 "IsometricAssetSelector": "",
 "IsometricMap": "",
 "IsometricMapInspector": "",
+"IsometricPositionable": "",
+"IsometricServer": "",
 "MapEditionHandler": "",
 "NumericLineEdit": "",
 "PlaceholderInspector": "",
 "PlaceholderType": "",
 "PlaceholderTypes": "",
 "StairSelector": "",
-"TilePlaceholder": "",
-"TilesetResource": ""
+"TilePlaceholder": ""
 }
 
 [application]
@@ -141,10 +147,11 @@ config/icon="res://icon.png"
 [autoload]
 
 MapSettings="*res://addons/IsometricMap/Scripts/map_setting.gd"
+IsometricServer="*res://addons/IsometricMap/IsometricServer.tscn"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "IsometricMap", "godot-plugin-refresher" )
+enabled=PoolStringArray( "IsometricMap", "godot-plugin-refresher", "gut" )
 
 [input]
 

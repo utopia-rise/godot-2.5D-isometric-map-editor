@@ -6,7 +6,7 @@
 
 namespace godot {
     class IsometricMap : public IsometricPositionable {
-        GODOT_CLASS(IsometricMap, IsometricPositionable)
+        GODOT_SUBCLASS(IsometricMap, IsometricPositionable)
 
     private:
         bool drawTiles = true;
@@ -18,14 +18,20 @@ namespace godot {
         void generateTopologicalRenderGraph();
         void renderIsoNode(IsometricPositionable *isoNode);
         Array getPositionableBehind(IsometricPositionable *isoNode);
-        void addIsoPositionable(IsometricPositionable *isometricPositionable);
-        void removeIsoPositionable(IsometricPositionable *isometricPositionable);
+
     public:
+
         static void _register_methods();
 
         void _init();
         void _process(float delta);
-        void _onResize(Vector3 size) override;
+
+        void addIsoPositionable(IsometricPositionable *isometricPositionable);
+        void removeIsoPositionable(IsometricPositionable *isometricPositionable);
+        IsometricPositionable *getPositionableAt(Vector3 pos, bool onlyLeftUpperCorner = true);
+        bool isOverlapping(IsometricPositionable *positionable);
+
+        void _onResize() override;
         void _onGridUpdated(int stair) override;
     };
 }

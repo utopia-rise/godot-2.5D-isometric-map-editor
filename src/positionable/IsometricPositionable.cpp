@@ -8,20 +8,28 @@ IsometricPositionable::IsometricPositionable() = default;
 IsometricPositionable::~IsometricPositionable() = default;
 
 void IsometricPositionable::_register_methods() {
+    register_method("_init", &IsometricPositionable::_init);
     register_method("_enter_tree", &IsometricPositionable::_enter_tree);
     register_method("_exit_tree", &IsometricPositionable::_exit_tree);
     register_method("get_hexagone_coordinates", &IsometricPositionable::getHexagoneCoordinates);
     register_method("drawOutline", &IsometricPositionable::drawOutline);
     register_method("_on_resize", &IsometricPositionable::_onResize);
-    register_method("_grid_updated", &IsometricPositionable::_onGridUpdated);
-    register_method("_on_select", &IsometricPositionable::onSelect);
+    register_method("_on_grid_updated", &IsometricPositionable::_onGridUpdated);
+    register_method("_on_select", &IsometricPositionable::_onSelect);
 
     register_property("iso_position", &IsometricPositionable::isoPosition, Vector2());
     register_property("aabb", &IsometricPositionable::setAABB, &IsometricPositionable::getAABB, AABB(Vector3(), Vector3(1, 1, 1)));
+    register_property("position3d", &IsometricPositionable::setPosition3D, &IsometricPositionable::getPosition3D, Vector3());
+    register_property("size3d", &IsometricPositionable::setSize3D, &IsometricPositionable::getSize3D, Vector3(1, 1, 1));
+}
+
+void IsometricPositionable::_init() {
+    aabb = AABB({0, 0, 0}, {1, 1, 1});
+    _onResize();
 }
 
 void IsometricPositionable::_enter_tree() {
-    zOrderSize = 1;
+    setZOrderSize(1);
     updateZOrderSize(zOrderSize);
 }
 
@@ -74,7 +82,26 @@ void IsometricPositionable::setAABB(AABB ab) {
     aabb = ab;
     this->set_position(IsometricServer::getInstance().getScreenCoordFrom3D(ab.position));
     isoPosition = get_position();
-    _onResize(ab.size);
+    _onResize();
+}
+
+Vector3 IsometricPositionable::getPosition3D() {
+    return aabb.position;
+}
+
+void IsometricPositionable::setPosition3D(Vector3 pos) {
+    aabb.position = pos;
+    set_position(IsometricServer::getInstance().getScreenCoordFrom3D(pos));
+    isoPosition = get_position();
+}
+
+Vector3 IsometricPositionable::getSize3D() {
+    return aabb.size;
+}
+
+void IsometricPositionable::setSize3D(Vector3 s) {
+    aabb.size = s;
+    _onResize();
 }
 
 int IsometricPositionable::getZOrderSize() const {
@@ -104,7 +131,7 @@ void IsometricPositionable::updateZOrderSize(int change) {
     }
 }
 
-void IsometricPositionable::_onResize(godot::Vector3 size) {
+void IsometricPositionable::_onResize() {
 
 }
 
@@ -112,7 +139,7 @@ void IsometricPositionable::_onGridUpdated(int stair) {
 
 }
 
-void IsometricPositionable::onSelect(bool isSelected) {
+void IsometricPositionable::_onSelect(bool isSelected) {
 
 }
 
