@@ -25,9 +25,6 @@ func test_should_add_remove_iso_positionable():
 	assert_eq(test_map.get_positionable_at(inner_pos.position3d), inner_pos, "inner_pos should be found at " + str(inner_pos.position3d))
 	assert_eq(test_map.get_positionable_at(Vector3(2, 2, 2), false), inner_pos, "inner_pos should be found at " + str(Vector3(2, 2, 2)))
 	var overlap_map = IsometricPositionable.new()
-	overlap_map.position3d = Vector3(0, 0, 2)
-	overlap_map.size3d = Vector3(5, 5, 1)
-	assert_true(test_map.is_overlapping(overlap_map), "Should overlap.")
 	test_map.remove_iso_positionable(inner_pos, "Should have remove isomap as child.")
 	assert_eq(inner_pos.get_parent(), null)
 	inner_pos.queue_free()
@@ -56,6 +53,7 @@ func test_should_not_add_overlapping_iso_positionable():
 	overlapping_pos.position3d = Vector3(2, 2, 2)
 	test_map.add_iso_positionable(overlapping_pos)
 	assert_eq(overlapping_pos.get_parent(), null, "Overlapping map should not have parent")
+	assert_true(test_map.is_overlapping(overlapping_pos), "Should overlap.")
 	overlapping_pos.queue_free()
 	inner_pos.queue_free()
 
