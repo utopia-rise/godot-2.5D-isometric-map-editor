@@ -4,6 +4,7 @@
 
 #include <gen/Node2D.hpp>
 #include <core/Godot.hpp>
+#include <type_traits>
 
 namespace godot {
 
@@ -28,29 +29,32 @@ namespace godot {
         int zOrderSize;
         bool rendered = false;
         bool temporary = true;
-        int debugZ = 0;
 
+        int debugZ = 0;
         PoolVector2Array leftPoints;
         PoolVector2Array rightPoints;
         PoolVector2Array upPoints;
+
         PoolVector2Array downPoints;
 
         void updateZOrderSize(int change);
-    public:
-        Vector2 isoPosition;
 
+    public:
+
+        Vector2 isoPosition;
         IsometricPositionable();
 
         ~IsometricPositionable();
+
         static void _register_methods();
         void  _init();
         void _enter_tree();
         void _exit_tree();
-
         Transform2D getHexagoneCoordinates() const;
-        void drawOutline();
 
+        void drawOutline();
         AABB getAABB();
+
         void setAABB(AABB ab);
         Vector3 getPosition3D();
         void setPosition3D(Vector3 pos);

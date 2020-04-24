@@ -3,6 +3,10 @@
 
 using namespace godot;
 
+IsometricMap::IsometricMap() = default;
+
+IsometricMap::~IsometricMap() = default;
+
 void IsometricMap::_register_methods() {
     register_method("_init", &IsometricMap::_init);
     register_method("_process", &IsometricMap::_process);
@@ -11,6 +15,7 @@ void IsometricMap::_register_methods() {
     register_method("remove_iso_positionable", &IsometricMap::removeIsoPositionable);
     register_method("get_positionable_at", &IsometricMap::getPositionableAt);
     register_method("is_overlapping", &IsometricMap::isOverlapping);
+    register_method("flatten", &IsometricMap::flatten);
 
     register_method("_on_resize", &IsometricMap::_onResize);
     register_method("_on_grid_updated", &IsometricMap::_onGridUpdated);
@@ -92,6 +97,35 @@ Array IsometricMap::getPositionableBehind(IsometricPositionable *isoNode) {
     return isoNodes;
 }
 
+Array IsometricMap::getFlattenPositionables(Vector3 offset) {
+    Array positionables = Array();
+    const Array &children = get_children();
+    for (int i = 0; i < children.size(); i++) {
+        IsometricPositionable *positionable = children[i];
+        if (positionable) {
+            if (auto *map = dynamic_cast<IsometricMap *>(positionable)) {
+                const Array &innerPositionables = map->getFlattenPositionables(offset + map->getPosition3D());
+                for (int j = 0; j < innerPositionables.size(); j++) {
+                    IsometricPositionable *innerPositionable = innerPositionables[j];
+                    if (innerPositionable) {
+                        positionables.append(innerPositionable->duplicate());
+                    }
+                }
+            } else {
+                positionable->setPosition3D(offset + positionable->getPosition3D());
+                positionables.append(positionable->duplicate());
+            }
+        }
+    }
+    return positionables;
+}
+
+IsometricMap *IsometricMap::copy() {
+    IsometricMap *copy = IsometricMap::_new();
+    copy->setAABB(getAABB());
+    return copy;
+}
+
 void IsometricMap::addIsoPositionable(IsometricPositionable *isometricPositionable) {
     const Vector3 &mapSize = getAABB().size;
     const AABB &aabb = isometricPositionable->getAABB();
@@ -125,4 +159,16 @@ IsometricPositionable *IsometricMap::getPositionableAt(Vector3 pos, bool onlyLef
 
 bool IsometricMap::isOverlapping(IsometricPositionable *positionable) {
     return editionGrid3D.isOverlapping(positionable->getAABB());
+}
+
+IsometricMap *IsometricMap::flatten() {
+    auto *isometricMap = this->copy();
+    const Array &flattenChildren = getFlattenPositionables();
+    for (int i = 0; i < flattenChildren.size(); i++) {
+        IsometricPositionable *it = flattenChildren[i];
+        if (it) {
+            isometricMap->addIsoPositionable(it);
+        }
+    }
+    return isometricMap;
 }
