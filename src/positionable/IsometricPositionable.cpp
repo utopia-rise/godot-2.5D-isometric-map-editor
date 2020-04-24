@@ -131,10 +131,6 @@ void IsometricPositionable::updateZOrderSize(int change) {
     }
 }
 
-IsometricPositionable *IsometricPositionable::copy() {
-    return IsometricPositionable::_new(this);
-}
-
 void IsometricPositionable::_onResize() {
 
 }

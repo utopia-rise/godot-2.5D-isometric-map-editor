@@ -29,10 +29,6 @@ void IsometricMap::_process(float delta) {
     generateTopologicalRenderGraph();
 }
 
-IsometricMap *IsometricMap::copy() {
-    return IsometricPositionable::_new(this);
-}
-
 void IsometricMap::_onResize() {
     grid3D.updateArraySize(getSize3D());
     editionGrid3D.updateArraySize(getSize3D());
@@ -112,16 +108,22 @@ Array IsometricMap::getFlattenPositionables(Vector3 offset) {
                 for (int j = 0; j < innerPositionables.size(); j++) {
                     IsometricPositionable *innerPositionable = innerPositionables[j];
                     if (innerPositionable) {
-                        positionables.append(innerPositionable->copy());
+                        positionables.append(innerPositionable->duplicate());
                     }
                 }
             } else {
                 positionable->setPosition3D(offset + positionable->getPosition3D());
-                positionables.append(positionable->copy());
+                positionables.append(positionable->duplicate());
             }
         }
     }
     return positionables;
+}
+
+IsometricMap *IsometricMap::copy() {
+    IsometricMap *copy = IsometricMap::_new();
+    copy->setAABB(getAABB());
+    return copy;
 }
 
 void IsometricMap::addIsoPositionable(IsometricPositionable *isometricPositionable) {

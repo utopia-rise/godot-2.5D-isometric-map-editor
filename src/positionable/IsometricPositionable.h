@@ -39,15 +39,6 @@ namespace godot {
 
         void updateZOrderSize(int change);
 
-    protected:
-        template<typename T>
-        static T *_new(T *original) {
-            static_assert(std::is_base_of<IsometricPositionable, T>::value, "T must be an IsometricPositionable based class.");
-            T *copy = T::_new();
-            copy->setAABB(original->aabb);
-            return copy;
-        }
-
     public:
 
         Vector2 isoPosition;
@@ -77,8 +68,6 @@ namespace godot {
         void setTemporary(bool temp);
         int getDebugZ() const;
         void setDebugZ(int dZ);
-
-        virtual IsometricPositionable *copy();
 
         virtual void _onResize();
         virtual void _onGridUpdated(int stair);
