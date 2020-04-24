@@ -1,5 +1,6 @@
 #include "IsometricPositionable.h"
 #include "../IsometricServer.h"
+#include <type_traits>
 
 using namespace godot;
 
@@ -129,6 +130,10 @@ void IsometricPositionable::updateZOrderSize(int change) {
     if (parent) {
         parent->zOrderSize += change;
     }
+}
+
+IsometricPositionable *IsometricPositionable::copy() {
+    return IsometricPositionable::_new(this);
 }
 
 void IsometricPositionable::_onResize() {

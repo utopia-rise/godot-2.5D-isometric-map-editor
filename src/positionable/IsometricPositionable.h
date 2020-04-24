@@ -28,29 +28,41 @@ namespace godot {
         int zOrderSize;
         bool rendered = false;
         bool temporary = true;
-        int debugZ = 0;
 
+        int debugZ = 0;
         PoolVector2Array leftPoints;
         PoolVector2Array rightPoints;
         PoolVector2Array upPoints;
+
         PoolVector2Array downPoints;
 
         void updateZOrderSize(int change);
-    public:
-        Vector2 isoPosition;
 
+    protected:
+        template<typename T>
+        T *_new(T *original) {
+            static_assert(std::is_base_of<IsometricPositionable, T>::value, "T must be an IsometricPositionable based class.");
+            T *copy = T::_new();
+            copy->setAABB(original->aabb);
+            return copy;
+        }
+
+    public:
+
+        Vector2 isoPosition;
         IsometricPositionable();
 
         ~IsometricPositionable();
+
         static void _register_methods();
         void  _init();
         void _enter_tree();
         void _exit_tree();
-
         Transform2D getHexagoneCoordinates() const;
-        void drawOutline();
 
+        void drawOutline();
         AABB getAABB();
+
         void setAABB(AABB ab);
         Vector3 getPosition3D();
         void setPosition3D(Vector3 pos);
@@ -64,6 +76,8 @@ namespace godot {
         void setTemporary(bool temp);
         int getDebugZ() const;
         void setDebugZ(int dZ);
+
+        virtual IsometricPositionable *copy();
 
         virtual void _onResize();
         virtual void _onGridUpdated(int stair);

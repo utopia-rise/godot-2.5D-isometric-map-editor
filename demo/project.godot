@@ -59,7 +59,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/IsometricMap/widget/isometric_asset_selector.gd"
 }, {
-"base": "",
+"base": "Node2D",
 "class": "IsometricMap",
 "language": "NativeScript",
 "path": "res://addons/IsometricMap/GdnsScripts/positionable/IsometricMap.gdns"
@@ -69,12 +69,12 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/IsometricMap/isometric_map_inspector.gd"
 }, {
-"base": "",
+"base": "Node2D",
 "class": "IsometricPositionable",
 "language": "NativeScript",
 "path": "res://addons/IsometricMap/GdnsScripts/positionable/IsometricPositionable.gdns"
 }, {
-"base": "",
+"base": "Node",
 "class": "IsometricServer",
 "language": "NativeScript",
 "path": "res://addons/IsometricMap/GdnsScripts/IsometricServer.gdns"

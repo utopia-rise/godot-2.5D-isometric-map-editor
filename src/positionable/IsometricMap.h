@@ -18,18 +18,26 @@ namespace godot {
         void generateTopologicalRenderGraph();
         void renderIsoNode(IsometricPositionable *isoNode);
         Array getPositionableBehind(IsometricPositionable *isoNode);
+        Array getFlattenPositionables(Vector3 offset = Vector3());
 
     public:
 
+        IsometricMap();
+
+        ~IsometricMap();
         static void _register_methods();
 
         void _init();
-        void _process(float delta);
 
+        void _process(float delta);
         void addIsoPositionable(IsometricPositionable *isometricPositionable);
+
         void removeIsoPositionable(IsometricPositionable *isometricPositionable);
         IsometricPositionable *getPositionableAt(Vector3 pos, bool onlyLeftUpperCorner = true);
         bool isOverlapping(IsometricPositionable *positionable);
+        IsometricMap *flatten();
+
+        IsometricMap *copy() override;
 
         void _onResize() override;
         void _onGridUpdated(int stair) override;
