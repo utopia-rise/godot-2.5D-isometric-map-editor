@@ -4,6 +4,7 @@
 
 #include <gen/Node2D.hpp>
 #include <core/Godot.hpp>
+#include <type_traits>
 
 namespace godot {
 

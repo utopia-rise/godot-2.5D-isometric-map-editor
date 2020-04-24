@@ -1,6 +1,5 @@
 #include "IsometricPositionable.h"
 #include "../IsometricServer.h"
-#include <type_traits>
 
 using namespace godot;
 
