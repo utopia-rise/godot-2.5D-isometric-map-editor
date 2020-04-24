@@ -41,7 +41,7 @@ namespace godot {
 
     protected:
         template<typename T>
-        T *_new(T *original) {
+        static T *_new(T *original) {
             static_assert(std::is_base_of<IsometricPositionable, T>::value, "T must be an IsometricPositionable based class.");
             T *copy = T::_new();
             copy->setAABB(original->aabb);
