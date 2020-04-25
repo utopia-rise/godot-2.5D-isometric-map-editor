@@ -18,7 +18,6 @@ void IsometricPositionable::_register_methods() {
     register_method("_on_select", &IsometricPositionable::_onSelect);
 
     register_property("iso_position", &IsometricPositionable::isoPosition, Vector2());
-    register_property("aabb", &IsometricPositionable::setAABB, &IsometricPositionable::getAABB, AABB(Vector3(), Vector3(1, 1, 1)));
     register_property("position3d", &IsometricPositionable::setPosition3D, &IsometricPositionable::getPosition3D, Vector3());
     register_property("size3d", &IsometricPositionable::setSize3D, &IsometricPositionable::getSize3D, Vector3(1, 1, 1));
 }
@@ -85,7 +84,7 @@ void IsometricPositionable::setAABB(AABB ab) {
     _onResize();
 }
 
-Vector3 IsometricPositionable::getPosition3D() {
+Vector3 IsometricPositionable::getPosition3D() const {
     return aabb.position;
 }
 
@@ -95,7 +94,7 @@ void IsometricPositionable::setPosition3D(Vector3 pos) {
     isoPosition = get_position();
 }
 
-Vector3 IsometricPositionable::getSize3D() {
+Vector3 IsometricPositionable::getSize3D() const {
     return aabb.size;
 }
 
@@ -139,7 +138,7 @@ void IsometricPositionable::_onGridUpdated(int stair) {
 
 }
 
-void IsometricPositionable::_onSelect(bool isSelected) {
+void IsometricPositionable::_onSelect(bool selected) {
 
 }
 

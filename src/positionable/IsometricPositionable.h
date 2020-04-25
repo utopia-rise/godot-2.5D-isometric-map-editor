@@ -1,7 +1,6 @@
 #ifndef ISOMETRICMAPEDITOR_ISOMETRIC_POSITIONABLE
 #define ISOMETRICMAPEDITOR_ISOMETRIC_POSITIONABLE
 
-
 #include <gen/Node2D.hpp>
 #include <core/Godot.hpp>
 #include <type_traits>
@@ -31,16 +30,16 @@ namespace godot {
         bool temporary = true;
 
         int debugZ = 0;
-        PoolVector2Array leftPoints;
-        PoolVector2Array rightPoints;
-        PoolVector2Array upPoints;
-
-        PoolVector2Array downPoints;
 
         void updateZOrderSize(int change);
 
-    public:
+    protected:
+        PoolVector2Array leftPoints = PoolVector2Array();
+        PoolVector2Array rightPoints = PoolVector2Array();
+        PoolVector2Array upPoints = PoolVector2Array();
+        PoolVector2Array downPoints = PoolVector2Array();
 
+    public:
         Vector2 isoPosition;
         IsometricPositionable();
 
@@ -56,9 +55,9 @@ namespace godot {
         AABB getAABB();
 
         void setAABB(AABB ab);
-        Vector3 getPosition3D();
+        Vector3 getPosition3D() const;
         void setPosition3D(Vector3 pos);
-        Vector3 getSize3D();
+        Vector3 getSize3D() const;
         void setSize3D(Vector3 s);
         int getZOrderSize() const;
         void setZOrderSize(int size);
@@ -71,7 +70,7 @@ namespace godot {
 
         virtual void _onResize();
         virtual void _onGridUpdated(int stair);
-        virtual void _onSelect(bool isSelected);
+        virtual void _onSelect(bool selected);
     };
 }
 

@@ -26,6 +26,9 @@ src/IsometricServer.cpp \
 src/_IsometricServer.cpp \
 src/positionable/IsometricPositionable.cpp \
 src/positionable/IsometricMap.cpp \
+src/positionable/IsometricTile.cpp \
+src/positionable/IsometricPlaceholder.cpp \
+src/positionable/PlaceholderType.cpp \
 src/containers/Grid3D.cpp \
 
 LOCAL_C_INCLUDES := \
