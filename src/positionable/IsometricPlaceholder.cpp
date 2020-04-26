@@ -19,6 +19,7 @@ void IsometricPlaceholder::_register_methods() {
 }
 
 void IsometricPlaceholder::_init() {
+    IsometricPositionable::_init();
     placeholderType = (PlaceholderType *) ResourceLoader::get_singleton()->load("res://addons/IsometricMap/prefab/types/default.tres").ptr();
     updateColors();
 }
@@ -40,7 +41,7 @@ void IsometricPlaceholder::_draw() {
 }
 
 void IsometricPlaceholder::preparePoints() {
-    const Vector3 &size = getAABB().size;
+    const Vector3 &size = getSize3D();
     int w = size.x;
     int d = size.y;
     int h = size.z;
@@ -90,13 +91,15 @@ void IsometricPlaceholder::preparePoints() {
 
     PoolVector2Array points = PoolVector2Array();
 
+    //Lower points
     points.push_back(Vector2(0, 0));
     points.push_back(Vector2(tileWidth * 0.5 * w, tileHeight * 0.5 * w));
     points.push_back(Vector2(tileWidth * 0.5 * (w - d), tileHeight * 0.5 * (d + w)));
     points.push_back(Vector2(-tileWidth * 0.5 * d, tileHeight * 0.5 * d));
 
-    Vector2 heightOffset = Vector2(0, IsometricServer::getInstance().eZ * h);
+    Vector2 heightOffset = Vector2(0, - IsometricServer::getInstance().eZ * h);
 
+    //Upper points
     points.push_back(points[0] + (1 - (rightSlope + backwardSlope)) * heightOffset);
     points.push_back(points[1] + (1 - (leftSlope + backwardSlope)) * heightOffset);
     points.push_back(points[2] + (1 - (leftSlope + forwardSlope)) * heightOffset);
