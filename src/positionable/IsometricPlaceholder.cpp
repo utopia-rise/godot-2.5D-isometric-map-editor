@@ -20,13 +20,16 @@ void IsometricPlaceholder::_register_methods() {
 
 void IsometricPlaceholder::_init() {
     IsometricPositionable::_init();
-    placeholderType = (PlaceholderType *) ResourceLoader::get_singleton()->load("res://addons/IsometricMap/prefab/types/default.tres").ptr();
+    Ref<Resource> ref = ResourceLoader::get_singleton()->load(
+            "res://addons/IsometricMap/prefab/types/default.tres");
+    ref.instance();
+    placeholderType = (PlaceholderType *) ref.ptr();
     updateColors();
 }
 
 void IsometricPlaceholder::_draw() {
     int debugZ = getDebugZ();
-    if (debugZ == (int) getAABB().size.z) {
+    if (debugZ == (int) getSize3D().z) {
         stairColor = PoolColorArray(Array::make(Color(1, 0.65, 0, 0.2)
                 .linear_interpolate(downColor[0], 0.2)));
     } else if (debugZ == 0) {
@@ -140,15 +143,44 @@ void IsometricPlaceholder::preparePoints() {
 }
 
 void IsometricPlaceholder::drawPoints() {
-    draw_polygon(upPoints, upColor);
-    draw_polygon(leftPoints, leftColor);
-    draw_polygon(rightPoints, rightColor);
-
     Vector3 position3D = getPosition3D();
     Vector3 size = getSize3D();
 
     int debugZ = getDebugZ();
-    if (debugZ > -1) {
+
+    if (isTemporary()) {
+        Color upC = upColor[0];
+        Color leC = leftColor[0];
+        Color riC = rightColor[0];
+        Color stairC = stairColor[0];
+        upC.a = tempAlpha;
+        leC.a = tempAlpha;
+        riC.a = tempAlpha;
+        stairC.a = tempAlpha;
+        upColor.set(0, upC);
+        leftColor.set(0, leC);
+        rightColor.set(0, riC);
+        stairColor.set(0, stairC);
+    } else {
+        Color stairC = stairColor[0];
+        stairC.a = 1;
+        stairColor.set(0, stairC);
+        if (isSelected) {
+            drawOutline();
+        }
+    }
+    draw_polygon(upPoints, upColor);
+    draw_polygon(leftPoints, leftColor);
+    draw_polygon(rightPoints, rightColor);
+
+    if (debugZ >= 0) {
+        if (debugZ <= (int) size.z) {
+            draw_polygon(debugPoints, stairColor);
+            draw_line(debugPoints[0], debugPoints[1], stairColor[0], 2.0);
+            draw_line(debugPoints[1], debugPoints[2], stairColor[0], 4.0);
+            draw_line(debugPoints[2], debugPoints[3], stairColor[0], 4.0);
+            draw_line(debugPoints[3], debugPoints[0], stairColor[0], 2.0);
+        }
         real_t zRatio = IsometricServer::getInstance().zRatio;
         int tileWidth = IsometricServer::getInstance().tileWidth;
         int tileHeight = IsometricServer::getInstance().tileHeight;
@@ -178,41 +210,6 @@ void IsometricPlaceholder::drawPoints() {
                 draw_line(from, to, Color(0, 0, 0, 1), 2.0);
             }
         }
-        if ((real_t) debugZ <= size.z) {
-            draw_polygon(debugPoints, Array::make(stairColor));
-            Color stairC = stairColor[0];
-            stairC.a = 1;
-            stairColor.set(0, stairC);
-            draw_line(debugPoints[0], debugPoints[1], stairColor[0], 2.0);
-            draw_line(debugPoints[1], debugPoints[2], stairColor[0], 4.0);
-            draw_line(debugPoints[2], debugPoints[3], stairColor[0], 4.0);
-            draw_line(debugPoints[3], debugPoints[0], stairColor[0], 2.0);
-        }
-    }
-
-    if (isTemporary()) {
-        Color upC = upColor[0];
-        Color leC = leftColor[0];
-        Color riC = rightColor[0];
-        Color stairC = stairColor[0];
-        upC.a = tempAlpha;
-        leC.a = tempAlpha;
-        riC.a = tempAlpha;
-        stairC.a = 0.05;
-        upColor.set(0, upC);
-        leftColor.set(0, leC);
-        rightColor.set(0, riC);
-        stairColor.set(0, stairC);
-
-        draw_polygon(upPoints, upColor);
-        draw_polygon(leftPoints, leftColor);
-        draw_polygon(rightPoints, rightColor);
-
-        if (debugZ >= 0 && debugZ <= (int) size.z) {
-            draw_polygon(debugPoints, stairColor);
-        }
-    } else if (isSelected) {
-        drawOutline();
     }
 }
 

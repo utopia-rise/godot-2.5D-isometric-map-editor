@@ -20,6 +20,7 @@ void IsometricPositionable::_register_methods() {
     register_property("iso_position", &IsometricPositionable::isoPosition, Vector2());
     register_property("position3d", &IsometricPositionable::setPosition3D, &IsometricPositionable::getPosition3D, Vector3());
     register_property("size3d", &IsometricPositionable::setSize3D, &IsometricPositionable::getSize3D, Vector3(1, 1, 1));
+    register_property("is_temporary", &IsometricPositionable::setTemporary, &IsometricPositionable::isTemporary, true);
 }
 
 void IsometricPositionable::_init() {

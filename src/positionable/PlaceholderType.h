@@ -18,9 +18,9 @@ namespace godot {
 
         void _init();
 
-        String getTypeName();
+        String getTypeName() const;
         void setTypeName(String name);
-        Color getColor();
+        Color getColor() const;
         void setColor(Color col);
     };
 

@@ -5,4 +5,4 @@
 [resource]
 script = ExtResource( 1 )
 type_name = "default"
-color = Color( 0.415686, 0.415686, 0.415686, 1 )
+color = Color( 0.83, 0.83, 0.83, 1 )
