@@ -13,7 +13,7 @@ namespace godot {
         GODOT_SUBCLASS(IsometricPlaceholder, IsometricPositionable)
 
     private:
-        PlaceholderType *placeholderType;
+        Ref<PlaceholderType> placeholderType;
         SlopeType slopeType = SlopeType::NONE;
 
         float tempAlpha = 0.15;
@@ -46,8 +46,8 @@ namespace godot {
         void _onGridUpdated(int stair) override;
         void _onSelect(bool selected) override;
 
-        PlaceholderType *getPlaceholderType() const;
-        void setPlaceholderType(PlaceholderType *pType);
+        Ref<PlaceholderType> getPlaceholderType() const;
+        void setPlaceholderType(Ref<PlaceholderType> pType);
         int getSlopeType();
         void setSlopeType(int type);
     };

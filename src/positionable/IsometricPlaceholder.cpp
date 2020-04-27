@@ -7,9 +7,9 @@
 using namespace godot;
 
 void IsometricPlaceholder::_register_methods() {
-    register_property("placeholder_type", &IsometricPlaceholder::setPlaceholderType,
+    register_property<IsometricPlaceholder, Ref<PlaceholderType>>("placeholder_type", &IsometricPlaceholder::setPlaceholderType,
             &IsometricPlaceholder::getPlaceholderType,
-                      (PlaceholderType *) ResourceLoader::get_singleton()->load("res://addons/IsometricMap/prefab/types/default.tres").ptr());
+                      ResourceLoader::get_singleton()->load("res://addons/IsometricMap/prefab/types/default.tres"));
     register_property("slope_type", &IsometricPlaceholder::setSlopeType, &IsometricPlaceholder::getSlopeType,
             (int) SlopeType::NONE,GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT,
             GODOT_PROPERTY_HINT_ENUM, "NONE,LEFT,RIGHT,FORWARD,BACKWARD");
@@ -20,11 +20,7 @@ void IsometricPlaceholder::_register_methods() {
 
 void IsometricPlaceholder::_init() {
     IsometricPositionable::_init();
-    Ref<Resource> ref = ResourceLoader::get_singleton()->load(
-            "res://addons/IsometricMap/prefab/types/default.tres");
-    ref.instance();
-    placeholderType = (PlaceholderType *) ref.ptr();
-    updateColors();
+    setPlaceholderType(ResourceLoader::get_singleton()->load("res://addons/IsometricMap/prefab/types/default.tres"));
 }
 
 void IsometricPlaceholder::_draw() {
@@ -237,12 +233,16 @@ void IsometricPlaceholder::_onSelect(bool selected) {
     update();
 }
 
-PlaceholderType *IsometricPlaceholder::getPlaceholderType() const {
+Ref<PlaceholderType> IsometricPlaceholder::getPlaceholderType() const {
+    Godot::print("getPlaceholderType");
     return placeholderType;
 }
 
-void IsometricPlaceholder::setPlaceholderType(PlaceholderType *pType) {
+void IsometricPlaceholder::setPlaceholderType(Ref<PlaceholderType> pType) {
     placeholderType = pType;
+    Godot::print(String("ptype path is {0}").format(Array::make(pType->get_path())));
+    Godot::print(String("ptype name is {0}").format(Array::make(placeholderType->getTypeName())));
+    Godot::print(String("ptype color is {0}").format(Array::make(placeholderType->getColor())));
     updateColors();
 }
 
