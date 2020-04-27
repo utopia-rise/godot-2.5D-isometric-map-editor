@@ -9,50 +9,20 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "IsoPositionable",
-"class": "BasePlaceholder",
-"language": "GDScript",
-"path": "res://addons/IsometricMap/Scripts/BasePlaceholder.gd"
-}, {
-"base": "BasePlaceholder",
-"class": "CharacterPlaceholder",
-"language": "GDScript",
-"path": "res://addons/IsometricMap/Scripts/CharacterPlaceholder.gd"
-}, {
 "base": "Tree",
 "class": "FileTree",
 "language": "GDScript",
 "path": "res://addons/IsometricMap/widget/files_tree.gd"
-}, {
-"base": "Reference",
-"class": "Grid3D",
-"language": "GDScript",
-"path": "res://addons/IsometricMap/Scripts/ressource/grid_3d.gd"
 }, {
 "base": "Node2D",
 "class": "GridCursor",
 "language": "GDScript",
 "path": "res://addons/IsometricMap/Scripts/grid_cursor.gd"
 }, {
-"base": "IsoPositionable",
-"class": "IsoMap",
-"language": "GDScript",
-"path": "res://addons/IsometricMap/Scripts/iso_map.gd"
-}, {
-"base": "Node2D",
-"class": "IsoPositionable",
-"language": "GDScript",
-"path": "res://addons/IsometricMap/Scripts/iso_positionable.gd"
-}, {
 "base": "Resource",
 "class": "IsoPreviewGenerator",
 "language": "GDScript",
 "path": "res://addons/IsometricMap/Scripts/iso_preview_generator.gd"
-}, {
-"base": "IsoPositionable",
-"class": "IsoTile",
-"language": "GDScript",
-"path": "res://addons/IsometricMap/Scripts/ressource/IsoTile.gd"
 }, {
 "base": "TabContainer",
 "class": "IsometricAssetSelector",
@@ -84,6 +54,11 @@ _global_script_classes=[ {
 "language": "NativeScript",
 "path": "res://addons/IsometricMap/GdnsScripts/IsometricServer.gdns"
 }, {
+"base": "Node2D",
+"class": "IsometricTile",
+"language": "NativeScript",
+"path": "res://addons/IsometricMap/GdnsScripts/positionable/IsometricTile.gdns"
+}, {
 "base": "Node",
 "class": "MapEditionHandler",
 "language": "GDScript",
@@ -94,54 +69,31 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/IsometricMap/widget/numeric_line_edit.gd"
 }, {
-"base": "EditorInspectorPlugin",
-"class": "PlaceholderInspector",
-"language": "GDScript",
-"path": "res://addons/IsometricMap/placeholder_inspector.gd"
-}, {
 "base": "Resource",
 "class": "PlaceholderType",
-"language": "GDScript",
-"path": "res://addons/IsometricMap/Scripts/ressource/placeholder_type.gd"
-}, {
-"base": "Resource",
-"class": "PlaceholderTypes",
-"language": "GDScript",
-"path": "res://addons/IsometricMap/Scripts/ressource/placeholder_types.gd"
+"language": "NativeScript",
+"path": "res://addons/IsometricMap/GdnsScripts/positionable/PlaceholderType.gdns"
 }, {
 "base": "Node2D",
 "class": "StairSelector",
 "language": "GDScript",
 "path": "res://addons/IsometricMap/Scripts/stair_selector.gd"
-}, {
-"base": "BasePlaceholder",
-"class": "TilePlaceholder",
-"language": "GDScript",
-"path": "res://addons/IsometricMap/Scripts/TilePlaceholder.gd"
 } ]
 _global_script_class_icons={
-"BasePlaceholder": "",
-"CharacterPlaceholder": "",
 "FileTree": "",
-"Grid3D": "",
 "GridCursor": "",
-"IsoMap": "",
-"IsoPositionable": "",
 "IsoPreviewGenerator": "",
-"IsoTile": "",
 "IsometricAssetSelector": "",
 "IsometricMap": "",
 "IsometricMapInspector": "",
 "IsometricPlaceholder": "",
 "IsometricPositionable": "",
 "IsometricServer": "",
+"IsometricTile": "",
 "MapEditionHandler": "",
 "NumericLineEdit": "",
-"PlaceholderInspector": "",
 "PlaceholderType": "",
-"PlaceholderTypes": "",
-"StairSelector": "",
-"TilePlaceholder": ""
+"StairSelector": ""
 }
 
 [application]
@@ -152,7 +104,6 @@ config/icon="res://icon.png"
 
 [autoload]
 
-MapSettings="*res://addons/IsometricMap/Scripts/map_setting.gd"
 IsometricServer="*res://addons/IsometricMap/IsometricServer.tscn"
 
 [editor_plugins]

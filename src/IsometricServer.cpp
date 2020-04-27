@@ -36,15 +36,15 @@ int IsometricServer::getAngle() const {
 
 void IsometricServer::setAngle(int agl) {
     angle = agl;
-    calculateEz();
+    eZ = calculateEz();
     //TODO calculate tileHeight
 }
 
-int IsometricServer::getEZ() const {
+double IsometricServer::getEZ() const {
     return eZ;
 }
 
-float IsometricServer::getZRatio() const {
+double IsometricServer::getZRatio() const {
     return zRatio;
 }
 

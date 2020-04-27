@@ -23,6 +23,8 @@ namespace godot {
         void setTileHeight(int tileHeight);
         int getAngle();
         void setAngle(int angle);
+        double getEZ();
+        double getZRatio();
 
         Vector2 getScreenCoordFrom3D(Vector3 pos);
         Vector3 get3DCoordFromScreen(Vector2 pos, real_t orthZ);

@@ -35,6 +35,7 @@ namespace godot {
         void removeIsoPositionable(IsometricPositionable *isometricPositionable);
         IsometricPositionable *getPositionableAt(Vector3 pos, bool onlyLeftUpperCorner = true);
         bool isOverlapping(IsometricPositionable *positionable);
+        bool isOverlappingAABB(AABB aabb);
 
         IsometricMap *flatten();
 

@@ -5,7 +5,7 @@ class_name StairSelector
 
 var selected_stair: int = 0
 
-var map: IsoMap
+var map
 var map_width: int
 var map_depth: int
 var map_height: int
@@ -25,11 +25,11 @@ func _process(delta):
 		update()
 
 func _draw():
-	var tile_depth: int = MapSettings.tile_height
-	var tile_width: int = MapSettings.tile_width
-	var tile_height: int = MapSettings.e_z
+	var tile_depth: int = IsometricServer.tile_height
+	var tile_width: int = IsometricServer.tile_width
+	var e_z: int = IsometricServer.get_ez()
 	var offset: Vector2 = Vector2(0, - tile_depth * 0.5)
-	var height_offset = Vector2(0, tile_height * selected_stair)
+	var height_offset = Vector2(0, e_z * selected_stair)
 	for i in range(0, map_depth):
 		var from: Vector2 = Vector2(-tile_width * 0.5 * i, tile_depth * 0.5 * i) + offset - height_offset
 		var to: Vector2 = Vector2(tile_width * 0.5 * (map_width - 1 - i), tile_depth * 0.5 * (i + map_width - 1)) + offset - height_offset

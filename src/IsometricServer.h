@@ -25,8 +25,8 @@ namespace godot {
         int tileWidth = 256;
         int tileHeight = 128;
         int angle = 30;
-        int eZ = (int) ((tileHeight / sin(DEG2RAD((float) angle)) / sqrt(2)) * cos(DEG2RAD((float) angle)));;
-        float zRatio = (float) eZ / (float) tileHeight;
+        double eZ = ((double) tileHeight / sin(DEG2RAD((double) angle)) / sqrt(2)) * cos(DEG2RAD((double) angle));
+        double zRatio = (double) eZ / (double) tileHeight;
 
         static IsometricServer &getInstance();
 
@@ -37,8 +37,8 @@ namespace godot {
         int getAngle() const;
         void setAngle(int agl);
 
-        int getEZ() const;
-        float getZRatio() const;
+        double getEZ() const;
+        double getZRatio() const;
 
         Vector2 getScreenCoordFrom3D(Vector3 pos) const;
         Vector3 get3DCoordFromScreen(Vector2 pos, real_t orthZ) const;

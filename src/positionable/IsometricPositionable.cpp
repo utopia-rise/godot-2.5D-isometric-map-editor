@@ -13,6 +13,8 @@ void IsometricPositionable::_register_methods() {
     register_method("_exit_tree", &IsometricPositionable::_exit_tree);
     register_method("get_hexagone_coordinates", &IsometricPositionable::getHexagoneCoordinates);
     register_method("drawOutline", &IsometricPositionable::drawOutline);
+    register_method("get_aabb", &IsometricPositionable::getAABB);
+    register_method("set_aabb", &IsometricPositionable::setAABB);
     register_method("_on_resize", &IsometricPositionable::_onResize);
     register_method("_on_grid_updated", &IsometricPositionable::_onGridUpdated);
     register_method("_on_select", &IsometricPositionable::_onSelect);

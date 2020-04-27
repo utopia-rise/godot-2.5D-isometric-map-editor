@@ -10,6 +10,8 @@ void _IsometricServer::_register_methods() {
 
     register_method("get_screen_coord_from_3d", &_IsometricServer::getScreenCoordFrom3D);
     register_method("get_3d_coord_from_screen", &_IsometricServer::get3DCoordFromScreen);
+    register_method("get_ez", &_IsometricServer::getEZ);
+    register_method("get_z_ratio", &_IsometricServer::getZRatio);
 }
 
 void _IsometricServer::_init() {}
@@ -36,6 +38,14 @@ int _IsometricServer::getAngle() {
 
 void _IsometricServer::setAngle(int angle) {
     IsometricServer::getInstance().setAngle(angle);
+}
+
+double _IsometricServer::getEZ() {
+    return IsometricServer::getInstance().getEZ();
+}
+
+double _IsometricServer::getZRatio() {
+    return IsometricServer::getInstance().getZRatio();
 }
 
 Vector2 _IsometricServer::getScreenCoordFrom3D(Vector3 pos) {

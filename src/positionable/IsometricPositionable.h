@@ -53,8 +53,8 @@ namespace godot {
 
         void drawOutline();
         AABB getAABB();
-
         void setAABB(AABB ab);
+
         Vector3 getPosition3D() const;
         void setPosition3D(Vector3 pos);
         Vector3 getSize3D() const;
