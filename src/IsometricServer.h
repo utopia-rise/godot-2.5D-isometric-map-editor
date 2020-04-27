@@ -6,10 +6,10 @@
 #include <core/Vector3.hpp>
 #include <core/Transform2D.hpp>
 #include <core/AABB.hpp>
+#include "helpers/MathHelper.h"
 
 namespace godot {
 
-#define DEG2RAD(deg) deg / 180 * Math_PI
 #define ISO_GROUP "positionables"
 
     class IsometricServer {

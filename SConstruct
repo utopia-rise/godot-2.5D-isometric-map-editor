@@ -414,6 +414,7 @@ sources = []
 add_sources(sources, "./src", 'cpp')
 add_sources(sources, "./src/positionable", 'cpp')
 add_sources(sources, "./src/containers", 'cpp')
+add_sources(sources, "./src/helpers", 'cpp')
 
 
 ###############
