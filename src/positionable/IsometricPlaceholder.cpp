@@ -20,10 +20,7 @@ void IsometricPlaceholder::_register_methods() {
 
 void IsometricPlaceholder::_init() {
     IsometricPositionable::_init();
-    Ref<PlaceholderType> type = (Ref<PlaceholderType>) ResourceLoader::get_singleton()->load(
-            "res://addons/IsometricMap/prefab/types/default.tres");
-    type->_init();
-    setPlaceholderType(type);
+    updateColors();
 }
 
 void IsometricPlaceholder::_draw() {
@@ -213,13 +210,13 @@ void IsometricPlaceholder::drawPoints() {
 }
 
 void IsometricPlaceholder::updateColors() {
-    leftColor = PoolColorArray(Array::make(placeholderType->getColor().darkened(0.5)));
-    rightColor = PoolColorArray(Array::make(placeholderType->getColor().darkened(0.25)));
-    upColor = PoolColorArray(Array::make(placeholderType->getColor()));
-    downColor = PoolColorArray(Array::make(placeholderType->getColor().darkened(0.9)));
-    sideSlopeColor = PoolColorArray(Array::make(placeholderType->getColor().darkened(0.10)));
-    forwardSlopeColor = PoolColorArray(Array::make(placeholderType->getColor().darkened(0.10)));
-    backwardSlopeColor = PoolColorArray(Array::make(placeholderType->getColor().lightened(0.10)));
+    leftColor = PoolColorArray(Array::make(typeColor.darkened(0.5)));
+    rightColor = PoolColorArray(Array::make(typeColor.darkened(0.25)));
+    upColor = PoolColorArray(Array::make(typeColor));
+    downColor = PoolColorArray(Array::make(typeColor.darkened(0.9)));
+    sideSlopeColor = PoolColorArray(Array::make(typeColor.darkened(0.10)));
+    forwardSlopeColor = PoolColorArray(Array::make(typeColor.darkened(0.10)));
+    backwardSlopeColor = PoolColorArray(Array::make(typeColor.lightened(0.10)));
 }
 
 void IsometricPlaceholder::setMapSize(Vector3 size) {
@@ -242,6 +239,7 @@ Ref<PlaceholderType> IsometricPlaceholder::getPlaceholderType() const {
 
 void IsometricPlaceholder::setPlaceholderType(Ref<PlaceholderType> pType) {
     placeholderType = pType;
+    typeColor = placeholderType->getColor();
     updateColors();
 }
 

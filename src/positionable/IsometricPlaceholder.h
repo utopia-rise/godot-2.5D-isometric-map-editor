@@ -21,6 +21,7 @@ namespace godot {
 
         PoolVector2Array debugPoints = PoolVector2Array();
 
+        Color typeColor = Color(0.83, 0.83, 0.83, 1);
         PoolColorArray leftColor;
         PoolColorArray rightColor;
         PoolColorArray upColor;

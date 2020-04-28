@@ -9,10 +9,7 @@ void PlaceholderType::_register_methods() {
     register_method("_init", &PlaceholderType::_init);
 }
 
-void PlaceholderType::_init() {
-    typeName = "default";
-    color = Color( 0.83, 0.83, 0.83, 1 );
-}
+void PlaceholderType::_init() {}
 
 String PlaceholderType::getTypeName() const {
     return typeName;
