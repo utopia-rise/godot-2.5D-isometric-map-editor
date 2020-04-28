@@ -1,13 +1,11 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://addons/IsometricMap/Scripts/iso_map.gd" type="Script" id=1]
-[ext_resource path="res://Scenes/examples/maps/inner_maps/InnerTest.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/IsometricMap/GdnsScripts/positionable/IsometricMap.gdns" type="Script" id=1]
+[ext_resource path="res://Scenes/examples/tiles/cubetower.tscn" type="PackedScene" id=3]
 
-[node name="IsoMap" type="Node2D"]
+[node name="ExampleMap" type="Node2D"]
 script = ExtResource( 1 )
-aabb = AABB( 0, 0, 0, 20, 20, 20 )
+size3d = Vector3( 100, 100, 1 )
 
-[node name="InnerTest2" parent="." instance=ExtResource( 2 )]
-position = Vector2( -384, 192 )
-iso_position = Vector2( -384, 192 )
-aabb = AABB( 0, 3, 0, 5, 10, 5 )
+[node name="IsoTile" parent="." instance=ExtResource( 3 )]
+is_temporary = false

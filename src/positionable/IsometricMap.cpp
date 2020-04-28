@@ -10,6 +10,7 @@ IsometricMap::~IsometricMap() = default;
 void IsometricMap::_register_methods() {
     register_method("_init", &IsometricMap::_init);
     register_method("_process", &IsometricMap::_process);
+    register_method("get_class", &IsometricMap::getClass);
 
     register_method("add_iso_positionable", &IsometricMap::addIsoPositionable);
     register_method("remove_iso_positionable", &IsometricMap::removeIsoPositionable);
@@ -27,10 +28,16 @@ void IsometricMap::_init() {
 }
 
 void IsometricMap::_process(float delta) {
+    //if(Engine::get_singleton()->is_editor_hint()) to check if in editor, to deactivate code if needed
     generateTopologicalRenderGraph();
 }
 
+String IsometricMap::getClass() const {
+    return "IsometricMap";
+}
+
 void IsometricMap::_onResize() {
+    Godot::print(String("updating size {0}").format(Array::make(getSize3D())));
     grid3D.updateArraySize(getSize3D());
     editionGrid3D.updateArraySize(getSize3D());
 }

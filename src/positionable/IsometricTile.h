@@ -9,8 +9,10 @@ namespace godot {
         GODOT_SUBCLASS(IsometricTile, IsometricPositionable)
 
     public:
-        void _init();
         static void _register_methods();
+
+        void _init();
+        String getClass() const override;
     };
 
 }

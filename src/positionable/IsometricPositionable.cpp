@@ -11,6 +11,7 @@ void IsometricPositionable::_register_methods() {
     register_method("_init", &IsometricPositionable::_init);
     register_method("_enter_tree", &IsometricPositionable::_enter_tree);
     register_method("_exit_tree", &IsometricPositionable::_exit_tree);
+    register_method("get_class", &IsometricPositionable::getClass);
     register_method("get_hexagone_coordinates", &IsometricPositionable::getHexagoneCoordinates);
     register_method("drawOutline", &IsometricPositionable::drawOutline);
     register_method("get_aabb", &IsometricPositionable::getAABB);
@@ -23,6 +24,7 @@ void IsometricPositionable::_register_methods() {
     register_property("position3d", &IsometricPositionable::setPosition3D, &IsometricPositionable::getPosition3D, Vector3());
     register_property("size3d", &IsometricPositionable::setSize3D, &IsometricPositionable::getSize3D, Vector3(1, 1, 1));
     register_property("is_temporary", &IsometricPositionable::setTemporary, &IsometricPositionable::isTemporary, true);
+    register_property("debug_z", &IsometricPositionable::setDebugZ, &IsometricPositionable::getDebugZ, 0);
 }
 
 void IsometricPositionable::_init() {
@@ -37,6 +39,10 @@ void IsometricPositionable::_enter_tree() {
 
 void IsometricPositionable::_exit_tree() {
     updateZOrderSize(-zOrderSize);
+}
+
+String IsometricPositionable::getClass() const {
+    return "IsometricPositionable";
 }
 
 Transform2D IsometricPositionable::getHexagoneCoordinates() const {

@@ -49,6 +49,7 @@ namespace godot {
         void  _init();
         void _enter_tree();
         void _exit_tree();
+        virtual String getClass() const;
         Transform2D getHexagoneCoordinates() const;
 
         void drawOutline();

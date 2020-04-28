@@ -80,15 +80,17 @@ bool Grid3D::isOverlapping(AABB aabb) const {
     int index = getId(aabb.position);
     Vector3 size = aabb.size;
 
-    Object *element = internalArray[index];
-    if (element) {
-        return true;
-    }
-    for (int i = 1; i < (int) size.x * (int) size.y * (int) size.z; i++) {
-        index += Grid3D::indexIncrementFrom(planeSquareAndJumpsFrom(size), size, i);
-        element = internalArray[index];
+    if (index >= 0 && index < internalArray.size()) {
+        Object *element = internalArray[index];
         if (element) {
             return true;
+        }
+        for (int i = 1; i < (int) size.x * (int) size.y * (int) size.z; i++) {
+            index += Grid3D::indexIncrementFrom(planeSquareAndJumpsFrom(size), size, i);
+            element = internalArray[index];
+            if (element) {
+                return true;
+            }
         }
     }
     return false;

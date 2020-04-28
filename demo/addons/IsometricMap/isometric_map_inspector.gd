@@ -6,7 +6,7 @@ class_name IsometricMapInspector
 var undo_redo: UndoRedo
 
 func can_handle(object):
-	return object is IsometricMap
+	return object.get_class() == "IsometricMap"
 
 func parse_property(object, type, path, hint, hint_text, usage):
 	if path == "size3d":

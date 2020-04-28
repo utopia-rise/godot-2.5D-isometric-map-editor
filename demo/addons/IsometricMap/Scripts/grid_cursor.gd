@@ -30,22 +30,22 @@ func _process(delta):
 	if mouse_position != new_mouse_position:
 		mouse_position = new_mouse_position
 		update()
-	if map_width != map.aabb.size.x or map_depth != map.aabb.size.y or map_height != map.aabb.size.z:
-		map_width = map.aabb.size.x
-		map_depth = map.aabb.size.y
-		map_height = map.aabb.size.z
+	if map_width != map.size3d.x or map_depth != map.size3d.y or map_height != map.size3d.z:
+		map_width = map.size3d.x
+		map_depth = map.size3d.y
+		map_height = map.size3d.z
 		update()
 
 func _draw():
-	var tile_height: int = IsometricServer.tile_height
-	var tile_width: int = IsometricServer.tile_width
+	var tile_height: int = IsoServer.tile_height
+	var tile_width: int = IsoServer.tile_width
 	var offset: Vector2 = Vector2(0, tile_height * 0.5)
 	
-	var position_3D = IsometricServer.get_3d_coord_from_screen(offset + mouse_position, selected_stair)
+	var position_3D = IsoServer.get_3d_coord_from_screen(offset + mouse_position, selected_stair)
 	position_3D.x = clamp(int(position_3D.x), 0, map_width - 1)
 	position_3D.y = clamp(int(position_3D.y), 0, map_depth - 1)
 	position_3D.z = clamp(int(position_3D.z), 0, map_height - 1)
-	offset = IsometricServer.get_screen_coord_from_3d(position_3D)
+	offset = IsoServer.get_screen_coord_from_3d(position_3D)
 	offset += Vector2(0, - tile_height * grid_size * 0.5)
 	
 	var screen_x_delta = Vector2(tile_width * 0.5, tile_height * 0.5)

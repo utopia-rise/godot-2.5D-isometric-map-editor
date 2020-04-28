@@ -99,12 +99,11 @@ _global_script_class_icons={
 [application]
 
 config/name="Isometric Map Editor"
-run/main_scene="res://Scenes/examples/maps/ExampleMap.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
-IsometricServer="*res://addons/IsometricMap/IsometricServer.tscn"
+IsoServer="*res://addons/IsometricMap/IsometricServer.tscn"
 
 [editor_plugins]
 

@@ -17,11 +17,11 @@ extern "C" void GDN_EXPORT iso_map_gdnative_terminate(godot_gdnative_terminate_o
 
 extern "C" void GDN_EXPORT iso_map_nativescript_init(void *handle){
     Godot::nativescript_init(handle);
-    register_class<IsometricPositionable>();
-    register_class<IsometricMap>();
-    register_class<IsometricTile>();
-    register_class<IsometricPlaceholder>();
-    register_class<PlaceholderType>();
-    register_class<_IsometricServer>();
+    register_tool_class<IsometricPositionable>();
+    register_tool_class<IsometricMap>();
+    register_tool_class<IsometricTile>();
+    register_tool_class<IsometricPlaceholder>();
+    register_tool_class<PlaceholderType>();
+    register_tool_class<_IsometricServer>();
 }
 

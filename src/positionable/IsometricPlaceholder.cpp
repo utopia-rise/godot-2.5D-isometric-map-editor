@@ -16,6 +16,7 @@ void IsometricPlaceholder::_register_methods() {
 
     register_method("_init", &IsometricPlaceholder::_init);
     register_method("_draw", &IsometricPlaceholder::_draw);
+    register_method("get_class", &IsometricPlaceholder::getClass);
 }
 
 void IsometricPlaceholder::_init() {
@@ -37,6 +38,10 @@ void IsometricPlaceholder::_draw() {
     }
     preparePoints();
     drawPoints();
+}
+
+String IsometricPlaceholder::getClass() const {
+    return "IsometricPlaceholder";
 }
 
 void IsometricPlaceholder::preparePoints() {

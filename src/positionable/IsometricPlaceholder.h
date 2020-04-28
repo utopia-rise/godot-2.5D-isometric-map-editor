@@ -43,6 +43,7 @@ namespace godot {
 
         void _init();
         void _draw();
+        String getClass() const override;
 
         void _onGridUpdated(int stair) override;
         void _onSelect(bool selected) override;

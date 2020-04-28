@@ -16,7 +16,7 @@ func _enter_tree():
 	editor_file_system.connect("filesystem_changed", self, "on_filesystem_changed")
 
 func edit(object: Object) -> void:
-	if object is IsometricMap && !(object.get_parent() is IsometricMap):
+	if object.get_class() == "IsometricMap" && !(object.get_parent().get_class() == "IsometricMap"):
 		if handlers.has(object):
 			current_handler = handlers[object]
 		else:
@@ -27,7 +27,8 @@ func edit(object: Object) -> void:
 		current_handler.edit_placeholder(object)
 
 func handles(object: Object) -> bool:
-	return object is IsometricMap or object is IsometricTile or object is IsometricPositionable
+	var object_class = object.get_class()
+	return object_class == "IsometricMap" or object_class == "IsometricTile" or object_class == "IsometricPositionable"
 
 func forward_canvas_gui_input(event: InputEvent) -> bool:
 	if is_instance_valid(current_handler) and current_handler != null:

@@ -18,16 +18,16 @@ func _enter_tree():
 	map = get_parent()
 
 func _process(delta):
-	if map_width != map.aabb.size.x or map_depth != map.aabb.size.y or map_height != map.aabb.size.z:
-		map_width = map.aabb.size.x
-		map_depth = map.aabb.size.y
-		map_height = map.aabb.size.z
+	if map_width != map.size3d.x or map_depth != map.size3d.y or map_height != map.size3d.z:
+		map_width = map.size3d.x
+		map_depth = map.size3d.y
+		map_height = map.size3d.z
 		update()
 
 func _draw():
-	var tile_depth: int = IsometricServer.tile_height
-	var tile_width: int = IsometricServer.tile_width
-	var e_z: int = IsometricServer.get_ez()
+	var tile_depth: int = IsoServer.tile_height
+	var tile_width: int = IsoServer.tile_width
+	var e_z: int = IsoServer.get_ez()
 	var offset: Vector2 = Vector2(0, - tile_depth * 0.5)
 	var height_offset = Vector2(0, e_z * selected_stair)
 	for i in range(0, map_depth):
