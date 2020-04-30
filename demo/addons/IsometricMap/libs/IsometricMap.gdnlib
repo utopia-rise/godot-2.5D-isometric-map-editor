@@ -3,7 +3,7 @@
 singleton=false
 load_once=true
 symbol_prefix="iso_map_"
-reloadable=true
+reloadable=false
 
 [entry]
 
