@@ -25,7 +25,7 @@ namespace godot {
 
     private:
         AABB aabb;
-        int zOrderSize;
+        int zOrderSize = 0;
         bool rendered = false;
         bool temporary = true;
 
@@ -34,28 +34,28 @@ namespace godot {
         void updateZOrderSize(int change);
 
     protected:
-        PoolVector2Array leftPoints = PoolVector2Array();
-        PoolVector2Array rightPoints = PoolVector2Array();
-        PoolVector2Array upPoints = PoolVector2Array();
-        PoolVector2Array downPoints = PoolVector2Array();
+        PoolVector2Array leftPoints;
+        PoolVector2Array rightPoints;
+        PoolVector2Array upPoints;
+        PoolVector2Array downPoints;
 
     public:
         Vector2 isoPosition;
         IsometricPositionable();
 
-        ~IsometricPositionable();
+        ~IsometricPositionable() = default;
 
         static void _register_methods();
         void  _init();
         void _enter_tree();
         void _exit_tree();
-        virtual String getClass() const;
+        virtual String get_class() const;
         Transform2D getHexagoneCoordinates() const;
 
         void drawOutline();
+
         AABB getAABB();
         void setAABB(AABB ab);
-
         Vector3 getPosition3D() const;
         void setPosition3D(Vector3 pos);
         Vector3 getSize3D() const;

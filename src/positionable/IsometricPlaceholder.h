@@ -19,9 +19,9 @@ namespace godot {
         float tempAlpha = 0.15;
         bool isSelected = false;
 
-        PoolVector2Array debugPoints = PoolVector2Array();
+        PoolVector2Array debugPoints;
 
-        Color typeColor = Color(0.83, 0.83, 0.83, 1);
+        Color typeColor;
         PoolColorArray leftColor;
         PoolColorArray rightColor;
         PoolColorArray upColor;
@@ -37,15 +37,19 @@ namespace godot {
         void drawPoints();
         void updateColors();
 
-        void setMapSize(Vector3 size);
+        void setMapSize(const Vector3 &size);
     public:
+        IsometricPlaceholder();
+        ~IsometricPlaceholder() = default;
+
         static void _register_methods();
 
         void _init();
         void _draw();
-        String getClass() const override;
+        String get_class() const override;
 
         void _onGridUpdated(int stair) override;
+        void _onResize() override;
         void _onSelect(bool selected) override;
 
         Ref<PlaceholderType> getPlaceholderType() const;

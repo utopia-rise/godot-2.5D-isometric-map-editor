@@ -12,7 +12,7 @@ namespace godot {
         static void _register_methods();
 
         void _init();
-        String getClass() const override;
+        String get_class() const override;
     };
 
 }

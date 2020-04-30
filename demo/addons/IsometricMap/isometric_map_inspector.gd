@@ -66,7 +66,7 @@ class MapSizeEditor extends EditorProperty:
 	
 	func change_map_height(value: String) -> void:
 		var iso_map: IsometricMap = get_edited_object() as IsometricMap
-		var map_size: = Vector3(iso_map.map_size.x, iso_map.map_size.y, int(value))
+		var map_size: = Vector3(iso_map.size3d.x, iso_map.size3d.y, int(value))
 		undo_redo.create_action("change_map_height")
 		remove_out_of_range_placeholders(map_size)
 		undo_redo.add_do_property(iso_map, "size3d", map_size)
@@ -76,8 +76,7 @@ class MapSizeEditor extends EditorProperty:
 	func remove_out_of_range_placeholders(map_size: Vector3) -> void:
 		var iso_map: IsometricMap = get_edited_object() as IsometricMap
 		for pl in iso_map.get_children():
-			if pl is IsometricPlaceholder:
-				var plhd: = pl as IsometricPlaceholder
-				if plhd.ortho_position.x + plhd.width > map_size.x or plhd.ortho_position.y + plhd.depth > map_size.y or plhd.ortho_position.z + plhd.height > map_size.z:
-					undo_redo.add_do_method(iso_map, "remove_iso_positionable", plhd, plhd.ortho_position)
-					undo_redo.add_undo_method(iso_map, "add_iso_placeholder", plhd, plhd.ortho_position)
+			if pl.get_class() == "IsometricPlaceholder":
+				if pl.position3d.x + pl.size3d.x > map_size.x or pl.position3d.y + pl.size3d.y > map_size.y or pl.position3d.z + pl.size3d.z > map_size.z:
+					undo_redo.add_do_method(iso_map, "remove_iso_positionable", pl, pl.position3d)
+					undo_redo.add_undo_method(iso_map, "add_iso_placeholder", pl, pl.position3d)

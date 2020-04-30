@@ -11,31 +11,33 @@ namespace godot {
     class Grid3D {
     private:
 
-#define ARRAY_SIZE width * depth * height
-
         int width = 1;
         int depth = 1;
         int height = 1;
 
-        Array internalArray = Array();
+        Array internalArray;
 
         bool isInRange(int x, int y, int z) const;
 
-        int getId(Vector3 position) const;
+        int getId(const Vector3 &position) const;
         Vector3 getPosition3D(int id) const;
-        Vector3 planeSquareAndJumpsFrom(Vector3 size) const;
+        Vector3 planeSquareAndJumpsFrom(const Vector3 &size) const;
 
-        static int indexIncrementFrom(Vector3 planeSquareAndJumps, Vector3 size, int iteration);
+        inline int computeArraySize() const {
+            return width * depth * height;
+        }
+
+        static int indexIncrementFrom(const Vector3 &planeSquareAndJumps, const Vector3 &size, int iteration);
     public:
-        Grid3D();
-        ~Grid3D();
+        Grid3D() = default;
+        ~Grid3D() = default;
 
-        void updateArraySize(Vector3 size, bool reset = false);
+        void updateArraySize(const Vector3 &size, bool reset = false);
         void reset();
-        Object *getData(Vector3 position);
-        void setData(Vector3 position, Object *data);
-        bool insertBox(AABB aabb, Object *data, bool remove = false);
-        bool isOverlapping(AABB aabb) const;
+        Object *getData(const Vector3 &position);
+        void setData(const Vector3 &position, Object *data);
+        bool insertBox(const AABB &aabb, Object *data, bool remove = false);
+        bool isOverlapping(const AABB &aabb) const;
         bool has(Object *object) const;
 
         void forEach(void (*fptr)(Object *));
@@ -47,7 +49,7 @@ namespace godot {
         int getHeight() const;
         void setHeight(int h);
 
-        Array getInternalArray();
+        const Array &getInternalArray() const;
         void setInternalArray(const Array& array);
     };
 }

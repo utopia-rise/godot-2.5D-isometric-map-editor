@@ -3,15 +3,16 @@
 
 using namespace godot;
 
-IsometricPositionable::IsometricPositionable() = default;
+IsometricPositionable::IsometricPositionable() : aabb({0, 0, 0}, {1, 1, 1}){
 
-IsometricPositionable::~IsometricPositionable() = default;
+}
+
 
 void IsometricPositionable::_register_methods() {
     register_method("_init", &IsometricPositionable::_init);
     register_method("_enter_tree", &IsometricPositionable::_enter_tree);
     register_method("_exit_tree", &IsometricPositionable::_exit_tree);
-    register_method("get_class", &IsometricPositionable::getClass);
+    register_method("get_class", &IsometricPositionable::get_class);
     register_method("get_hexagone_coordinates", &IsometricPositionable::getHexagoneCoordinates);
     register_method("drawOutline", &IsometricPositionable::drawOutline);
     register_method("get_aabb", &IsometricPositionable::getAABB);
@@ -28,7 +29,6 @@ void IsometricPositionable::_register_methods() {
 }
 
 void IsometricPositionable::_init() {
-    aabb = AABB({0, 0, 0}, {1, 1, 1});
     _onResize();
 }
 
@@ -41,29 +41,29 @@ void IsometricPositionable::_exit_tree() {
     updateZOrderSize(-zOrderSize);
 }
 
-String IsometricPositionable::getClass() const {
+String IsometricPositionable::get_class() const {
     return "IsometricPositionable";
 }
 
 Transform2D IsometricPositionable::getHexagoneCoordinates() const {
-    auto orthoPosition = aabb.position;
-    auto size = aabb.size;
-    auto upperPoint = Vector3(orthoPosition.x, orthoPosition.y, orthoPosition.z + (float) IsometricServer::getInstance().zRatio * size.z);
-    auto lowerPoint = Vector3(orthoPosition.x + size.x, orthoPosition.y + size.y, orthoPosition.z);
-    auto leftPoint = Vector3(orthoPosition.x, orthoPosition.y + size.y, orthoPosition.z);
-    auto rightPoint = Vector3(orthoPosition.x + size.x, orthoPosition.y, orthoPosition.z);
-    auto minX = upperPoint.x - upperPoint.z;
-    auto maxX = lowerPoint.x - lowerPoint.z;
-    auto minY = upperPoint.y - upperPoint.z;
-    auto maxY = lowerPoint.y - lowerPoint.z;
-    auto hMin = leftPoint.x - leftPoint.y;
-    auto hMax = rightPoint.x - rightPoint.y;
+    const Vector3 &orthoPosition = aabb.position;
+    const Vector3 &size = aabb.size;
+    const Vector3 upperPoint(orthoPosition.x, orthoPosition.y, orthoPosition.z + (float) IsometricServer::getInstance().zRatio * size.z);
+    const Vector3 lowerPoint(orthoPosition.x + size.x, orthoPosition.y + size.y, orthoPosition.z);
+    const Vector3 leftPoint(orthoPosition.x, orthoPosition.y + size.y, orthoPosition.z);
+    const Vector3 rightPoint(orthoPosition.x + size.x, orthoPosition.y, orthoPosition.z);
+    real_t minX = upperPoint.x - upperPoint.z;
+    real_t maxX = lowerPoint.x - lowerPoint.z;
+    real_t minY = upperPoint.y - upperPoint.z;
+    real_t maxY = lowerPoint.y - lowerPoint.z;
+    real_t hMin = leftPoint.x - leftPoint.y;
+    real_t hMax = rightPoint.x - rightPoint.y;
     return {minX, maxX, minY, maxY, hMin, hMax};
 }
 
 void IsometricPositionable::drawOutline() {
 //    Upper Lines
-    const Color &colorRed = Color(255, 0, 0, 0);
+    Color colorRed(255, 0, 0, 0);
     draw_line(upPoints[0], upPoints[1], colorRed, 2.0);
     draw_line(upPoints[1], upPoints[2], colorRed, 2.0);
     draw_line(upPoints[2], upPoints[3], colorRed, 2.0);
@@ -99,7 +99,9 @@ Vector3 IsometricPositionable::getPosition3D() const {
 
 void IsometricPositionable::setPosition3D(Vector3 pos) {
     aabb.position = pos;
-    set_position(IsometricServer::getInstance().getScreenCoordFrom3D(pos));
+    const Vector2 &position = IsometricServer::getInstance().getScreenCoordFrom3D(pos);
+    Godot::print(String("set position {0}").format(Array::make(position)));
+    set_position(position);
     isoPosition = get_position();
 }
 
@@ -157,6 +159,7 @@ bool IsometricPositionable::isTemporary() const {
 
 void IsometricPositionable::setTemporary(bool temp) {
     this->temporary = temp;
+    update();
 }
 
 int IsometricPositionable::getDebugZ() const {

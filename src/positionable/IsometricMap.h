@@ -10,27 +10,27 @@ namespace godot {
 
     private:
         bool drawTiles = true;
-        Grid3D grid3D = Grid3D();
-        Grid3D editionGrid3D = Grid3D();
+        Grid3D grid3D;
+        Grid3D editionGrid3D;
 
         int currentSortingOrder = 0;
 
         void generateTopologicalRenderGraph();
         void renderIsoNode(IsometricPositionable *isoNode);
         Array getPositionableBehind(IsometricPositionable *isoNode);
-        Array getFlattenPositionables(Vector3 offset = Vector3());
+        Array getFlattenPositionables(const Vector3 &offset = Vector3());
         IsometricMap *copy();
 
     public:
 
-        IsometricMap();
-        ~IsometricMap();
+        IsometricMap() = default;
+        ~IsometricMap() = default;
 
         static void _register_methods();
 
         void _init();
         void _process(float delta);
-        String getClass() const override;
+        String get_class() const override;
 
         void addIsoPositionable(IsometricPositionable *isometricPositionable);
         void removeIsoPositionable(IsometricPositionable *isometricPositionable);

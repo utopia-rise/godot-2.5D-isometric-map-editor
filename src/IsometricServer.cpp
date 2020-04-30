@@ -2,9 +2,13 @@
 
 using namespace godot;
 
-IsometricServer::IsometricServer() = default;
-
-IsometricServer::~IsometricServer() = default;
+IsometricServer::IsometricServer()
+: tileWidth(256)
+, tileHeight(128)
+, angle(30) {
+    eZ = calculateEz();
+    zRatio = eZ / (float) tileHeight;
+}
 
 IsometricServer &IsometricServer::getInstance() {
     static IsometricServer instance;
@@ -40,7 +44,7 @@ void IsometricServer::setAngle(int agl) {
     //TODO calculate tileHeight
 }
 
-double IsometricServer::getEZ() const {
+float IsometricServer::getEZ() const {
     return eZ;
 }
 
@@ -48,11 +52,11 @@ double IsometricServer::getZRatio() const {
     return zRatio;
 }
 
-Vector3 IsometricServer::get3DCoordFromScreen(Vector2 pos, real_t orthZ) const {
-    auto isoX = pos.x;
-    auto isoY = pos.y;
-    real_t orthX = isoX / (float) tileWidth + (isoY + orthZ * (float) eZ) / (float) tileHeight;
-    real_t orthY = (isoY + orthZ * (float) eZ) / (float) tileHeight - isoX / (float) tileWidth;
+Vector3 IsometricServer::get3DCoordFromScreen(const Vector2 &pos, real_t orthZ) const {
+    real_t isoX = pos.x;
+    real_t isoY = pos.y;
+    real_t orthX = isoX / (float) tileWidth + (isoY + orthZ * eZ) / (float) tileHeight;
+    real_t orthY = (isoY + orthZ * eZ) / (float) tileHeight - isoX / (float) tileWidth;
     return {
             ::roundf(orthX),
             ::roundf(orthY),
@@ -60,26 +64,26 @@ Vector3 IsometricServer::get3DCoordFromScreen(Vector2 pos, real_t orthZ) const {
     };
 }
 
-Vector2 IsometricServer::getScreenCoordFrom3D(Vector3 pos) const {
+Vector2 IsometricServer::getScreenCoordFrom3D(const Vector3 &pos) const {
     return {
-            (pos.x - pos.y) * (float) tileWidth * 0.5f,
-            (pos.x + pos.y) * (float) tileHeight * 0.5f
+            (pos.x - pos.y) * (real_t) tileWidth * 0.5f,
+            (pos.x + pos.y) * (real_t) tileHeight * 0.5f - (real_t) (eZ * pos.z)
     };
 }
 
-int IsometricServer::calculateEz() const {
-    return (int) ((tileHeight / sin(DEG2RAD((float) angle)) / sqrt(2)) * cos(DEG2RAD((float) angle)));
+float IsometricServer::calculateEz() const {
+    return ((float) tileHeight / (float) sin(DEG2RAD((float) angle)) / (float) sqrt(2)) * (float) cos(DEG2RAD((float) angle));
 }
 
-bool IsometricServer::doHexagoneOverlap(Transform2D hex1, Transform2D hex2) {
+bool IsometricServer::doHexagoneOverlap(const Transform2D &hex1, const Transform2D &hex2) {
     return !(hex1.get_axis(0).x >= hex2.get_axis(0).y || hex2.get_axis(0).x >= hex1.get_axis(0).y)
     && !(hex1.get_axis(1).x >= hex2.get_axis(1).y || hex2.get_axis(1).x >= hex1.get_axis(1).y)
     && !(hex1.get_origin().x >= hex2.get_origin().y || hex2.get_origin().x >= hex1.get_origin().y);
 }
 
-bool IsometricServer::isBoxInFront(AABB box, AABB other) {
-    Vector3 boxEnd = box.position + box.size;
-    Vector3 otherEnd = other.position + other.size;
+bool IsometricServer::isBoxInFront(const AABB &box, const AABB &other) {
+    const Vector3 &boxEnd = box.position + box.size;
+    const Vector3 &otherEnd = other.position + other.size;
     if (boxEnd.x <= other.position.x) {
         return false;
     } else if (otherEnd.x <= box.position.x) {

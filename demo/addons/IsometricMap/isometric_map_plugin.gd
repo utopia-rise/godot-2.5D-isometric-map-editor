@@ -7,7 +7,6 @@ var isometric_asset_selector: IsometricAssetSelector = load("res://addons/Isomet
 var editor_file_system: EditorFileSystem
 
 func _enter_tree():
-	add_autoload_singleton("MapSettings", "res://addons/IsometricMap/Scripts/map_setting.gd")
 	add_inspector_plugin(IsometricMapInspector.new(get_undo_redo()))
 	add_control_to_container(EditorPlugin.CONTAINER_CANVAS_EDITOR_SIDE_RIGHT, isometric_asset_selector)
 	isometric_asset_selector.visible = false
@@ -23,7 +22,7 @@ func edit(object: Object) -> void:
 			var hdler: = MapEditionHandler.new(object, get_undo_redo(), self.get_editor_interface(), isometric_asset_selector)
 			handlers[object] = hdler
 			current_handler = hdler
-	elif object is IsometricPlaceholder and current_handler != null:
+	elif object.get_class() == "IsometricPlaceholder" and current_handler != null:
 		current_handler.edit_placeholder(object)
 
 func handles(object: Object) -> bool:

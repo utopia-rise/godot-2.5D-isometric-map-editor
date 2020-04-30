@@ -37,7 +37,7 @@ enum Axes {
 
 var drag_action: int = DragAction.NONE
 
-func _init(iso_map: IsometricMap, undo: UndoRedo, editor_interface: EditorInterface, asset_selector: IsometricAssetSelector):
+func _init(iso_map, undo: UndoRedo, editor_interface: EditorInterface, asset_selector: IsometricAssetSelector):
 	undo_redo = undo
 	self.editor_interface = editor_interface
 	self.isometric_asset_selector = asset_selector
@@ -50,7 +50,6 @@ func _init(iso_map: IsometricMap, undo: UndoRedo, editor_interface: EditorInterf
 	print("stair selector parent: " + str(stair_selector.get_parent()))
 	for child in map.get_children():
 		if isIsopositionable(child):
-			child.is_rendered = false
 			child.add_to_group("positionables", false)
 			child.update()
 	drag_action = DragAction.NONE
@@ -83,7 +82,6 @@ func forward_canvas_gui_input(event: InputEvent) -> bool:
 							var future_aabb: AABB = AABB(positionable_pos, Vector3(width_offset, depth_offset, selected_positionable.size3d.z))
 							if !map.is_overlapping_aabb(future_aabb) and width_offset >= 0 and 1 + target_position.x <= map.size3d.x and depth_offset >= 0 and 1 + target_position.y <= map.size3d.y and !(width_offset == depth_offset and width_offset == 0):
 								selected_positionable.set_aabb(future_aabb)
-								selected_positionable.update()
 						return true
 					else:
 						if loaded_positionable.get_class() == "IsometricTile":
@@ -135,7 +133,7 @@ func forward_canvas_gui_input(event: InputEvent) -> bool:
 						undo_redo.create_action("add_map")
 						undo_redo.add_do_method(map, "add_iso_positionable", selected_positionable)
 						undo_redo.add_do_method(selected_positionable, "set_owner", editor_interface.get_edited_scene_root())
-						undo_redo.add_do_method(selected_positionable, "_grid_updated", stair_selector.selected_stair)
+						undo_redo.add_do_method(selected_positionable, "_on_grid_updated", stair_selector.selected_stair)
 						undo_redo.add_undo_method(map, "remove_iso_positionable", selected_positionable)
 						undo_redo.commit_action()
 						load_iso_for_edition(selected_positionable.get_class() == "IsometricMap")
@@ -150,7 +148,7 @@ func forward_canvas_gui_input(event: InputEvent) -> bool:
 							undo_redo.create_action("add_tile")
 							undo_redo.add_do_method(map, "add_iso_positionable", selected_positionable)
 							undo_redo.add_do_method(selected_positionable, "set_owner", editor_interface.get_edited_scene_root())
-							undo_redo.add_do_method(selected_positionable, "_grid_updated", stair_selector.selected_stair)
+							undo_redo.add_do_method(selected_positionable, "_on_grid_updated", stair_selector.selected_stair)
 							undo_redo.add_undo_method(map, "remove_iso_positionable", selected_positionable)
 							undo_redo.commit_action()
 							load_iso_for_edition(false)
@@ -161,7 +159,7 @@ func forward_canvas_gui_input(event: InputEvent) -> bool:
 					elif selected_positionable.get_class() == "IsometricPlaceholder":
 						var ortho_pos: Vector3 = IsoServer.get_3d_coord_from_screen(map.get_local_mouse_position(), stair_selector.selected_stair).round()
 						if 0 <= ortho_pos.x and 1 + ortho_pos.x <= map.size3d.x and 0 <= ortho_pos.y and 1 + ortho_pos.y <= map.size3d.y:
-							selected_positionable.set_aabb(AABB(ortho_pos, selected_positionable.size3d))
+							selected_positionable.position3d = ortho_pos
 							if !map.is_overlapping(selected_positionable):
 								selected_positionable.debug_z = 0
 								map.add_child(selected_positionable)
@@ -172,7 +170,7 @@ func forward_canvas_gui_input(event: InputEvent) -> bool:
 					else :
 						return selected_positionable != null
 				else:
-					return false
+					return true
 			elif event.button_index == BUTTON_RIGHT:
 				pass
 		else:
@@ -188,7 +186,7 @@ func forward_canvas_gui_input(event: InputEvent) -> bool:
 							undo_redo.create_action("create_placeholder")
 							undo_redo.add_do_method(map, "add_iso_positionable", selected_positionable)
 							undo_redo.add_do_method(selected_positionable, "set_owner", root_node)
-							undo_redo.add_do_method(selected_positionable, "_grid_updated", stair_selector.selected_stair)
+							undo_redo.add_do_method(selected_positionable, "_on_grid_updated", stair_selector.selected_stair)
 							undo_redo.add_undo_method(map, "remove_iso_positionable", selected_positionable)
 							undo_redo.commit_action()
 							drag_action = DragAction.NONE
@@ -244,7 +242,8 @@ func forward_canvas_gui_input(event: InputEvent) -> bool:
 							for child in map.get_children():
 								print("ctrl back : " + str(child))
 								if isIsopositionable(child) and child != loaded_positionable:
-									remove_iso_positionable(child)
+									undo_redo.add_do_method(map, "remove_iso_positionable", child)
+									undo_redo.add_undo_method(map, "add_iso_positionable", child)
 							undo_redo.commit_action()
 						else:
 							if selected_positionable != null:
@@ -292,7 +291,7 @@ func remove_iso_positionable(iso_positionable) -> void:
 		undo_redo.add_do_method(self, "deselect_positionable", iso_positionable)
 	undo_redo.add_undo_method(map, "add_iso_positionable", iso_positionable)
 	undo_redo.add_undo_method(iso_positionable, "set_owner", root_node)
-	undo_redo.add_undo_method(iso_positionable, "_grid_updated", stair_selector.selected_stair)
+	undo_redo.add_undo_method(iso_positionable, "_on_grid_updated", stair_selector.selected_stair)
 	undo_redo.commit_action()
 
 func deselect_positionable(positionable):
@@ -300,20 +299,19 @@ func deselect_positionable(positionable):
 		selected_positionable = null
 
 func move_z_volume(positionable, up: bool) -> void:
-	if positionable != null:
-		if positionable.get_class() == "IsometricTile" or positionable.get_class() == "IsometricMap":
-			map.remove_iso_positionable(positionable)
+	print(str(positionable))
+	if positionable != null and positionable.get_class() == "IsometricPlaceholder":
+		map.remove_iso_positionable(positionable)
 		var future_aabb: = AABB(positionable.position3d, positionable.size3d)
 		var offset: int = 0
 		if up and positionable.position3d.z + positionable.size3d.z < map.size3d.z:
 			future_aabb.size.z += 1
 		elif !up and positionable.size3d.z > 0:
 			future_aabb.size.z -= 1
-		if !map.is_overlapping_aabb(future_aabb): #TODO : change method in cpp to take an aabb and get aabb from positionable
+		if !map.is_overlapping_aabb(future_aabb):
 			positionable.set_aabb(future_aabb)
-		if positionable.get_class() == "IsometricPlaceholder" or positionable.get_class() == "IsometricMap":
-			map.add_iso_positionable(positionable)
-		positionable._grid_updated(stair_selector.selected_stair)
+		map.add_iso_positionable(positionable)
+		positionable._on_grid_updated(stair_selector.selected_stair)
 
 func switch_slope_type(placeholder):
 	if placeholder != null and placeholder.get_class() == "IsometricPlaceholder":
@@ -381,42 +379,39 @@ func move_iso_positionable(iso_positionable, direction: int, as_action: bool) ->
 			future_position = current_position - Vector3(0, 1, 0)
 		elif direction == Direction.BACKWARD:
 			future_position = current_position + Vector3(0, 1, 0)
-		var future_aabb := AABB(future_position, current_aabb.size)
+		var future_aabb := AABB(future_position, current_size)
 		var is_position_positive := future_position.x >= 0 and future_position.y >= 0 and future_position.z >= 0
 		var is_in_map = future_position.x + current_size.x <= map.size3d.x and future_position.y + current_size.y <= map.size3d.y and future_position.z + current_size.z <= map.size3d.z
 		if !map.is_overlapping_aabb(future_aabb) and is_position_positive and is_in_map:
-			iso_positionable.set_aabb(future_aabb)
 			if as_action:
 				undo_redo.create_action("move_iso_positionable")
 				undo_redo.add_do_method(iso_positionable, "set_aabb", future_aabb)
 				undo_redo.add_do_method(map, "add_iso_positionable", iso_positionable)
 				undo_redo.add_do_method(iso_positionable, "set_owner", editor_interface.get_edited_scene_root())
+				undo_redo.add_do_method(iso_positionable, "_on_grid_updated", stair_selector.selected_stair)
 				undo_redo.add_undo_method(map, "remove_iso_positionable", iso_positionable)
-				undo_redo.add_undo_property(iso_positionable, "set_aabb", current_aabb)
-				undo_redo.add_undo_method(iso_positionable, "add_iso_positionable", iso_positionable)
+				undo_redo.add_undo_method(iso_positionable, "set_aabb", current_aabb)
+				undo_redo.add_undo_method(map, "add_iso_positionable", iso_positionable)
 				undo_redo.add_undo_method(iso_positionable, "set_owner", editor_interface.get_edited_scene_root())
+				undo_redo.add_undo_method(iso_positionable, "_on_grid_updated", stair_selector.selected_stair)
 				undo_redo.commit_action()
 			else:
 				iso_positionable.set_aabb(future_aabb)
 				map.add_iso_positionable(iso_positionable)
-				map.add_child(iso_positionable)
 				iso_positionable.set_owner(editor_interface.get_edited_scene_root())
-				iso_positionable._grid_updated(stair_selector.selected_stair)
+				iso_positionable._on_grid_updated(stair_selector.selected_stair)
 		else:
 			map.add_iso_positionable(iso_positionable)
-			map.add_child(iso_positionable)
 			iso_positionable.set_owner(editor_interface.get_edited_scene_root())
-			iso_positionable._grid_updated(stair_selector.selected_stair)
+			iso_positionable._on_grid_updated(stair_selector.selected_stair)
 
 func select_positionable(positionable):
 	print("selecting " + str(positionable))
 	if selected_positionable != null:
 		selected_positionable._on_select(false)
-		selected_positionable.update()
 	selected_positionable = positionable
 	if positionable != null:
 		positionable._on_select(true)
-		positionable.update()
 
 func load_positionable(positionable) -> void:
 	loaded_positionable = positionable
@@ -436,7 +431,7 @@ func create_new_placeholder() -> void:
 func check_and_select_existing() -> bool:
 	for z in range(map.size3d.z, 0, -1):
 		var ortho_pos: Vector3 = IsoServer.get_3d_coord_from_screen(map.get_local_mouse_position(), z-1).round()
-		var posi: IsometricPositionable = map.get_positionable_at(ortho_pos)
+		var posi = map.get_positionable_at(ortho_pos)
 		if posi != null:
 			if posi.position3d.z + posi.size3d.z > stair_selector.selected_stair:
 				select_positionable(posi)
@@ -488,4 +483,4 @@ func on_map_selected() -> void:
 
 func isIsopositionable(object):
 	var object_class = object.get_class()
-	return object_class == "IsometricPositionable" or object_class == "IsometricMap" or object_class == "IsometricPlaceholder"
+	return object_class == "IsometricTile" or object_class == "IsometricMap" or object_class == "IsometricPlaceholder"

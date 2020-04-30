@@ -49,5 +49,5 @@ func move_selected_stair(up: bool) -> bool:
 		return false
 	selected_stair += offset
 	self.update()
-	get_tree().call_group("positionables", "_grid_updated", selected_stair)
+	get_tree().call_group("positionables", "_on_grid_updated", selected_stair)
 	return true

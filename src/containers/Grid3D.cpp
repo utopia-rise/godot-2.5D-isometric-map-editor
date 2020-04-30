@@ -2,10 +2,7 @@
 
 using namespace godot;
 
-Grid3D::Grid3D() = default;
-Grid3D::~Grid3D() = default;
-
-void Grid3D::updateArraySize(godot::Vector3 size, bool reset) {
+void Grid3D::updateArraySize(const Vector3 &size, bool reset) {
     //Save old values
     int oldSize = internalArray.size();
     Array oldArray = internalArray;
@@ -18,7 +15,7 @@ void Grid3D::updateArraySize(godot::Vector3 size, bool reset) {
     height = (int) size.z;
     internalArray = Array();
 
-    for (int i = 0; i < ARRAY_SIZE; i++) {
+    for (int i = 0; i < computeArraySize(); i++) {
         internalArray.append((Object *) nullptr);
     }
 
@@ -46,19 +43,19 @@ void Grid3D::reset() {
     updateArraySize({(real_t) width, (real_t) depth, (real_t) height}, true);
 }
 
-Object *Grid3D::getData(Vector3 position) {
+Object *Grid3D::getData(const Vector3 &position) {
     return (int) position.x >= 0 && (int) position.x < width && (int) position.y >= 0 && (int) position.y < depth && (int) position.z >= 0 && (int) position.z < height
     ? (Object *) internalArray[(int) position.x + width * (int) position.y + width * depth * (int) position.z]
     : nullptr;
 }
 
-void Grid3D::setData(Vector3 position, Object *data) {
+void Grid3D::setData(const Vector3 &position, Object *data) {
     internalArray[(int) position.x + width * (int) position.y + width * depth * (int) position.z] = data;
 }
 
-bool Grid3D::insertBox(AABB aabb, Object *data, bool remove) {
-    Vector3 position = aabb.position;
-    Vector3 size = aabb.size;
+bool Grid3D::insertBox(const AABB &aabb, Object *data, bool remove) {
+    const Vector3 &position = aabb.position;
+    const Vector3 &size = aabb.size;
     int index = getId(position);
     int endX = (int) position.x + (int) size.x;
     int endY = (int) position.y + (int) size.y;
@@ -76,9 +73,9 @@ bool Grid3D::insertBox(AABB aabb, Object *data, bool remove) {
     return true;
 }
 
-bool Grid3D::isOverlapping(AABB aabb) const {
+bool Grid3D::isOverlapping(const AABB &aabb) const {
     int index = getId(aabb.position);
-    Vector3 size = aabb.size;
+    const Vector3 &size = aabb.size;
 
     if (index >= 0 && index < internalArray.size()) {
         Object *element = internalArray[index];
@@ -141,7 +138,7 @@ void Grid3D::setHeight(int h) {
     });
 }
 
-Array Grid3D::getInternalArray() {
+const Array &Grid3D::getInternalArray() const {
     return internalArray;
 }
 
@@ -162,7 +159,7 @@ bool Grid3D::isInRange(int x, int y, int z) const {
     return x < width && y < depth && z < height;
 }
 
-int Grid3D::getId(Vector3 position) const {
+int Grid3D::getId(const Vector3 &position) const {
     return (int) position.x + width * (int) position.y + width * depth * (int) position.z;
 }
 
@@ -174,7 +171,7 @@ Vector3 Grid3D::getPosition3D(int id) const {
     };
 }
 
-Vector3 Grid3D::planeSquareAndJumpsFrom(Vector3 size) const {
+Vector3 Grid3D::planeSquareAndJumpsFrom(const Vector3 &size) const {
     return {
         size.x * size.y,
         (real_t ) width - size.x,
@@ -182,7 +179,7 @@ Vector3 Grid3D::planeSquareAndJumpsFrom(Vector3 size) const {
     };
 }
 
-int Grid3D::indexIncrementFrom(Vector3 planeSquareAndJumps, Vector3 size, int iteration) {
+int Grid3D::indexIncrementFrom(const Vector3 &planeSquareAndJumps, const Vector3 &size, int iteration) {
     int increment = 0;
     increment += (iteration % (int) size.x) == 0 ? (int) planeSquareAndJumps.y : 0;
     increment += (iteration % (int) planeSquareAndJumps.x) == 0 ? (int) planeSquareAndJumps.z : 0;

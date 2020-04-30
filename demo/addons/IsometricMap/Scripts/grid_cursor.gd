@@ -37,19 +37,19 @@ func _process(delta):
 		update()
 
 func _draw():
-	var tile_height: int = IsoServer.tile_height
+	var tile_depth: int = IsoServer.tile_height
 	var tile_width: int = IsoServer.tile_width
-	var offset: Vector2 = Vector2(0, tile_height * 0.5)
+	var offset: Vector2 = Vector2(0, tile_depth * 0.5)
 	
 	var position_3D = IsoServer.get_3d_coord_from_screen(offset + mouse_position, selected_stair)
 	position_3D.x = clamp(int(position_3D.x), 0, map_width - 1)
 	position_3D.y = clamp(int(position_3D.y), 0, map_depth - 1)
 	position_3D.z = clamp(int(position_3D.z), 0, map_height - 1)
 	offset = IsoServer.get_screen_coord_from_3d(position_3D)
-	offset += Vector2(0, - tile_height * grid_size * 0.5)
+	offset += Vector2(0, - tile_depth * grid_size * 0.5)
 	
-	var screen_x_delta = Vector2(tile_width * 0.5, tile_height * 0.5)
-	var screen_y_delta = Vector2(tile_width * -0.5, tile_height * 0.5)
+	var screen_x_delta = Vector2(tile_width * 0.5, tile_depth * 0.5)
+	var screen_y_delta = Vector2(tile_width * -0.5, tile_depth * 0.5)
 
 	var from: Vector2 = offset + screen_x_delta * 0.5
 	var to: Vector2 = from + screen_x_delta * (grid_size - 1)
