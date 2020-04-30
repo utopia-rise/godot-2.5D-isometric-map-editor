@@ -29,6 +29,7 @@ namespace godot {
         static void _register_methods();
 
         void _init();
+        void _ready();
         void _process(float delta);
         String get_class() const override;
 

@@ -63,23 +63,23 @@ Transform2D IsometricPositionable::getHexagoneCoordinates() const {
 
 void IsometricPositionable::drawOutline() {
 //    Upper Lines
-    Color colorRed(255, 0, 0, 0);
-    draw_line(upPoints[0], upPoints[1], colorRed, 2.0);
-    draw_line(upPoints[1], upPoints[2], colorRed, 2.0);
-    draw_line(upPoints[2], upPoints[3], colorRed, 2.0);
-    draw_line(upPoints[3], upPoints[0], colorRed, 2.0);
+    Color colorRed(255, 0, 0, 1);
+    draw_line(upPoints[0], upPoints[1], colorRed, 10.0);
+    draw_line(upPoints[1], upPoints[2], colorRed, 10.0);
+    draw_line(upPoints[2], upPoints[3], colorRed, 10.0);
+    draw_line(upPoints[3], upPoints[0], colorRed, 10.0);
 
 //    Vertical Lines
-    draw_line(upPoints[0], downPoints[0], colorRed, 1.0);
-    draw_line(upPoints[1], downPoints[1], colorRed, 2.0);
-    draw_line(upPoints[2], downPoints[2], colorRed, 2.0);
-    draw_line(upPoints[3], downPoints[3], colorRed, 2.0);
+    draw_line(upPoints[0], downPoints[0], colorRed, 10.0);
+    draw_line(upPoints[1], downPoints[1], colorRed, 10.0);
+    draw_line(upPoints[2], downPoints[2], colorRed, 10.0);
+    draw_line(upPoints[3], downPoints[3], colorRed, 10.0);
 
 //    Lower Lines
-    draw_line(downPoints[0], downPoints[1], colorRed, 1.0);
-    draw_line(downPoints[1], downPoints[2], colorRed, 2.0);
-    draw_line(downPoints[2], downPoints[3], colorRed, 2.0);
-    draw_line(downPoints[3], downPoints[0], colorRed, 1.0);
+    draw_line(downPoints[0], downPoints[1], colorRed, 10.0);
+    draw_line(downPoints[1], downPoints[2], colorRed, 10.0);
+    draw_line(downPoints[2], downPoints[3], colorRed, 10.0);
+    draw_line(downPoints[3], downPoints[0], colorRed, 10.0);
 }
 
 AABB IsometricPositionable::getAABB() {
@@ -99,9 +99,7 @@ Vector3 IsometricPositionable::getPosition3D() const {
 
 void IsometricPositionable::setPosition3D(Vector3 pos) {
     aabb.position = pos;
-    const Vector2 &position = IsometricServer::getInstance().getScreenCoordFrom3D(pos);
-    Godot::print(String("set position {0}").format(Array::make(position)));
-    set_position(position);
+    set_position(IsometricServer::getInstance().getScreenCoordFrom3D(pos));
     isoPosition = get_position();
 }
 
