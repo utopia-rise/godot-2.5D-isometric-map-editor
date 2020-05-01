@@ -36,6 +36,10 @@ LOCAL_C_INCLUDES := \
 ../godot-cpp/include/ \
 ../godot-cpp/include/core \
 ../godot-cpp/include/gen \
+src \
+src/containers \
+src/helpers \
+src/positionable \
 
 LOCAL_STATIC_LIBRARIES := godot-prebuilt
 
