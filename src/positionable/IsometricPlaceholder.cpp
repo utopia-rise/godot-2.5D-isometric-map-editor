@@ -177,7 +177,7 @@ void IsometricPlaceholder::drawPoints() {
         upC.a = 1;
         leC.a = 1;
         riC.a = 1;
-        stairC.a = 1;
+        stairC.a = 0.5;
         upColor.set(0, upC);
         leftColor.set(0, leC);
         rightColor.set(0, riC);
