@@ -1,9 +1,9 @@
 #ifndef ISOMETRICMAPEDITOR_ISOMETRICPLACEHOLDER_H
 #define ISOMETRICMAPEDITOR_ISOMETRICPLACEHOLDER_H
 
-#include "IsometricPositionable.h"
-#include "IsometricMap.h"
-#include "PlaceholderType.h"
+#include <IsometricPositionable.h>
+#include <IsometricMap.h>
+#include <PlaceholderType.h>
 
 namespace godot {
 

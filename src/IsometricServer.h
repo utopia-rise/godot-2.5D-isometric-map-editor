@@ -6,7 +6,7 @@
 #include <core/Vector3.hpp>
 #include <core/Transform2D.hpp>
 #include <core/AABB.hpp>
-#include "helpers/MathHelper.h"
+#include <MathHelper.h>
 
 namespace godot {
 

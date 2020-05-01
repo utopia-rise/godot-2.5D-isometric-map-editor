@@ -1,9 +1,10 @@
-#include "IsometricPositionable.h"
-#include "../IsometricServer.h"
+#include <IsometricPositionable.h>
+#include <IsometricServer.h>
 
 using namespace godot;
 
-IsometricPositionable::IsometricPositionable() : aabb({0, 0, 0}, {1, 1, 1}){
+IsometricPositionable::IsometricPositionable() : aabb({0, 0, 0}, {1, 1, 1}), zOrderSize(0), rendered(false),
+temporary(true), debugZ(0) {
 
 }
 
@@ -46,12 +47,12 @@ String IsometricPositionable::get_class() const {
 }
 
 Transform2D IsometricPositionable::getHexagoneCoordinates() const {
-    const Vector3 &orthoPosition = aabb.position;
-    const Vector3 &size = aabb.size;
-    const Vector3 upperPoint(orthoPosition.x, orthoPosition.y, orthoPosition.z + (float) IsometricServer::getInstance().zRatio * size.z);
-    const Vector3 lowerPoint(orthoPosition.x + size.x, orthoPosition.y + size.y, orthoPosition.z);
-    const Vector3 leftPoint(orthoPosition.x, orthoPosition.y + size.y, orthoPosition.z);
-    const Vector3 rightPoint(orthoPosition.x + size.x, orthoPosition.y, orthoPosition.z);
+    const Vector3 &orthoPosition { aabb.position };
+    const Vector3 &size { aabb.size };
+    const Vector3 &upperPoint { Vector3(orthoPosition.x, orthoPosition.y, orthoPosition.z + IsometricServer::getInstance().zRatio * size.z) };
+    const Vector3 &lowerPoint { Vector3(orthoPosition.x + size.x, orthoPosition.y + size.y, orthoPosition.z) };
+    const Vector3 &leftPoint { Vector3(orthoPosition.x, orthoPosition.y + size.y, orthoPosition.z) };
+    const Vector3 &rightPoint { Vector3(orthoPosition.x + size.x, orthoPosition.y, orthoPosition.z) };
     real_t minX = upperPoint.x - upperPoint.z;
     real_t maxX = lowerPoint.x - lowerPoint.z;
     real_t minY = upperPoint.y - upperPoint.z;
@@ -63,23 +64,24 @@ Transform2D IsometricPositionable::getHexagoneCoordinates() const {
 
 void IsometricPositionable::drawOutline() {
 //    Upper Lines
-    Color colorRed(255, 0, 0, 1);
-    draw_line(upPoints[0], upPoints[1], colorRed, 10.0);
-    draw_line(upPoints[1], upPoints[2], colorRed, 10.0);
-    draw_line(upPoints[2], upPoints[3], colorRed, 10.0);
-    draw_line(upPoints[3], upPoints[0], colorRed, 10.0);
+    const Color &colorRed { Color(255, 0, 0, 1) };
+    constexpr real_t lineSize { 10.0f };
+    draw_line(upPoints[0], upPoints[1], colorRed, lineSize);
+    draw_line(upPoints[1], upPoints[2], colorRed, lineSize);
+    draw_line(upPoints[2], upPoints[3], colorRed, lineSize);
+    draw_line(upPoints[3], upPoints[0], colorRed, lineSize);
 
 //    Vertical Lines
-    draw_line(upPoints[0], downPoints[0], colorRed, 10.0);
-    draw_line(upPoints[1], downPoints[1], colorRed, 10.0);
-    draw_line(upPoints[2], downPoints[2], colorRed, 10.0);
-    draw_line(upPoints[3], downPoints[3], colorRed, 10.0);
+    draw_line(upPoints[0], downPoints[0], colorRed, lineSize);
+    draw_line(upPoints[1], downPoints[1], colorRed, lineSize);
+    draw_line(upPoints[2], downPoints[2], colorRed, lineSize);
+    draw_line(upPoints[3], downPoints[3], colorRed, lineSize);
 
 //    Lower Lines
-    draw_line(downPoints[0], downPoints[1], colorRed, 10.0);
-    draw_line(downPoints[1], downPoints[2], colorRed, 10.0);
-    draw_line(downPoints[2], downPoints[3], colorRed, 10.0);
-    draw_line(downPoints[3], downPoints[0], colorRed, 10.0);
+    draw_line(downPoints[0], downPoints[1], colorRed, lineSize);
+    draw_line(downPoints[1], downPoints[2], colorRed, lineSize);
+    draw_line(downPoints[2], downPoints[3], colorRed, lineSize);
+    draw_line(downPoints[3], downPoints[0], colorRed, lineSize);
 }
 
 AABB IsometricPositionable::getAABB() {
@@ -88,7 +90,7 @@ AABB IsometricPositionable::getAABB() {
 
 void IsometricPositionable::setAABB(AABB ab) {
     aabb = ab;
-    this->set_position(IsometricServer::getInstance().getScreenCoordFrom3D(ab.position));
+    set_position(IsometricServer::getInstance().getScreenCoordFrom3D(ab.position));
     isoPosition = get_position();
     _onResize();
 }
@@ -117,7 +119,7 @@ int IsometricPositionable::getZOrderSize() const {
 }
 
 void IsometricPositionable::setZOrderSize(int size) {
-    int delta = size - zOrderSize;
+    int delta { size - zOrderSize };
     if (delta != 0) {
         updateZOrderSize(delta);
     }
@@ -133,7 +135,7 @@ void IsometricPositionable::setRendered(bool isRendered) {
 }
 
 void IsometricPositionable::updateZOrderSize(int change) {
-    auto parent = Object::cast_to<IsometricPositionable>(this->get_parent());
+    auto *parent = Object::cast_to<IsometricPositionable>(this->get_parent());
     if (parent) {
         parent->zOrderSize += change;
     }

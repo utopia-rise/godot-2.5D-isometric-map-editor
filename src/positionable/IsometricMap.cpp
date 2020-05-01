@@ -1,7 +1,11 @@
-#include "IsometricMap.h"
-#include "../IsometricServer.h"
+#include <IsometricMap.h>
+#include <IsometricServer.h>
 
 using namespace godot;
+
+IsometricMap::IsometricMap() : drawTiles(true), currentSortingOrder(0) {
+
+}
 
 void IsometricMap::_register_methods() {
     register_method("_init", &IsometricMap::_init);
@@ -25,7 +29,7 @@ void IsometricMap::_init() {
 }
 
 void IsometricMap::_ready() {
-    const Array &children = get_children();
+    const Array &children { get_children() };
     for (int i = 0; i < children.size(); i++) {
         IsometricPositionable *positionable = children[i];
         if (positionable) {
@@ -50,7 +54,7 @@ void IsometricMap::_onResize() {
 }
 
 void IsometricMap::_onGridUpdated(int stair) {
-    const Array &children = get_children();
+    const Array &children { get_children() };
     for (int i = 0; i < children.size(); i++) {
         IsometricPositionable *isometricPositionable = children[i];
         if (isometricPositionable) {
@@ -61,7 +65,7 @@ void IsometricMap::_onGridUpdated(int stair) {
 
 void IsometricMap::generateTopologicalRenderGraph() {
     currentSortingOrder = 0;
-    const Array &children = get_children();
+    const Array &children { get_children() };
     for (int i = 0; i < children.size(); i++) {
         IsometricPositionable *positionable = children[i];
         if (positionable) {
@@ -80,15 +84,15 @@ void IsometricMap::generateTopologicalRenderGraph() {
 
 void IsometricMap::renderIsoNode(IsometricPositionable *isoNode) {
     isoNode->setRendered(true);
-    int maxZSize = 0;
-    const Array &isoNodes = getPositionableBehind(isoNode);
+    int maxZSize { 0 };
+    const Array &isoNodes { getPositionableBehind(isoNode) };
     for (int i = 0; i < isoNodes.size(); i++) {
         IsometricPositionable *positionable = isoNodes[i];
         if (positionable) {
             if (!positionable->isRendered()) {
                 renderIsoNode(positionable);
             }
-            int positionableZOrderSize = positionable->getZOrderSize();
+            int positionableZOrderSize { positionable->getZOrderSize() };
             maxZSize = positionableZOrderSize >= maxZSize ? positionableZOrderSize : maxZSize;
         }
     }
@@ -99,7 +103,7 @@ void IsometricMap::renderIsoNode(IsometricPositionable *isoNode) {
 
 Array IsometricMap::getPositionableBehind(IsometricPositionable *isoNode) {
     Array isoNodes;
-    const Array &children = get_children();
+    const Array &children { get_children() };
     for (int i = 0; i < children.size(); i++) {
         IsometricPositionable *positionable = children[i];
         if (positionable && positionable != isoNode) {
@@ -114,7 +118,7 @@ Array IsometricMap::getPositionableBehind(IsometricPositionable *isoNode) {
 
 Array IsometricMap::getFlattenPositionables(const Vector3 &offset) {
     Array positionables;
-    const Array &children = get_children();
+    const Array &children { get_children() };
     for (int i = 0; i < children.size(); i++) {
         IsometricPositionable *positionable = children[i];
         if (positionable) {
@@ -135,16 +139,16 @@ Array IsometricMap::getFlattenPositionables(const Vector3 &offset) {
     return positionables;
 }
 
-IsometricMap *IsometricMap::copy() {
-    IsometricMap *copy = IsometricMap::_new();
+IsometricMap *IsometricMap::initializeFrom() {
+    IsometricMap *copy { IsometricMap::_new() };
     copy->setAABB(getAABB());
     return copy;
 }
 
 void IsometricMap::addIsoPositionable(IsometricPositionable *isometricPositionable) {
-    const Vector3 &mapSize = getAABB().size;
-    const AABB &aabb = isometricPositionable->getAABB();
-    const Vector3 &pos = aabb.position;
+    const Vector3 &mapSize { getAABB().size };
+    const AABB &aabb { isometricPositionable->getAABB() };
+    const Vector3 &pos { aabb.position };
     if (pos.x >= mapSize.x || pos.y >= mapSize.y || pos.z >= mapSize.z || editionGrid3D.isOverlapping(aabb)) return;
     isometricPositionable->setTemporary(false);
     isometricPositionable->setDebugZ(0);
@@ -155,9 +159,9 @@ void IsometricMap::addIsoPositionable(IsometricPositionable *isometricPositionab
 }
 
 void IsometricMap::removeIsoPositionable(IsometricPositionable *isometricPositionable) {
-    const Vector3 &mapSize = getAABB().size;
-    const AABB &aabb = isometricPositionable->getAABB();
-    const Vector3 &pos = aabb.position;
+    const Vector3 &mapSize { getAABB().size };
+    const AABB &aabb { isometricPositionable->getAABB() };
+    const Vector3 &pos { aabb.position };
     if (pos.x >= mapSize.x || pos.y >= mapSize.y || pos.z >= mapSize.z) return;
     remove_child(isometricPositionable);
     grid3D.setData(aabb.position, nullptr);
@@ -181,8 +185,8 @@ bool IsometricMap::isOverlappingAABB(AABB aabb) {
 }
 
 IsometricMap *IsometricMap::flatten() {
-    auto *isometricMap = this->copy();
-    const Array &flattenChildren = getFlattenPositionables();
+    auto *isometricMap = this->initializeFrom();
+    const Array &flattenChildren { getFlattenPositionables() };
     for (int i = 0; i < flattenChildren.size(); i++) {
         IsometricPositionable *it = flattenChildren[i];
         if (it) {

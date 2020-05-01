@@ -7,29 +7,16 @@
 
 namespace godot {
 
-#define GODOT_LOG(level, message)\
-    switch (level) {\
-        case 0:\
-            Godot::print(message);\
-            break;\
-        case 1:\
-            Godot::print_warning(message, BOOST_CURRENT_FUNCTION, __FILE__, __LINE__);\
-            break;\
-        case 2:\
-            Godot::print_error(message, BOOST_CURRENT_FUNCTION, __FILE__, __LINE__);\
-            break;\
-    }\
-
     class IsometricPositionable : public Node2D {
     GODOT_CLASS(IsometricPositionable, Node2D)
 
     private:
         AABB aabb;
-        int zOrderSize = 0;
-        bool rendered = false;
-        bool temporary = true;
+        int zOrderSize;
+        bool rendered;
+        bool temporary;
 
-        int debugZ = 0;
+        int debugZ;
 
         void updateZOrderSize(int change);
 

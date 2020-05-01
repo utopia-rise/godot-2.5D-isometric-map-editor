@@ -1,13 +1,10 @@
-#include "IsometricServer.h"
+#include <IsometricServer.h>
 
 using namespace godot;
 
-IsometricServer::IsometricServer()
-: tileWidth(256)
-, tileHeight(128)
-, angle(30) {
+IsometricServer::IsometricServer(): tileWidth(256), tileHeight(128), angle(30) {
     eZ = calculateEz();
-    zRatio = eZ / (float) tileHeight;
+    zRatio = eZ / static_cast<float>(tileHeight);
 }
 
 IsometricServer &IsometricServer::getInstance() {
@@ -53,10 +50,12 @@ double IsometricServer::getZRatio() const {
 }
 
 Vector3 IsometricServer::get3DCoordFromScreen(const Vector2 &pos, real_t orthZ) const {
-    real_t isoX = pos.x;
-    real_t isoY = pos.y;
-    real_t orthX = isoX / (float) tileWidth + (isoY + orthZ * eZ) / (float) tileHeight;
-    real_t orthY = (isoY + orthZ * eZ) / (float) tileHeight - isoX / (float) tileWidth;
+    real_t isoX { pos.x };
+    real_t isoY { pos.y };
+    auto tileWidthFloat = static_cast<real_t>(tileWidth);
+    auto tileHeightFloat = static_cast<real_t>(tileHeight);
+    real_t orthX { isoX / tileWidthFloat + (isoY + orthZ * eZ) / tileHeightFloat };
+    real_t orthY { (isoY + orthZ * eZ) / tileHeightFloat - isoX / tileWidthFloat };
     return {
             ::roundf(orthX),
             ::roundf(orthY),
@@ -66,13 +65,13 @@ Vector3 IsometricServer::get3DCoordFromScreen(const Vector2 &pos, real_t orthZ) 
 
 Vector2 IsometricServer::getScreenCoordFrom3D(const Vector3 &pos) const {
     return {
-            (pos.x - pos.y) * (real_t) tileWidth * 0.5f,
-            (pos.x + pos.y) * (real_t) tileHeight * 0.5f - (real_t) (eZ * pos.z)
+            (pos.x - pos.y) * static_cast<real_t>(tileWidth) * 0.5f,
+            (pos.x + pos.y) * static_cast<real_t>(tileHeight) * 0.5f - eZ * pos.z
     };
 }
 
 float IsometricServer::calculateEz() const {
-    return ((float) tileHeight / (float) sin(DEG2RAD((float) angle)) / (float) sqrt(2)) * (float) cos(DEG2RAD((float) angle));
+    return static_cast<float>((tileHeight / sin(deg2rad(angle)) / sqrt(2)) * cos(deg2rad(angle)));
 }
 
 bool IsometricServer::doHexagoneOverlap(const Transform2D &hex1, const Transform2D &hex2) {
@@ -82,8 +81,8 @@ bool IsometricServer::doHexagoneOverlap(const Transform2D &hex1, const Transform
 }
 
 bool IsometricServer::isBoxInFront(const AABB &box, const AABB &other) {
-    const Vector3 &boxEnd = box.position + box.size;
-    const Vector3 &otherEnd = other.position + other.size;
+    const Vector3 &boxEnd { box.position + box.size };
+    const Vector3 &otherEnd { other.position + other.size };
     if (boxEnd.x <= other.position.x) {
         return false;
     } else if (otherEnd.x <= box.position.x) {

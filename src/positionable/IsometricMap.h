@@ -1,29 +1,29 @@
 #ifndef ISOMETRICMAPEDITOR_ISOMETRICMAP_H
 #define ISOMETRICMAPEDITOR_ISOMETRICMAP_H
 
-#include "IsometricPositionable.h"
-#include "../containers/Grid3D.h"
+#include <IsometricPositionable.h>
+#include <Grid3D.h>
 
 namespace godot {
     class IsometricMap : public IsometricPositionable {
         GODOT_SUBCLASS(IsometricMap, IsometricPositionable)
 
     private:
-        bool drawTiles = true;
+        bool drawTiles;
         Grid3D grid3D;
         Grid3D editionGrid3D;
 
-        int currentSortingOrder = 0;
+        int currentSortingOrder;
 
         void generateTopologicalRenderGraph();
         void renderIsoNode(IsometricPositionable *isoNode);
         Array getPositionableBehind(IsometricPositionable *isoNode);
         Array getFlattenPositionables(const Vector3 &offset = Vector3());
-        IsometricMap *copy();
+        IsometricMap *initializeFrom();
 
     public:
 
-        IsometricMap() = default;
+        IsometricMap();
         ~IsometricMap() = default;
 
         static void _register_methods();

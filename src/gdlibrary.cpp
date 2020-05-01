@@ -1,9 +1,9 @@
-#include "positionable/IsometricPositionable.h"
-#include "_IsometricServer.h"
-#include "positionable/IsometricMap.h"
-#include "positionable/IsometricTile.h"
-#include "positionable/PlaceholderType.h"
-#include "positionable/IsometricPlaceholder.h"
+#include <IsometricPositionable.h>
+#include <_IsometricServer.h>
+#include <IsometricMap.h>
+#include <IsometricTile.h>
+#include <PlaceholderType.h>
+#include <IsometricPlaceholder.h>
 
 using namespace godot;
 
