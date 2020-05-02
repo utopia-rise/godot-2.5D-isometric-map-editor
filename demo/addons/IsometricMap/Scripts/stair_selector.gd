@@ -11,7 +11,7 @@ var map_depth: int
 var map_height: int
 
 func _init():
-	z_index = 0
+	z_index = 4096
 	show_behind_parent = true
 
 func _enter_tree():
