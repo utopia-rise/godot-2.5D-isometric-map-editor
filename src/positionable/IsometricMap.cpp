@@ -18,6 +18,7 @@ void IsometricMap::_register_methods() {
     register_method("get_positionable_at", &IsometricMap::getPositionableAt);
     register_method("is_overlapping", &IsometricMap::isOverlapping);
     register_method("is_overlapping_aabb", &IsometricMap::isOverlappingAABB);
+    register_method("has", &IsometricMap::has);
     register_method("flatten", &IsometricMap::flatten);
 
     register_method("_on_resize", &IsometricMap::_onResize);
@@ -182,6 +183,10 @@ bool IsometricMap::isOverlapping(IsometricPositionable *positionable) {
 
 bool IsometricMap::isOverlappingAABB(AABB aabb) {
     return editionGrid3D.isOverlapping(aabb);
+}
+
+bool IsometricMap::has(IsometricPositionable *isometricPositionable) {
+    return grid3D.has(isometricPositionable);
 }
 
 IsometricMap *IsometricMap::flatten() {

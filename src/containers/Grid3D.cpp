@@ -90,9 +90,11 @@ bool Grid3D::isOverlapping(const AABB &aabb) const {
         }
         for (int i = 1; i < static_cast<int>(size.x) * static_cast<int>(size.y) * static_cast<int>(size.z); i++) {
             index += Grid3D::indexIncrementFrom(planeSquareAndJumpsFrom(size), size, i);
-            element = internalArray[index];
-            if (element) {
-                return true;
+            if (index >= 0 && index < internalArray.size()) {
+                element = internalArray[index];
+                if (element) {
+                    return true;
+                }
             }
         }
     }

@@ -124,51 +124,30 @@ func forward_canvas_gui_input(event: InputEvent) -> bool:
 			if event.button_index == BUTTON_LEFT:
 				var is_selecting_existing := check_and_select_existing()
 				if !is_selecting_existing:
-					select_positionable(loaded_positionable)
-					if selected_positionable.get_class() == "IsometricMap":
-						selected_positionable.modulate.a = 1
-						selected_positionable.visible = true
-						selected_positionable.set_aabb(AABB(IsoServer.get_3d_coord_from_screen(map.get_local_mouse_position(), stair_selector.selected_stair).round(), selected_positionable.size3d))
-						map.remove_child(selected_positionable)
-						undo_redo.create_action("add_map")
-						undo_redo.add_do_method(map, "add_iso_positionable", selected_positionable)
-						undo_redo.add_do_method(selected_positionable, "set_owner", editor_interface.get_edited_scene_root())
-						undo_redo.add_do_method(selected_positionable, "_on_grid_updated", stair_selector.selected_stair)
-						undo_redo.add_undo_method(map, "remove_iso_positionable", selected_positionable)
-						undo_redo.commit_action()
-						load_iso_for_edition(selected_positionable.get_class() == "IsometricMap")
-						return true
-					elif selected_positionable.get_class() == "IsometricTile":
-						var ortho_pos: Vector3 = IsoServer.get_3d_coord_from_screen(map.get_local_mouse_position(), stair_selector.selected_stair).round()
-						if 0 <= ortho_pos.x and 1 + ortho_pos.x <= map.size3d.x and 0 <= ortho_pos.y and 1 + ortho_pos.y <= map.size3d.y:
-							selected_positionable.set_aabb(AABB(IsoServer.get_3d_coord_from_screen(map.get_local_mouse_position(), stair_selector.selected_stair).round(), selected_positionable.size3d))
-							selected_positionable.visible = true
-							selected_positionable.modulate.a = 1
-							map.remove_child(selected_positionable)
-							undo_redo.create_action("add_tile")
-							undo_redo.add_do_method(map, "add_iso_positionable", selected_positionable)
-							undo_redo.add_do_method(selected_positionable, "set_owner", editor_interface.get_edited_scene_root())
-							undo_redo.add_do_method(selected_positionable, "_on_grid_updated", stair_selector.selected_stair)
-							undo_redo.add_undo_method(map, "remove_iso_positionable", selected_positionable)
-							undo_redo.commit_action()
-							load_iso_for_edition(false)
-							drag_action = DragAction.TILING
-							return true
-						else:
-							return false
-					elif selected_positionable.get_class() == "IsometricPlaceholder":
-						var ortho_pos: Vector3 = IsoServer.get_3d_coord_from_screen(map.get_local_mouse_position(), stair_selector.selected_stair).round()
-						if 0 <= ortho_pos.x and 1 + ortho_pos.x <= map.size3d.x and 0 <= ortho_pos.y and 1 + ortho_pos.y <= map.size3d.y:
-							selected_positionable.position3d = ortho_pos
-							if !map.is_overlapping(selected_positionable):
-								selected_positionable.debug_z = 0
-								map.add_child(selected_positionable)
-								selected_positionable.set_owner(map)
-								print("set position : " + str(selected_positionable.get_position()))
+					var ortho_pos: Vector3 = IsoServer.get_3d_coord_from_screen(map.get_local_mouse_position(), stair_selector.selected_stair).round()
+					var is_in_plane := 0 <= ortho_pos.x and 1 + ortho_pos.x <= map.size3d.x and 0 <= ortho_pos.y and 1 + ortho_pos.y <= map.size3d.y
+					if is_in_plane and 0 <= ortho_pos.z and ortho_pos.z + loaded_positionable.size3d.z <= map.size3d.z:
+						select_positionable(loaded_positionable)
+						if selected_positionable.get_class() == "IsometricMap":
+								add_real_positionable(true)
+								return true
+						elif selected_positionable.get_class() == "IsometricTile":
+								add_real_positionable(false)
 								drag_action = DragAction.TILING
 								return true
-					else :
-						return selected_positionable != null
+						elif selected_positionable.get_class() == "IsometricPlaceholder":
+								selected_positionable.position3d = ortho_pos
+								if !map.is_overlapping(selected_positionable):
+									selected_positionable.debug_z = 0
+									map.add_child(selected_positionable)
+									selected_positionable.set_owner(map)
+									print("set position : " + str(selected_positionable.get_position()))
+									drag_action = DragAction.TILING
+									return true
+						else :
+							return selected_positionable != null
+					else:
+						return false
 				else:
 					return true
 			elif event.button_index == BUTTON_RIGHT:
@@ -208,14 +187,14 @@ func forward_canvas_gui_input(event: InputEvent) -> bool:
 						undo_redo.redo()
 					elif (event.control or event.command) and drag_action == DragAction.NONE:
 						undo_redo.undo()
-					else:
+					elif drag_action != DragAction.TILING:
 						undo_redo.create_action("move_z_volume_up")
 						undo_redo.add_do_method(self, "move_z_volume", selected_positionable, true)
 						undo_redo.add_undo_method(self, "move_z_volume", selected_positionable, false)
 						undo_redo.commit_action()
 					return true
 				KEY_S:
-					if !(event.control or event.command):
+					if !(event.control or event.command) and drag_action != DragAction.TILING:
 						undo_redo.create_action("move_z_volume_down")
 						undo_redo.add_do_method(self, "move_z_volume", selected_positionable, false)
 						undo_redo.add_undo_method(self, "move_z_volume", selected_positionable, true)
@@ -240,7 +219,6 @@ func forward_canvas_gui_input(event: InputEvent) -> bool:
 							undo_redo.create_action("remove_iso_positionable")
 							print("control backspace")
 							for child in map.get_children():
-								print("ctrl back : " + str(child))
 								if isIsopositionable(child) and child != loaded_positionable:
 									undo_redo.add_do_method(map, "remove_iso_positionable", child)
 									undo_redo.add_undo_method(map, "add_iso_positionable", child)
@@ -311,6 +289,7 @@ func move_z_volume(positionable, up: bool) -> void:
 		if !map.is_overlapping_aabb(future_aabb):
 			positionable.set_aabb(future_aabb)
 		map.add_iso_positionable(positionable)
+		positionable.set_owner(editor_interface.get_edited_scene_root())
 		positionable._on_grid_updated(stair_selector.selected_stair)
 
 func switch_slope_type(placeholder):
@@ -327,6 +306,19 @@ func reverse_switch_slope_type(placeholder):
 		else:
 			placeholder.slope_type -= 1
 # ----------
+
+func add_real_positionable(is_map: bool):
+	selected_positionable.set_aabb(AABB(IsoServer.get_3d_coord_from_screen(map.get_local_mouse_position(), stair_selector.selected_stair).round(), selected_positionable.size3d))
+	selected_positionable.visible = true
+	selected_positionable.modulate.a = 1
+	map.remove_child(selected_positionable)
+	undo_redo.create_action("add_real_positionable")
+	undo_redo.add_do_method(map, "add_iso_positionable", selected_positionable)
+	undo_redo.add_do_method(selected_positionable, "set_owner", editor_interface.get_edited_scene_root())
+	undo_redo.add_do_method(selected_positionable, "_on_grid_updated", stair_selector.selected_stair)
+	undo_redo.add_undo_method(map, "remove_iso_positionable", selected_positionable)
+	undo_redo.commit_action()
+	load_iso_for_edition(is_map)
 
 func move_grid(up: bool) -> bool:
 	var result  = stair_selector.move_selected_stair(up)
@@ -419,7 +411,7 @@ func load_positionable(positionable) -> void:
 func unload_positionable() -> void:
 	if loaded_positionable != null and is_instance_valid(loaded_positionable):
 		if loaded_positionable.get_class() == "IsometricMap":
-			if !map.grid_3d.has(loaded_positionable):
+			if !map.has(loaded_positionable):
 				map.remove_child(loaded_positionable)
 		loaded_positionable.queue_free()
 		loaded_positionable = null
@@ -440,7 +432,7 @@ func check_and_select_existing() -> bool:
 	return false
 
 func create_new_map() -> bool:
-	var created_map: IsometricMap = load(selected_tile_item.get_metadata(0)).instance()
+	var created_map = load(selected_tile_item.get_metadata(0)).instance()
 	if (created_map != null):
 		load_positionable(created_map)
 		return true
@@ -451,7 +443,7 @@ func create_new_tile() -> bool:
 	if (created_tile != null):
 		load_positionable(created_tile)
 		return true
-	return false	
+	return false
 
 func scene_from_tile_tree(is_map: bool) -> void:
 	if selected_tile_item != null:
