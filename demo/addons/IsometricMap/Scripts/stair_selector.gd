@@ -5,7 +5,7 @@ class_name StairSelector
 
 var selected_stair: int = 0
 
-var map: IsoMap
+var map
 var map_width: int
 var map_depth: int
 var map_height: int
@@ -18,18 +18,18 @@ func _enter_tree():
 	map = get_parent()
 
 func _process(delta):
-	if map_width != map.aabb.size.x or map_depth != map.aabb.size.y or map_height != map.aabb.size.z:
-		map_width = map.aabb.size.x
-		map_depth = map.aabb.size.y
-		map_height = map.aabb.size.z
+	if map_width != map.size3d.x or map_depth != map.size3d.y or map_height != map.size3d.z:
+		map_width = map.size3d.x
+		map_depth = map.size3d.y
+		map_height = map.size3d.z
 		update()
 
 func _draw():
-	var tile_depth: int = MapSettings.tile_height
-	var tile_width: int = MapSettings.tile_width
-	var tile_height: int = MapSettings.e_z
+	var tile_depth: int = IsoServer.tile_height
+	var tile_width: int = IsoServer.tile_width
+	var e_z: int = IsoServer.get_ez()
 	var offset: Vector2 = Vector2(0, - tile_depth * 0.5)
-	var height_offset = Vector2(0, tile_height * selected_stair)
+	var height_offset = Vector2(0, e_z * selected_stair)
 	for i in range(0, map_depth):
 		var from: Vector2 = Vector2(-tile_width * 0.5 * i, tile_depth * 0.5 * i) + offset - height_offset
 		var to: Vector2 = Vector2(tile_width * 0.5 * (map_width - 1 - i), tile_depth * 0.5 * (i + map_width - 1)) + offset - height_offset
@@ -49,5 +49,5 @@ func move_selected_stair(up: bool) -> bool:
 		return false
 	selected_stair += offset
 	self.update()
-	get_tree().call_group("positionables", "_grid_updated", selected_stair)
+	get_tree().call_group("positionables", "_on_grid_updated", selected_stair)
 	return true

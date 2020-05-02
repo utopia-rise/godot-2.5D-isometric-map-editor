@@ -7,53 +7,41 @@
 
 namespace godot {
 
-#define GODOT_LOG(level, message)\
-    switch (level) {\
-        case 0:\
-            Godot::print(message);\
-            break;\
-        case 1:\
-            Godot::print_warning(message, BOOST_CURRENT_FUNCTION, __FILE__, __LINE__);\
-            break;\
-        case 2:\
-            Godot::print_error(message, BOOST_CURRENT_FUNCTION, __FILE__, __LINE__);\
-            break;\
-    }\
-
     class IsometricPositionable : public Node2D {
     GODOT_CLASS(IsometricPositionable, Node2D)
 
     private:
         AABB aabb;
         int zOrderSize;
-        bool rendered = false;
-        bool temporary = true;
+        bool rendered;
+        bool temporary;
 
-        int debugZ = 0;
+        int debugZ;
 
         void updateZOrderSize(int change);
 
     protected:
-        PoolVector2Array leftPoints = PoolVector2Array();
-        PoolVector2Array rightPoints = PoolVector2Array();
-        PoolVector2Array upPoints = PoolVector2Array();
-        PoolVector2Array downPoints = PoolVector2Array();
+        PoolVector2Array leftPoints;
+        PoolVector2Array rightPoints;
+        PoolVector2Array upPoints;
+        PoolVector2Array downPoints;
 
     public:
         Vector2 isoPosition;
         IsometricPositionable();
 
-        ~IsometricPositionable();
+        ~IsometricPositionable() = default;
 
         static void _register_methods();
         void  _init();
         void _enter_tree();
         void _exit_tree();
+        virtual String get_class() const;
         Transform2D getHexagoneCoordinates() const;
 
         void drawOutline();
-        AABB getAABB();
 
+        AABB getAABB();
         void setAABB(AABB ab);
         Vector3 getPosition3D() const;
         void setPosition3D(Vector3 pos);

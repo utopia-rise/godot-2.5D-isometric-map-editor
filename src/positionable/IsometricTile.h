@@ -1,7 +1,7 @@
 #ifndef ISOMETRICMAPEDITOR_ISOMETRICTILE_H
 #define ISOMETRICMAPEDITOR_ISOMETRICTILE_H
 
-#include "IsometricPositionable.h"
+#include <IsometricPositionable.h>
 
 namespace godot {
 
@@ -9,8 +9,10 @@ namespace godot {
         GODOT_SUBCLASS(IsometricTile, IsometricPositionable)
 
     public:
-        void _init();
         static void _register_methods();
+
+        void _init();
+        String get_class() const override;
     };
 
 }

@@ -20,7 +20,7 @@ func generate_tree(path: String, extension: String, root_node: TreeItem = null, 
 		current_category = self.create_item()
 		for elmt in additional_elements:
 			if elmt is String:
-				var element_item: = self.create_item(current_category)
+				var element_item := self.create_item(current_category)
 				element_item.set_text(0, elmt)
 				element_item.set_metadata(0, elmt)
 		self.set_hide_root(true)

@@ -9,10 +9,10 @@ var root_node: Node
 
 func generate_from_path(path: String, size: Vector2, treeitem: TreeItem) -> Texture:
 	var viewport := Viewport.new()
-	var scene := load(path).instance() as IsoPositionable
-	var hexa_coord := scene.get_hexagone_coordinates()
-	var x_scene_size := hexa_coord.x.y - hexa_coord.x.x
-	var y_scene_size := hexa_coord.y.y - hexa_coord.y.x
+	var scene = load(path).instance()
+	var hexa_coord = scene.get_hexagone_coordinates()
+	var x_scene_size = hexa_coord.x.y - hexa_coord.x.x
+	var y_scene_size = hexa_coord.y.y - hexa_coord.y.x
 	scene.scale = scene.scale / Vector2(x_scene_size, y_scene_size)
 	scene.position = size / 2
 	viewport.render_target_update_mode = Viewport.UPDATE_ALWAYS
