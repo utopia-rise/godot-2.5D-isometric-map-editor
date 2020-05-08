@@ -8,14 +8,18 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        platform: [linux, osx, windows, android, ios]
         include:
-          - os: ubuntu-latest
-            platform: linux
-          - os: macos-latest
-            platform: osx
-          - os: windows-latest
-            platform: windows
+          - platform: linux
+            os: ubuntu-latest
+          - platform: osx
+            os: macos-latest
+          - platform: windows
+            os: windows-latest
+          - platform: android
+            os: ubuntu-latest
+          - platform: ios
+            os: macos-latest
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
@@ -23,14 +27,42 @@ jobs:
         with:
           python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
           architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
-      - run: |
+      - name: Install scons
+        run: |
           python -m pip install --upgrade pip
           pip install scons
-      - run: cd .. && git clone --recursive  https://github.com/utopia-rise/godot-cpp godot-cpp
-      - run: wget https://downloads.tuxfamily.org/godotengine/3.2.1/Godot_v3.2.1-stable_osx.64.zip
-        if: ${{ matrix.task }} == 'osx'
-      - uses: montudor/action-zip@v0.1.0
-        if: ${{ matrix.task }} == 'osx'
+      - name: Move godot-2.5D-isometric-map-editor in subfolder
+        run: |
+          mkdir godot-2.5D-isometric-map-editor
+          mv demo godot-2.5D-isometric-map-editor/demo
+          mv jni godot-2.5D-isometric-map-editor/jni
+          mv src godot-2.5D-isometric-map-editor/src
+          mv .gitignore godot-2.5D-isometric-map-editor/
+          mv Android.mk godot-2.5D-isometric-map-editor/
+          mv CMakeLists.txt godot-2.5D-isometric-map-editor/
+          mv LICENSE godot-2.5D-isometric-map-editor/
+          mv SConstruct godot-2.5D-isometric-map-editor/
+      - name: Clone godot-cpp
+        run: git clone --recursive  https://github.com/utopia-rise/godot-cpp godot-cpp
+      - name: Download Godot Engine
+        if: matrix.platform == 'osx'
+        run: |
+          wget https://downloads.tuxfamily.org/godotengine/3.2.1/Godot_v3.2.1-stable_osx.64.zip
+          unzip Godot_v3.2.1-stable_osx.64.zip
+          rm Godot_v3.2.1-stable_osx.64.zip
+      - name: Create android toolchains folder
+        if: matrix.platform == 'android'
+        run: mkdir android-toolchains
+      - name: Setup NDK
+        if: matrix.platform == 'android'
+        uses: ravinderjangra/android-ndk-toolchain-setup@0.2
         with:
-          args: unzip -qq Godot_v3.2.1-stable_osx.64.zip
-      - run: ls -al
+          api: '21'
+          arch: 'x86'
+          install-location: 'android-toolchains'
+          force: true
+      - if: matrix.platform != 'windows'
+        run: ls -al
+      - if: matrix.platform == 'android'
+        run: ls -al android-toolchains
+      - run: echo ${{matrix.platform}}
