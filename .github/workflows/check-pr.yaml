@@ -33,3 +33,4 @@ jobs:
         if: ${{ matrix.task }} == 'osx'
         with:
           args: unzip -qq Godot_v3.2.1-stable_osx.64.zip
+      - run: ls -al
