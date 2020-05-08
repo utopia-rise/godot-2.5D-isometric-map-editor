@@ -111,7 +111,7 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: osx-binary
-      - name: Copy OSX binary to addon folder
+      - name: Run Tests
         run: |
           mkdir -p demo/addons/IsometricMap/libs/osx/
           cp osx-binary/libGodotIsoMapEditor.osx.release.64.dylib demo/addons/IsometricMap/libs/osx/
