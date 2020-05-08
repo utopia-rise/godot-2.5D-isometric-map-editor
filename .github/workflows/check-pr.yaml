@@ -1,4 +1,4 @@
-name: Check PR - godot-library
+name: Check PR
 on:
   pull_request:
     paths:
@@ -50,19 +50,28 @@ jobs:
           wget https://downloads.tuxfamily.org/godotengine/3.2.1/Godot_v3.2.1-stable_osx.64.zip
           unzip Godot_v3.2.1-stable_osx.64.zip
           rm Godot_v3.2.1-stable_osx.64.zip
-      - name: Create android toolchains folder
-        if: matrix.platform == 'android'
-        run: mkdir android-toolchains
       - name: Setup NDK
         if: matrix.platform == 'android'
-        uses: ravinderjangra/android-ndk-toolchain-setup@0.2
-        with:
-          api: '21'
-          arch: 'x86'
-          install-location: 'android-toolchains'
-          force: true
-      - if: matrix.platform != 'windows'
-        run: ls -al
-      - if: matrix.platform == 'android'
-        run: ls -al android-toolchains
-      - run: echo ${{matrix.platform}}
+        run: |
+          export ANDROID_NDK_ROOT=/home/runner/work/godot-2.5D-isometric-map-editor/godot-2.5D-isometric-map-editor/android-sdk/ndk-bundle
+          sh .github/download-ndk.sh
+      - name: Build godot-cpp
+        if: matrix.platform != 'android' && matrix.platform != 'ios'
+        run: |
+          cd godot-cpp
+          scons platform=${{matrix.platform}} generate_bindings=true bits=64 target=release
+          cd ..
+      - name: Build godot-cpp android
+        if: matrix.platform == 'android'
+        run: |
+          cd godot-cpp
+          export ANDROID_NDK_ROOT=/home/runner/work/godot-2.5D-isometric-map-editor/godot-2.5D-isometric-map-editor/android-sdk/ndk-bundle
+          scons platform=${{matrix.platform}} generate_bindings=true android_arch=armv7 target=release
+          scons platform=${{matrix.platform}} generate_bindings=true android_arch=arm64v8 target=release
+          cd ..
+      - name: Build godot-cpp ios
+        if: matrix.platform == 'ios'
+        run: |
+          cd godot-cpp
+          scons platform=${{matrix.platform}} generate_bindings=true ios_arch=arm64 target=release
+          cd ..
