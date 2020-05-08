@@ -91,3 +91,30 @@ jobs:
         run: |
           cd godot-2.5D-isometric-map-editor
           scons platform=${{matrix.platform}} target=release ios_arch=arm64
+      - name: Upload OSX binary
+        if: matrix.platform == 'osx'
+        uses: actions/upload-artifact@v1
+        with:
+          name: osx-binary
+          path: godot-2.5D-isometric-map-editor/bin/libGodotIsoMapEditor.osx.release.64.dylib
+  test:
+    needs: build
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Download Godot Engine
+        run: |
+          wget https://downloads.tuxfamily.org/godotengine/3.2.1/Godot_v3.2.1-stable_osx.64.zip
+          unzip Godot_v3.2.1-stable_osx.64.zip
+          rm Godot_v3.2.1-stable_osx.64.zip
+      - name: Download OSX binary
+        uses: actions/download-artifact@v1
+        with:
+          name: osx-binary
+      - name: Copy OSX binary to addon folder
+        run: |
+          mkdir -p demo/addons/IsometricMap/libs/osx/
+          cp osx-binary/libGodotIsoMapEditor.osx.release.64.dylib demo/addons/IsometricMap/libs/osx/
+          cd demo
+          chmod +x run_tests.sh
+          ./run_tests.sh ../Godot.app/Contents/MacOS/Godot
