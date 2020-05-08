@@ -75,3 +75,19 @@ jobs:
           cd godot-cpp
           scons platform=${{matrix.platform}} generate_bindings=true ios_arch=arm64 target=release
           cd ..
+      - name: Build 2.5D Isometric Map Editor
+        if: matrix.platform != 'android' && matrix.platform != 'ios'
+        run: |
+          cd godot-2.5D-isometric-map-editor
+          scons platform=${{matrix.platform}} bits=64 target=release
+      - name: Build 2.5D Isometric Map Editor android
+        if: matrix.platform == 'android'
+        run: |
+          cd godot-2.5D-isometric-map-editor
+          export ANDROID_NDK_ROOT=/home/runner/work/godot-2.5D-isometric-map-editor/godot-2.5D-isometric-map-editor/android-sdk/ndk-bundle
+          $ANDROID_NDK_ROOT/ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=Android.mk  APP_PLATFORM=android-21
+      - name: Build 2.5D Isometric Map Editor android
+        if: matrix.platform == 'ios'
+        run: |
+          cd godot-2.5D-isometric-map-editor
+          scons platform=${{matrix.platform}} target=release ios_arch=arm64
