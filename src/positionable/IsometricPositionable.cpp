@@ -3,8 +3,8 @@
 
 using namespace godot;
 
-IsometricPositionable::IsometricPositionable() : aabb({0, 0, 0}, {1, 1, 1}), zOrderSize(0), rendered(false),
-temporary(true), debugZ(0) {
+IsometricPositionable::IsometricPositionable() : debugPoints(), aabb({0, 0, 0}, {1, 1, 1}),
+zOrderSize(0), rendered(false), temporary(true), debugZ(0) {
 
 }
 
@@ -27,6 +27,9 @@ void IsometricPositionable::_register_methods() {
     register_property("size3d", &IsometricPositionable::setSize3D, &IsometricPositionable::getSize3D, Vector3(1, 1, 1));
     register_property("is_temporary", &IsometricPositionable::setTemporary, &IsometricPositionable::isTemporary, true);
     register_property("debug_z", &IsometricPositionable::setDebugZ, &IsometricPositionable::getDebugZ, 0);
+    register_property("slope_type", &IsometricPositionable::setSlopeType, &IsometricPositionable::getSlopeType,
+                      static_cast<int>(SlopeType::NONE), GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT,
+                      GODOT_PROPERTY_HINT_ENUM, "NONE,LEFT,RIGHT,FORWARD,BACKWARD");
 }
 
 void IsometricPositionable::_init() {
@@ -60,6 +63,103 @@ Transform2D IsometricPositionable::getHexagoneCoordinates() const {
     real_t hMin = leftPoint.x - leftPoint.y;
     real_t hMax = rightPoint.x - rightPoint.y;
     return {minX, maxX, minY, maxY, hMin, hMax};
+}
+
+void IsometricPositionable::preparePoints() {
+    const Vector3 &size { getSize3D() };
+    real_t w { size.x };
+    real_t d { size.y };
+    real_t h { size.z };
+
+    int leftSlope { 0 };
+    int rightSlope { 0 };
+    int forwardSlope { 0 };
+    int backwardSlope { 0 };
+
+    int tileWidth { IsometricServer::getInstance().tileWidth };
+    int tileHeight { IsometricServer::getInstance().tileHeight };
+
+    Vector2 offset(0, static_cast<real_t>(-tileHeight) * 0.5f);
+    Vector2 gridSlopeOffset;
+
+    float ratio { 0 };
+
+    int debugZ { getDebugZ() };
+
+    if (h > 0) {
+        ratio = static_cast<float>(debugZ) / h;
+    }
+    auto tileWidthFloat = static_cast<real_t>(tileWidth);
+    auto tileHeightFloat = static_cast<real_t>(tileHeight);
+    switch (slopeType) {
+        case SlopeType::NONE:
+            break;
+        case SlopeType::LEFT:
+            leftSlope = 1;
+            gridSlopeOffset = -Vector2(tileWidthFloat * 0.5f * w, tileHeightFloat * 0.5f * w) * ratio;
+            break;
+        case SlopeType::RIGHT:
+            rightSlope = 1;
+            gridSlopeOffset = Vector2(tileWidthFloat * 0.5f * w, tileHeightFloat * 0.5f * w) * ratio;
+            break;
+        case SlopeType::FORWARD:
+            forwardSlope = 1;
+            gridSlopeOffset = -Vector2(-tileWidthFloat * 0.5f * d, tileHeightFloat * 0.5f * d) * ratio;
+            break;
+        case SlopeType::BACKWARD:
+            backwardSlope = 1;
+            gridSlopeOffset = Vector2(-tileWidthFloat * 0.5f * d, tileHeightFloat * 0.5f * d) * ratio;
+            break;
+    }
+
+    PoolVector2Array points;
+
+    //Lower points
+    points.push_back(Vector2(0, 0));
+    points.push_back(Vector2(tileWidthFloat * 0.5f * w, tileHeightFloat * 0.5f * w));
+    points.push_back(Vector2(tileWidthFloat * 0.5f * (w - d), tileHeightFloat * 0.5f * (d + w)));
+    points.push_back(Vector2(-tileWidthFloat * 0.5f * d, tileHeightFloat * 0.5f * d));
+
+    Vector2 heightOffset(0, - IsometricServer::getInstance().eZ * h);
+
+    //Upper points
+    points.push_back(points[0] + (1 - (rightSlope + backwardSlope)) * heightOffset);
+    points.push_back(points[1] + (1 - (leftSlope + backwardSlope)) * heightOffset);
+    points.push_back(points[2] + (1 - (leftSlope + forwardSlope)) * heightOffset);
+    points.push_back(points[3] + (1 - (rightSlope + forwardSlope)) * heightOffset);
+
+    upPoints.resize(0);
+    upPoints.push_back(offset + points[4]);
+    upPoints.push_back(offset + points[5]);
+    upPoints.push_back(offset + points[6]);
+    upPoints.push_back(offset + points[7]);
+
+    leftPoints.resize(0);
+    leftPoints.push_back(offset + points[2]);
+    leftPoints.push_back(offset + points[3]);
+    leftPoints.push_back(offset + points[7]);
+    leftPoints.push_back(offset + points[6]);
+
+    rightPoints.resize(0);
+    rightPoints.push_back(offset + points[1]);
+    rightPoints.push_back(offset + points[2]);
+    rightPoints.push_back(offset + points[6]);
+    rightPoints.push_back(offset + points[5]);
+
+    downPoints.resize(0);
+    downPoints.push_back(offset + points[0]);
+    downPoints.push_back(offset + points[1]);
+    downPoints.push_back(offset + points[2]);
+    downPoints.push_back(offset + points[3]);
+
+    if (debugZ > -1) {
+        Vector2 gridOffset(0, - IsometricServer::getInstance().eZ * debugZ);
+        debugPoints.resize(0);
+        debugPoints.push_back(offset + points[0] + gridOffset + (rightSlope + backwardSlope) * gridSlopeOffset);
+        debugPoints.push_back(offset + points[1] + gridOffset + (leftSlope + backwardSlope) * gridSlopeOffset);
+        debugPoints.push_back(offset + points[2] + gridOffset + (leftSlope + forwardSlope) * gridSlopeOffset);
+        debugPoints.push_back(offset + points[3] + gridOffset + (rightSlope + forwardSlope) * gridSlopeOffset);
+    }
 }
 
 void IsometricPositionable::drawOutline() {
@@ -150,7 +250,8 @@ void IsometricPositionable::_onGridUpdated(int stair) {
 }
 
 void IsometricPositionable::_onSelect(bool selected) {
-
+    isSelected = selected;
+    update();
 }
 
 bool IsometricPositionable::isTemporary() const {
@@ -168,4 +269,13 @@ int IsometricPositionable::getDebugZ() const {
 
 void IsometricPositionable::setDebugZ(int dZ) {
     this->debugZ = dZ;
+}
+
+int IsometricPositionable::getSlopeType() {
+    return static_cast<int>(slopeType);
+}
+
+void IsometricPositionable::setSlopeType(int type) {
+    slopeType = (SlopeType) type;
+    update();
 }

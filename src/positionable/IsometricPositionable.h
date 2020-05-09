@@ -7,6 +7,8 @@
 
 namespace godot {
 
+    enum class SlopeType {NONE = 0, LEFT = 1, RIGHT = 2, FORWARD = 3, BACKWARD = 4};
+
     class IsometricPositionable : public Node2D {
     GODOT_CLASS(IsometricPositionable, Node2D)
 
@@ -18,14 +20,21 @@ namespace godot {
 
         int debugZ;
 
+        SlopeType slopeType = SlopeType::NONE;
+
         void updateZOrderSize(int change);
 
     protected:
+        bool isSelected = false;
+
         PoolVector2Array leftPoints;
         PoolVector2Array rightPoints;
         PoolVector2Array upPoints;
         PoolVector2Array downPoints;
 
+        PoolVector2Array debugPoints;
+
+        void preparePoints();
     public:
         Vector2 isoPosition;
         IsometricPositionable();
@@ -55,6 +64,8 @@ namespace godot {
         void setTemporary(bool temp);
         int getDebugZ() const;
         void setDebugZ(int dZ);
+        int getSlopeType();
+        void setSlopeType(int type);
 
         virtual void _onResize();
         virtual void _onGridUpdated(int stair);

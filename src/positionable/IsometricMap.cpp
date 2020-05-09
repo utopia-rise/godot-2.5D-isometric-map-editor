@@ -11,6 +11,7 @@ void IsometricMap::_register_methods() {
     register_method("_init", &IsometricMap::_init);
     register_method("_ready", &IsometricMap::_ready);
     register_method("_process", &IsometricMap::_process);
+    register_method("_draw", &IsometricMap::_draw);
     register_method("get_class", &IsometricMap::get_class);
 
     register_method("add_iso_positionable", &IsometricMap::addIsoPositionable);
@@ -43,6 +44,13 @@ void IsometricMap::_ready() {
 void IsometricMap::_process(float delta) {
     //if(Engine::get_singleton()->is_editor_hint()) to check if in editor, to deactivate code if needed
     generateTopologicalRenderGraph();
+}
+
+void IsometricMap::_draw() {
+    if (isSelected) {
+        preparePoints();
+        drawOutline();
+    }
 }
 
 String IsometricMap::get_class() const {
