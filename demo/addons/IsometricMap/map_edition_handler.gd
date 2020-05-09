@@ -294,7 +294,7 @@ func move_z_volume(positionable, up: bool) -> void:
 
 func switch_slope_type(placeholder):
 	if placeholder != null and placeholder.get_class() == "IsometricPlaceholder":
-		if placeholder.slope_type == placeholder.SlopeType.size() - 1:
+		if placeholder.slope_type == 4:
 			placeholder.slope_type = 0
 		else:
 			placeholder.slope_type += 1
