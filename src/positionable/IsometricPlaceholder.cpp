@@ -125,7 +125,7 @@ void IsometricPlaceholder::drawPoints() {
         real_t offset { (zRatio - 1) * zDeltaFloat };
         auto tileHeightFloat = static_cast<real_t>(tileHeight);
         auto tileWidthFloat = static_cast<real_t>(tileWidth);
-        const Vector2 &base { downPoints[0] + Vector2(0, (zDeltaFloat + offset) * tileHeightFloat - eZ * static_cast<real_t >(debugZ)) };
+        const Vector2 &base { downPoints[0] + Vector2(0, (zDeltaFloat + offset) * tileHeightFloat - eZ * static_cast<real_t>(debugZ)) };
 
         real_t maxX { mapSize.x - position3D.x - zDeltaFloat - offset };
         real_t maxY { mapSize.y - position3D.y - zDeltaFloat - offset };
@@ -135,13 +135,15 @@ void IsometricPlaceholder::drawPoints() {
 
         if (maxX > 0 && maxY > 0) {
             for (int i = 0; i < static_cast<int>(maxY + 1); i++) {
-                const Vector2 &from { base + Vector2(tileWidthFloat * 0.5f - i, tileHeightFloat * 0.5f * i) };
-                const Vector2 &to { base + Vector2(tileWidthFloat * 0.5f * (maxX - i), tileHeightFloat * 0.5f * (maxX + i)) };
+                auto iFloat = static_cast<real_t>(i);
+                const Vector2 &from { base + Vector2(tileWidthFloat * 0.5f - iFloat, tileHeightFloat * 0.5f * iFloat) };
+                const Vector2 &to { base + Vector2(tileWidthFloat * 0.5f * (maxX - iFloat), tileHeightFloat * 0.5f * (maxX + iFloat)) };
                 draw_line(from, to, Color(0, 0, 0, 1), 2.0);
             }
             for (int i = 0; i < static_cast<int>(maxX + 1); i++) {
-                const Vector2 &from { base + Vector2(tileWidthFloat * 0.5f * i, tileHeightFloat * 0.5f * i) };
-                const Vector2 &to { base + Vector2(tileWidthFloat * 0.5f * (i - maxY), tileHeightFloat * 0.5f * (maxY + i)) };
+                auto iFloat = static_cast<real_t>(i);
+                const Vector2 &from { base + Vector2(tileWidthFloat * 0.5f * iFloat, tileHeightFloat * 0.5f * iFloat) };
+                const Vector2 &to { base + Vector2(tileWidthFloat * 0.5f * (iFloat - maxY), tileHeightFloat * 0.5f * (maxY + iFloat)) };
                 draw_line(from, to, Color(0, 0, 0, 1), 2.0);
             }
         }

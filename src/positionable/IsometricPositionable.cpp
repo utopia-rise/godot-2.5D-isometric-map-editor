@@ -84,10 +84,10 @@ void IsometricPositionable::preparePoints() {
 
     float ratio { 0 };
 
-    int debugZ { getDebugZ() };
+    int debZ {getDebugZ() };
 
     if (h > 0) {
-        ratio = static_cast<float>(debugZ) / h;
+        ratio = static_cast<float>(debZ) / h;
     }
     auto tileWidthFloat = static_cast<real_t>(tileWidth);
     auto tileHeightFloat = static_cast<real_t>(tileHeight);
@@ -152,8 +152,8 @@ void IsometricPositionable::preparePoints() {
     downPoints.push_back(offset + points[2]);
     downPoints.push_back(offset + points[3]);
 
-    if (debugZ > -1) {
-        Vector2 gridOffset(0, - IsometricServer::getInstance().eZ * debugZ);
+    if (debZ > -1) {
+        Vector2 gridOffset(0, - IsometricServer::getInstance().eZ * static_cast<real_t>(debZ));
         debugPoints.resize(0);
         debugPoints.push_back(offset + points[0] + gridOffset + (rightSlope + backwardSlope) * gridSlopeOffset);
         debugPoints.push_back(offset + points[1] + gridOffset + (leftSlope + backwardSlope) * gridSlopeOffset);
