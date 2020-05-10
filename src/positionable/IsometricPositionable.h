@@ -4,6 +4,7 @@
 #include <gen/Node2D.hpp>
 #include <core/Godot.hpp>
 #include <type_traits>
+#include <OutlineDrawer.h>
 
 namespace godot {
 
@@ -25,7 +26,7 @@ namespace godot {
         void updateZOrderSize(int change);
 
     protected:
-        bool isSelected = false;
+        OutlineDrawer *outlineDrawer;
 
         PoolVector2Array leftPoints;
         PoolVector2Array rightPoints;
@@ -47,8 +48,6 @@ namespace godot {
         void _exit_tree();
         virtual String get_class() const;
         Transform2D getHexagoneCoordinates() const;
-
-        void drawOutline();
 
         AABB getAABB();
         void setAABB(AABB ab);

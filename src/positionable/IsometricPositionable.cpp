@@ -4,7 +4,7 @@
 using namespace godot;
 
 IsometricPositionable::IsometricPositionable() : debugPoints(), aabb({0, 0, 0}, {1, 1, 1}),
-zOrderSize(0), rendered(false), temporary(true), debugZ(0) {
+zOrderSize(0), rendered(false), temporary(true), debugZ(0), outlineDrawer(nullptr) {
 
 }
 
@@ -15,7 +15,6 @@ void IsometricPositionable::_register_methods() {
     register_method("_exit_tree", &IsometricPositionable::_exit_tree);
     register_method("get_class", &IsometricPositionable::get_class);
     register_method("get_hexagone_coordinates", &IsometricPositionable::getHexagoneCoordinates);
-    register_method("drawOutline", &IsometricPositionable::drawOutline);
     register_method("get_aabb", &IsometricPositionable::getAABB);
     register_method("set_aabb", &IsometricPositionable::setAABB);
     register_method("_on_resize", &IsometricPositionable::_onResize);
@@ -162,28 +161,6 @@ void IsometricPositionable::preparePoints() {
     }
 }
 
-void IsometricPositionable::drawOutline() {
-//    Upper Lines
-    const Color &colorRed { Color(255, 0, 0, 1) };
-    constexpr real_t lineSize { 10.0f };
-    draw_line(upPoints[0], upPoints[1], colorRed, lineSize);
-    draw_line(upPoints[1], upPoints[2], colorRed, lineSize);
-    draw_line(upPoints[2], upPoints[3], colorRed, lineSize);
-    draw_line(upPoints[3], upPoints[0], colorRed, lineSize);
-
-//    Vertical Lines
-    draw_line(upPoints[0], downPoints[0], colorRed, lineSize);
-    draw_line(upPoints[1], downPoints[1], colorRed, lineSize);
-    draw_line(upPoints[2], downPoints[2], colorRed, lineSize);
-    draw_line(upPoints[3], downPoints[3], colorRed, lineSize);
-
-//    Lower Lines
-    draw_line(downPoints[0], downPoints[1], colorRed, lineSize);
-    draw_line(downPoints[1], downPoints[2], colorRed, lineSize);
-    draw_line(downPoints[2], downPoints[3], colorRed, lineSize);
-    draw_line(downPoints[3], downPoints[0], colorRed, lineSize);
-}
-
 AABB IsometricPositionable::getAABB() {
     return aabb;
 }
@@ -250,8 +227,19 @@ void IsometricPositionable::_onGridUpdated(int stair) {
 }
 
 void IsometricPositionable::_onSelect(bool selected) {
-    isSelected = selected;
-    update();
+    if (selected) {
+        preparePoints();
+        if (outlineDrawer) {
+            remove_child(outlineDrawer);
+        }
+        outlineDrawer = OutlineDrawer::_new();
+        outlineDrawer->setPoints(&upPoints, &downPoints);
+        add_child(outlineDrawer);
+        outlineDrawer->update();
+    } else if (outlineDrawer) {
+        remove_child(outlineDrawer);
+        outlineDrawer = nullptr;
+    }
 }
 
 bool IsometricPositionable::isTemporary() const {

@@ -22,6 +22,7 @@ extern "C" void GDN_EXPORT iso_map_nativescript_init(void *handle){
     register_tool_class<IsometricTile>();
     register_tool_class<IsometricPlaceholder>();
     register_tool_class<PlaceholderType>();
+    register_tool_class<OutlineDrawer>();
     register_tool_class<_IsometricServer>();
 }
 

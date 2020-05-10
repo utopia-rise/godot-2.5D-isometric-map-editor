@@ -31,7 +31,6 @@ namespace godot {
         void _init();
         void _ready();
         void _process(float delta);
-        void _draw();
         String get_class() const override;
 
         void addIsoPositionable(IsometricPositionable *isometricPositionable);

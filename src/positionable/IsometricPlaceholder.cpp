@@ -1,7 +1,7 @@
 #include <gen/ResourceLoader.hpp>
-#include "IsometricPlaceholder.h"
-#include "../helpers/MathHelper.h"
-#include "../IsometricServer.h"
+#include <IsometricPlaceholder.h>
+#include <MathHelper.h>
+#include <IsometricServer.h>
 #include <gen/Texture.hpp>
 
 using namespace godot;
@@ -95,9 +95,6 @@ void IsometricPlaceholder::drawPoints() {
         leftColor.set(0, leC);
         rightColor.set(0, riC);
         stairColor.set(0, stairC);
-        if (isSelected) {
-            drawOutline();
-        }
     }
     draw_polygon(upPoints, upColor);
     draw_polygon(leftPoints, leftColor);
