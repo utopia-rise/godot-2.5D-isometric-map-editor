@@ -30,7 +30,7 @@ src/positionable/IsometricTile.cpp \
 src/positionable/IsometricPlaceholder.cpp \
 src/positionable/PlaceholderType.cpp \
 src/containers/Grid3D.cpp \
-src/positionable/OutlineDrawer.cpp \
+src/editor/OutlineDrawer.cpp \
 
 LOCAL_C_INCLUDES := \
 ../godot-cpp/godot_headers \
