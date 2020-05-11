@@ -13,6 +13,7 @@ namespace godot {
     private:
         PoolVector2Array *upPoints;
         PoolVector2Array *downPoints;
+        Color color;
 
     public:
         OutlineDrawer();
@@ -22,7 +23,7 @@ namespace godot {
 
         void _init();
         void _draw();
-        void setPoints(PoolVector2Array *up, PoolVector2Array *down);
+        void setPointsAndColor(PoolVector2Array *up, PoolVector2Array *down, const Color &c);
     };
 
 }

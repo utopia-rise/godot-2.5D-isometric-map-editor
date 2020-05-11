@@ -233,7 +233,7 @@ void IsometricPositionable::_onSelect(bool selected) {
             remove_child(outlineDrawer);
         }
         outlineDrawer = OutlineDrawer::_new();
-        outlineDrawer->setPoints(&upPoints, &downPoints);
+        outlineDrawer->setPointsAndColor(&upPoints, &downPoints, Color(255, 0, 0, 1));
         add_child(outlineDrawer);
         outlineDrawer->update();
     } else if (outlineDrawer) {
