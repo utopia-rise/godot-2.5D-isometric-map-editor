@@ -27,7 +27,7 @@ func edit(object: Object) -> void:
 
 func handles(object: Object) -> bool:
 	var object_class = object.get_class()
-	return object_class == "IsometricMap" or object_class == "IsometricTile" or object_class == "IsometricPositionable"
+	return object_class == "IsometricMap" or object_class == "IsometricTile" or object_class == "IsometricPositionable" or object_class == "IsometricPlaceholder"
 
 func forward_canvas_gui_input(event: InputEvent) -> bool:
 	if is_instance_valid(current_handler) and current_handler != null:
