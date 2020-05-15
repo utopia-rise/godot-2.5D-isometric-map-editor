@@ -24,7 +24,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/IsometricMap/Scripts/iso_preview_generator.gd"
 }, {
-"base": "TabContainer",
+"base": "Panel",
 "class": "IsometricAssetSelector",
 "language": "GDScript",
 "path": "res://addons/IsometricMap/widget/isometric_asset_selector.gd"
