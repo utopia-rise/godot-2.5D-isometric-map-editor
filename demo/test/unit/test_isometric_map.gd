@@ -113,3 +113,7 @@ func test_assert_flatten_isometricmap():
 	var ch = flatten_map.get_children()
 	expected_child_count = 5
 	assert_eq(flatten_map.get_children().size(), expected_child_count, "Flatten map should have " + str(expected_child_count) + "children.")
+
+func test_assert_cannot_change_slope_type():
+	test_map.slope_type = 2
+	assert_eq(test_map.slope_type, 0, "Should not be able to change slope_type.")
