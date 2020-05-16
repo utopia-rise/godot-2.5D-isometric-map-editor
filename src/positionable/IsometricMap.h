@@ -42,6 +42,9 @@ namespace godot {
 
         IsometricMap *flatten();
 
+        int getSlopeType() override;
+        void setSlopeType(int type) override;
+
         void _onResize() override;
         void _onGridUpdated(int stair) override;
     };

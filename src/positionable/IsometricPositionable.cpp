@@ -1,5 +1,7 @@
 #include <IsometricPositionable.h>
 #include <IsometricServer.h>
+#include "IsometricPositionable.h"
+
 
 using namespace godot;
 
@@ -161,6 +163,17 @@ void IsometricPositionable::preparePoints() {
     }
 }
 
+void IsometricPositionable::setOutlineDrawer() {
+    preparePoints();
+    if (outlineDrawer) {
+        remove_child(outlineDrawer);
+    }
+    outlineDrawer = OutlineDrawer::_new();
+    outlineDrawer->setPointsAndColor(&upPoints, &downPoints, Color(255, 0, 0, 1));
+    add_child(outlineDrawer);
+    outlineDrawer->update();
+}
+
 AABB IsometricPositionable::getAABB() {
     return aabb;
 }
@@ -228,14 +241,7 @@ void IsometricPositionable::_onGridUpdated(int stair) {
 
 void IsometricPositionable::_onSelect(bool selected) {
     if (selected) {
-        preparePoints();
-        if (outlineDrawer) {
-            remove_child(outlineDrawer);
-        }
-        outlineDrawer = OutlineDrawer::_new();
-        outlineDrawer->setPointsAndColor(&upPoints, &downPoints, Color(255, 0, 0, 1));
-        add_child(outlineDrawer);
-        outlineDrawer->update();
+        setOutlineDrawer();
     } else if (outlineDrawer) {
         remove_child(outlineDrawer);
         outlineDrawer = nullptr;
@@ -265,5 +271,8 @@ int IsometricPositionable::getSlopeType() {
 
 void IsometricPositionable::setSlopeType(int type) {
     slopeType = (SlopeType) type;
+    if (outlineDrawer) {
+        setOutlineDrawer();
+    }
     update();
 }

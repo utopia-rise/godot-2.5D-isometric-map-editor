@@ -36,6 +36,7 @@ namespace godot {
         PoolVector2Array debugPoints;
 
         void preparePoints();
+        void setOutlineDrawer();
     public:
         Vector2 isoPosition;
         IsometricPositionable();
@@ -63,8 +64,9 @@ namespace godot {
         void setTemporary(bool temp);
         int getDebugZ() const;
         void setDebugZ(int dZ);
-        int getSlopeType();
-        void setSlopeType(int type);
+
+        virtual int getSlopeType();
+        virtual void setSlopeType(int type);
 
         virtual void _onResize();
         virtual void _onGridUpdated(int stair);

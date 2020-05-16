@@ -13,6 +13,7 @@ namespace godot {
 
         void _init();
         String get_class() const override;
+
     };
 
 }

@@ -1,11 +1,14 @@
 #include <IsometricTile.h>
+#include "IsometricTile.h"
 
-void godot::IsometricTile::_register_methods() {
+using namespace godot;
+
+void IsometricTile::_register_methods() {
     register_method("_init", &IsometricTile::_init);
     register_method("get_class", &IsometricTile::get_class);
 }
 
-void godot::IsometricTile::_init() {
+void IsometricTile::_init() {
     IsometricPositionable::_init();
 }
 

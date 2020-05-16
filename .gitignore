@@ -1,9 +1,12 @@
+*.DS_Store
 *.os
 *.obj
 .sconsign.dblite
 bin/
+obj/
 cmake-build-debug/
 .idea/
 *.dll
 *.so
 *.dylib
+*.o
