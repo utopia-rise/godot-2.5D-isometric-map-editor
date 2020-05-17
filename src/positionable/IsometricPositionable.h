@@ -21,8 +21,6 @@ namespace godot {
 
         int debugZ;
 
-        SlopeType slopeType = SlopeType::NONE;
-
         void updateZOrderSize(int change);
 
     protected:
@@ -37,6 +35,10 @@ namespace godot {
 
         void preparePoints();
         void setOutlineDrawer();
+        virtual SlopeType
+        calculateSlopeOffset(Vector2 *slopeOffset, real_t tileWidthFloat, real_t tileHeightFloat, real_t width,
+                             real_t depth,
+                             real_t ratio) const;
     public:
         Vector2 isoPosition;
         IsometricPositionable();
@@ -64,9 +66,6 @@ namespace godot {
         void setTemporary(bool temp);
         int getDebugZ() const;
         void setDebugZ(int dZ);
-
-        virtual int getSlopeType();
-        virtual void setSlopeType(int type);
 
         virtual void _onResize();
         virtual void _onGridUpdated(int stair);

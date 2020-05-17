@@ -9,9 +9,9 @@ void IsometricTile::_register_methods() {
 }
 
 void IsometricTile::_init() {
-    IsometricPositionable::_init();
+    IsometricElement::_init();
 }
 
-godot::String godot::IsometricTile::get_class() const {
+String IsometricTile::get_class() const {
     return "IsometricTile";
 }

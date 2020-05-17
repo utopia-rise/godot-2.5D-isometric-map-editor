@@ -28,9 +28,6 @@ void IsometricPositionable::_register_methods() {
     register_property("size3d", &IsometricPositionable::setSize3D, &IsometricPositionable::getSize3D, Vector3(1, 1, 1));
     register_property("is_temporary", &IsometricPositionable::setTemporary, &IsometricPositionable::isTemporary, true);
     register_property("debug_z", &IsometricPositionable::setDebugZ, &IsometricPositionable::getDebugZ, 0);
-    register_property("slope_type", &IsometricPositionable::setSlopeType, &IsometricPositionable::getSlopeType,
-                      static_cast<int>(SlopeType::NONE), GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT,
-                      GODOT_PROPERTY_HINT_ENUM, "NONE,LEFT,RIGHT,FORWARD,BACKWARD");
 }
 
 void IsometricPositionable::_init() {
@@ -81,35 +78,34 @@ void IsometricPositionable::preparePoints() {
     int tileHeight { IsometricServer::getInstance().tileHeight };
 
     Vector2 offset(0, static_cast<real_t>(-tileHeight) * 0.5f);
-    Vector2 gridSlopeOffset;
 
     float ratio { 0 };
 
     int debZ {getDebugZ() };
 
     if (h > 0) {
-        ratio = static_cast<float>(debZ) / h;
+        ratio = static_cast<real_t>(debZ) / h;
     }
+
     auto tileWidthFloat = static_cast<real_t>(tileWidth);
     auto tileHeightFloat = static_cast<real_t>(tileHeight);
+    Vector2 gridSlopeOffset;
+
+    const SlopeType &slopeType { calculateSlopeOffset(&gridSlopeOffset, tileWidthFloat, tileHeightFloat, w, d, ratio) };
     switch (slopeType) {
         case SlopeType::NONE:
             break;
         case SlopeType::LEFT:
             leftSlope = 1;
-            gridSlopeOffset = -Vector2(tileWidthFloat * 0.5f * w, tileHeightFloat * 0.5f * w) * ratio;
             break;
         case SlopeType::RIGHT:
             rightSlope = 1;
-            gridSlopeOffset = Vector2(tileWidthFloat * 0.5f * w, tileHeightFloat * 0.5f * w) * ratio;
             break;
         case SlopeType::FORWARD:
             forwardSlope = 1;
-            gridSlopeOffset = -Vector2(-tileWidthFloat * 0.5f * d, tileHeightFloat * 0.5f * d) * ratio;
             break;
         case SlopeType::BACKWARD:
             backwardSlope = 1;
-            gridSlopeOffset = Vector2(-tileWidthFloat * 0.5f * d, tileHeightFloat * 0.5f * d) * ratio;
             break;
     }
 
@@ -172,6 +168,13 @@ void IsometricPositionable::setOutlineDrawer() {
     outlineDrawer->setPointsAndColor(&upPoints, &downPoints, Color(255, 0, 0, 1));
     add_child(outlineDrawer);
     outlineDrawer->update();
+}
+
+SlopeType
+IsometricPositionable::calculateSlopeOffset(Vector2 *slopeOffset, real_t tileWidthFloat, real_t tileHeightFloat,
+                                            real_t width, real_t depth,
+                                            real_t ratio) const {
+    return SlopeType::NONE;
 }
 
 AABB IsometricPositionable::getAABB() {
@@ -263,16 +266,4 @@ int IsometricPositionable::getDebugZ() const {
 
 void IsometricPositionable::setDebugZ(int dZ) {
     this->debugZ = dZ;
-}
-
-int IsometricPositionable::getSlopeType() {
-    return static_cast<int>(slopeType);
-}
-
-void IsometricPositionable::setSlopeType(int type) {
-    slopeType = (SlopeType) type;
-    if (outlineDrawer) {
-        setOutlineDrawer();
-    }
-    update();
 }

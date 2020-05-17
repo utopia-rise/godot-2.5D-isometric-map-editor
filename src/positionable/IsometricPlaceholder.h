@@ -4,11 +4,12 @@
 #include <IsometricPositionable.h>
 #include <IsometricMap.h>
 #include <PlaceholderType.h>
+#include "IsometricElement.h"
 
 namespace godot {
 
-    class IsometricPlaceholder : public IsometricPositionable {
-        GODOT_SUBCLASS(IsometricPlaceholder, IsometricPositionable)
+    class IsometricPlaceholder : public IsometricElement {
+        GODOT_SUBCLASS(IsometricPlaceholder, IsometricElement)
 
     private:
         Ref<PlaceholderType> placeholderType;

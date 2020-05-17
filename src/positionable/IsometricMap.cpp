@@ -23,8 +23,6 @@ void IsometricMap::_register_methods() {
     register_method("has", &IsometricMap::has);
     register_method("flatten", &IsometricMap::flatten);
 
-    register_property("slope_type", &IsometricMap::setSlopeType, &IsometricMap::getSlopeType, static_cast<int>(SlopeType::NONE));
-
     register_method("_on_resize", &IsometricMap::_onResize);
     register_method("_on_grid_updated", &IsometricMap::_onGridUpdated);
 }
@@ -51,14 +49,6 @@ void IsometricMap::_process(float delta) {
 
 String IsometricMap::get_class() const {
     return "IsometricMap";
-}
-
-int IsometricMap::getSlopeType() {
-    return static_cast<int>(SlopeType::NONE);
-}
-
-void IsometricMap::setSlopeType(int type) {
-
 }
 
 void IsometricMap::_onResize() {
