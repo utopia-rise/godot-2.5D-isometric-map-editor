@@ -12,11 +12,13 @@ X11.64="res://addons/IsometricMap/libs/linux/libGodotIsoMapEditor.linux.release.
 OSX.64="res://addons/IsometricMap/libs/osx/libGodotIsoMapEditor.osx.release.64.dylib"
 iOS.arm64="res://addons/IsometricMap/libs/iOS/libGodotIsoMapEditor.ios.release.arm64.a"
 Android.arm64-v8a="res://addons/IsometricMap/libs/android/arm64_v8a/libGodotIsoMapEditor.android.release.arm64-v8a.so"
+Android.armeabi-v7a= "res://addons/IsometricMap/libs/android/armeabi_v7a/libGodotIsoMapEditor.android.release.armeabi-v7a.so"
 
 [dependencies]
 
 Windows.64=[  ]
 X11.64=[  ]
 OSX.64=[  ]
-iOS.arm64=[  ]
+iOS.arm64=[ "res://addons/IsometricMap/libs/iOS/libgodot-cpp.ios.release.arm64.a" ]
 Android.arm64-v8a=[  ]
+Android.armeabi-v7a=[  ]

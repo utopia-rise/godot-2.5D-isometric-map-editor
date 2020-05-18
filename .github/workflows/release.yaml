@@ -1,0 +1,231 @@
+name: Release
+on:
+  push:
+    tags:
+      '*'
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        platform: [linux, osx, windows, android, ios]
+        include:
+          - platform: linux
+            os: ubuntu-latest
+          - platform: osx
+            os: macos-latest
+          - platform: windows
+            os: windows-latest
+          - platform: android
+            os: ubuntu-latest
+          - platform: ios
+            os: macos-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+          architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
+      - name: Install scons
+        run: |
+          python -m pip install --upgrade pip
+          pip install scons
+      - name: Move godot-2.5D-isometric-map-editor in subfolder
+        run: |
+          mkdir godot-2.5D-isometric-map-editor
+          mv demo godot-2.5D-isometric-map-editor/demo
+          mv jni godot-2.5D-isometric-map-editor/jni
+          mv src godot-2.5D-isometric-map-editor/src
+          mv .gitignore godot-2.5D-isometric-map-editor/
+          mv Android.mk godot-2.5D-isometric-map-editor/
+          mv CMakeLists.txt godot-2.5D-isometric-map-editor/
+          mv LICENSE godot-2.5D-isometric-map-editor/
+          mv SConstruct godot-2.5D-isometric-map-editor/
+      - name: Clone godot-cpp
+        run: git clone --recursive  https://github.com/utopia-rise/godot-cpp godot-cpp
+      - name: Download Godot Engine
+        if: matrix.platform == 'osx'
+        run: |
+          wget https://downloads.tuxfamily.org/godotengine/3.2.1/Godot_v3.2.1-stable_osx.64.zip
+          unzip Godot_v3.2.1-stable_osx.64.zip
+          rm Godot_v3.2.1-stable_osx.64.zip
+      - name: Setup NDK
+        if: matrix.platform == 'android'
+        run: |
+          export ANDROID_NDK_ROOT=/home/runner/work/godot-2.5D-isometric-map-editor/godot-2.5D-isometric-map-editor/android-sdk/ndk-bundle
+          sh .github/download-ndk.sh
+      - name: Build godot-cpp
+        if: matrix.platform != 'android' && matrix.platform != 'ios'
+        run: |
+          cd godot-cpp
+          scons platform=${{matrix.platform}} generate_bindings=true bits=64 target=release
+          cd ..
+      - name: Build godot-cpp android
+        if: matrix.platform == 'android'
+        run: |
+          cd godot-cpp
+          export ANDROID_NDK_ROOT=/home/runner/work/godot-2.5D-isometric-map-editor/godot-2.5D-isometric-map-editor/android-sdk/ndk-bundle
+          scons platform=${{matrix.platform}} generate_bindings=true android_arch=armv7 target=release
+          scons platform=${{matrix.platform}} generate_bindings=true android_arch=arm64v8 target=release
+          cd ..
+      - name: Build godot-cpp ios
+        if: matrix.platform == 'ios'
+        run: |
+          cd godot-cpp
+          scons platform=${{matrix.platform}} generate_bindings=true ios_arch=arm64 target=release
+          cd ..
+      - name: Build 2.5D Isometric Map Editor
+        if: matrix.platform != 'android' && matrix.platform != 'ios'
+        run: |
+          cd godot-2.5D-isometric-map-editor
+          scons platform=${{matrix.platform}} bits=64 target=release
+      - name: Build 2.5D Isometric Map Editor android
+        if: matrix.platform == 'android'
+        run: |
+          cd godot-2.5D-isometric-map-editor
+          export ANDROID_NDK_ROOT=/home/runner/work/godot-2.5D-isometric-map-editor/godot-2.5D-isometric-map-editor/android-sdk/ndk-bundle
+          $ANDROID_NDK_ROOT/ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=Android.mk  APP_PLATFORM=android-21
+      - name: Build 2.5D Isometric Map Editor ios
+        if: matrix.platform == 'ios'
+        run: |
+          cd godot-2.5D-isometric-map-editor
+          scons platform=${{matrix.platform}} target=release ios_arch=arm64
+      - name: Upload linux binary
+        if: matrix.platform == 'linux'
+        uses: actions/upload-artifact@v1
+        with:
+          name: linux-binary
+          path: godot-2.5D-isometric-map-editor/bin/libGodotIsoMapEditor.linux.release.64.so
+      - name: Upload OSX binary
+        if: matrix.platform == 'osx'
+        uses: actions/upload-artifact@v1
+        with:
+          name: osx-binary
+          path: godot-2.5D-isometric-map-editor/bin/libGodotIsoMapEditor.osx.release.64.dylib
+      - name: Upload Windows binary
+        if: matrix.platform == 'windows'
+        uses: actions/upload-artifact@v1
+        with:
+          name: windows-binary
+          path: godot-2.5D-isometric-map-editor/bin/libGodotIsoMapEditor.windows.release.64.dll
+      - name: Upload iOS binary
+        if: matrix.platform == 'ios'
+        uses: actions/upload-artifact@v1
+        with:
+          name: ios-binary
+          path: godot-2.5D-isometric-map-editor/bin/libGodotIsoMapEditor.ios.release.arm64.a
+      - name: Upload android armv7 binary
+        if: matrix.platform == 'android'
+        uses: actions/upload-artifact@v1
+        with:
+          name: android-armv7-binary
+          path: godot-2.5D-isometric-map-editor/libs/armeabi-v7a/libGodotIsoMapEditor.android.release.armeabi-v7a.so
+      - name: Upload android armv8 binary
+        if: matrix.platform == 'android'
+        uses: actions/upload-artifact@v1
+        with:
+          name: android-armv8-binary
+          path: godot-2.5D-isometric-map-editor/libs/arm64-v8a/libGodotIsoMapEditor.android.release.arm64-v8a.so
+      - name: Upload iOS godot-cpp binary
+        if: matrix.platform == 'ios'
+        uses: actions/upload-artifact@v1
+        with:
+          name: ios-godotcpp-binary
+          path: godot-cpp/bin/libgodot-cpp.ios.release.arm64.a
+
+  test:
+    needs: build
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Download Godot Engine
+        run: |
+          wget https://downloads.tuxfamily.org/godotengine/3.2.1/Godot_v3.2.1-stable_osx.64.zip
+          unzip Godot_v3.2.1-stable_osx.64.zip
+          rm Godot_v3.2.1-stable_osx.64.zip
+      - name: Download OSX binary
+        uses: actions/download-artifact@v1
+        with:
+          name: osx-binary
+      - name: Run Tests
+        run: |
+          mkdir -p demo/addons/IsometricMap/libs/osx/
+          cp osx-binary/libGodotIsoMapEditor.osx.release.64.dylib demo/addons/IsometricMap/libs/osx/
+          cd demo
+          chmod +x run_tests.sh
+          ./run_tests.sh ../Godot.app/Contents/MacOS/Godot
+
+  release:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Download linux binary
+        uses: actions/download-artifact@v1
+        with:
+          name: linux-binary
+      - name: Download OSX binary
+        uses: actions/download-artifact@v1
+        with:
+          name: osx-binary
+      - name: Download windows binary
+        uses: actions/download-artifact@v1
+        with:
+          name: windows-binary
+      - name: Download ios binary
+        uses: actions/download-artifact@v1
+        with:
+          name: ios-binary
+      - name: Download android-armv7 binary
+        uses: actions/download-artifact@v1
+        with:
+          name: android-armv7-binary
+      - name: Download android-armv8 binary
+        uses: actions/download-artifact@v1
+        with:
+          name: android-armv8-binary
+      - name: Download ios godot-cpp binary
+        uses: actions/download-artifact@v1
+        with:
+          name: ios-godotcpp-binary
+      - name: Copy binaries
+        run: |
+          mkdir -p demo/addons/IsometricMap/libs/osx/
+          mkdir -p demo/addons/IsometricMap/libs/linux/
+          mkdir -p demo/addons/IsometricMap/libs/windows/
+          mkdir -p demo/addons/IsometricMap/libs/android/arm64_v8a/
+          mkdir -p demo/addons/IsometricMap/libs/android/armeabi_v7a/
+          mkdir -p demo/addons/IsometricMap/libs/iOS/
+          cp linux-binary/libGodotIsoMapEditor.linux.release.64.so demo/addons/IsometricMap/libs/linux/
+          cp osx-binary/libGodotIsoMapEditor.osx.release.64.dylib demo/addons/IsometricMap/libs/osx/
+          cp windows-binary/libGodotIsoMapEditor.windows.release.64.dll demo/addons/IsometricMap/libs/windows/
+          cp android-armv8-binary/libGodotIsoMapEditor.android.release.arm64-v8a.so demo/addons/IsometricMap/libs/android/arm64_v8a/
+          cp android-armv7-binary/libGodotIsoMapEditor.android.release.armeabi-v7a.so demo/addons/IsometricMap/libs/android/armeabi_v7a/
+          cp ios-binary/libGodotIsoMapEditor.ios.release.arm64.a demo/addons/IsometricMap/libs/iOS/
+          cp ios-godotcpp-binary/libgodot-cpp.ios.release.arm64.a demo/addons/IsometricMap/libs/iOS/
+      - name: zip addons folder
+        run: |
+          mkdir addons
+          cp -r demo/addons/IsometricMap/ addons/IsometricMap
+          zip -r addons.zip addons/
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Upload Release Addon
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: ./addons.zip
+          asset_name: addons.zip
+          asset_content_type: application/zip

@@ -86,7 +86,7 @@ jobs:
           cd godot-2.5D-isometric-map-editor
           export ANDROID_NDK_ROOT=/home/runner/work/godot-2.5D-isometric-map-editor/godot-2.5D-isometric-map-editor/android-sdk/ndk-bundle
           $ANDROID_NDK_ROOT/ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=Android.mk  APP_PLATFORM=android-21
-      - name: Build 2.5D Isometric Map Editor android
+      - name: Build 2.5D Isometric Map Editor ios
         if: matrix.platform == 'ios'
         run: |
           cd godot-2.5D-isometric-map-editor
