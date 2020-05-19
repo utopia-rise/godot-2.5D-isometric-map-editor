@@ -1,12 +1,12 @@
 #include <gen/ResourceLoader.hpp>
-#include "IsometricPlaceholder.h"
-#include "../helpers/MathHelper.h"
-#include "../IsometricServer.h"
+#include <IsometricPlaceholder.h>
+#include <MathHelper.h>
+#include <IsometricServer.h>
 #include <gen/Texture.hpp>
 
 using namespace godot;
 
-IsometricPlaceholder::IsometricPlaceholder(): debugPoints(), typeColor(0.83, 0.83, 0.83, 1) {
+IsometricPlaceholder::IsometricPlaceholder(): typeColor(0.83, 0.83, 0.83, 1) {
 
 }
 
@@ -14,14 +14,10 @@ void IsometricPlaceholder::_register_methods() {
     register_property("placeholder_type", &IsometricPlaceholder::setPlaceholderType,
             &IsometricPlaceholder::getPlaceholderType,
             (Ref<PlaceholderType>) ResourceLoader::get_singleton()->load("res://addons/IsometricMap/prefab/types/default.tres"));
-    register_property("slope_type", &IsometricPlaceholder::setSlopeType, &IsometricPlaceholder::getSlopeType,
-                      static_cast<int>(SlopeType::NONE), GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT,
-            GODOT_PROPERTY_HINT_ENUM, "NONE,LEFT,RIGHT,FORWARD,BACKWARD");
 
     register_method("_init", &IsometricPlaceholder::_init);
     register_method("_draw", &IsometricPlaceholder::_draw);
     register_method("get_class", &IsometricPlaceholder::get_class);
-    register_method("_on_select", &IsometricPlaceholder::_onSelect);
 }
 
 void IsometricPlaceholder::_init() {
@@ -41,113 +37,30 @@ void IsometricPlaceholder::_draw() {
         stairColor = PoolColorArray(Array::make(Color(1, 0, 0, 0.2)
                 .linear_interpolate(downColor[0], 0.2)));
     }
+
+    switch (static_cast<SlopeType>(getSlopeType())) {
+        case SlopeType::NONE:
+            break;
+        case SlopeType::LEFT:
+            upColor = sideSlopeColor;
+            break;
+        case SlopeType::RIGHT:
+            upColor = sideSlopeColor;
+            break;
+        case SlopeType::FORWARD:
+            upColor = forwardSlopeColor;
+            break;
+        case SlopeType::BACKWARD:
+            upColor = backwardSlopeColor;
+            break;
+    }
+
     preparePoints();
     drawPoints();
 }
 
 String IsometricPlaceholder::get_class() const {
     return "IsometricPlaceholder";
-}
-
-void IsometricPlaceholder::preparePoints() {
-    const Vector3 &size { getSize3D() };
-    real_t w { size.x };
-    real_t d { size.y };
-    real_t h { size.z };
-
-    int leftSlope { 0 };
-    int rightSlope { 0 };
-    int forwardSlope { 0 };
-    int backwardSlope { 0 };
-
-    int tileWidth { IsometricServer::getInstance().tileWidth };
-    int tileHeight { IsometricServer::getInstance().tileHeight };
-
-    Vector2 offset(0, static_cast<real_t>(-tileHeight) * 0.5f);
-    Vector2 gridSlopeOffset;
-
-    float ratio { 0 };
-
-    int debugZ { getDebugZ() };
-
-    if (h > 0) {
-        ratio = static_cast<float>(debugZ) / h;
-    }
-    auto tileWidthFloat = static_cast<real_t>(tileWidth);
-    auto tileHeightFloat = static_cast<real_t>(tileHeight);
-    switch (slopeType) {
-        case SlopeType::NONE:
-            break;
-        case SlopeType::LEFT:
-            leftSlope = 1;
-            upColor = sideSlopeColor;
-            gridSlopeOffset = -Vector2(tileWidthFloat * 0.5f * w, tileHeightFloat * 0.5f * w) * ratio;
-            break;
-        case SlopeType::RIGHT:
-            rightSlope = 1;
-            upColor = sideSlopeColor;
-            gridSlopeOffset = Vector2(tileWidthFloat * 0.5f * w, tileHeightFloat * 0.5f * w) * ratio;
-            break;
-        case SlopeType::FORWARD:
-            forwardSlope = 1;
-            upColor = forwardSlopeColor;
-            gridSlopeOffset = -Vector2(-tileWidthFloat * 0.5f * d, tileHeightFloat * 0.5f * d) * ratio;
-            break;
-        case SlopeType::BACKWARD:
-            backwardSlope = 1;
-            upColor = backwardSlopeColor;
-            gridSlopeOffset = Vector2(-tileWidthFloat * 0.5f * d, tileHeightFloat * 0.5f * d) * ratio;
-            break;
-    }
-
-    PoolVector2Array points;
-
-    //Lower points
-    points.push_back(Vector2(0, 0));
-    points.push_back(Vector2(tileWidthFloat * 0.5f * w, tileHeightFloat * 0.5f * w));
-    points.push_back(Vector2(tileWidthFloat * 0.5f * (w - d), tileHeightFloat * 0.5f * (d + w)));
-    points.push_back(Vector2(-tileWidthFloat * 0.5f * d, tileHeightFloat * 0.5f * d));
-
-    Vector2 heightOffset(0, - IsometricServer::getInstance().eZ * h);
-
-    //Upper points
-    points.push_back(points[0] + (1 - (rightSlope + backwardSlope)) * heightOffset);
-    points.push_back(points[1] + (1 - (leftSlope + backwardSlope)) * heightOffset);
-    points.push_back(points[2] + (1 - (leftSlope + forwardSlope)) * heightOffset);
-    points.push_back(points[3] + (1 - (rightSlope + forwardSlope)) * heightOffset);
-
-    upPoints.resize(0);
-    upPoints.push_back(offset + points[4]);
-    upPoints.push_back(offset + points[5]);
-    upPoints.push_back(offset + points[6]);
-    upPoints.push_back(offset + points[7]);
-
-    leftPoints.resize(0);
-    leftPoints.push_back(offset + points[2]);
-    leftPoints.push_back(offset + points[3]);
-    leftPoints.push_back(offset + points[7]);
-    leftPoints.push_back(offset + points[6]);
-
-    rightPoints.resize(0);
-    rightPoints.push_back(offset + points[1]);
-    rightPoints.push_back(offset + points[2]);
-    rightPoints.push_back(offset + points[6]);
-    rightPoints.push_back(offset + points[5]);
-
-    downPoints.resize(0);
-    downPoints.push_back(offset + points[0]);
-    downPoints.push_back(offset + points[1]);
-    downPoints.push_back(offset + points[2]);
-    downPoints.push_back(offset + points[3]);
-
-    if (debugZ > -1) {
-        Vector2 gridOffset(0, - IsometricServer::getInstance().eZ * debugZ);
-        debugPoints.resize(0);
-        debugPoints.push_back(offset + points[0] + gridOffset + (rightSlope + backwardSlope) * gridSlopeOffset);
-        debugPoints.push_back(offset + points[1] + gridOffset + (leftSlope + backwardSlope) * gridSlopeOffset);
-        debugPoints.push_back(offset + points[2] + gridOffset + (leftSlope + forwardSlope) * gridSlopeOffset);
-        debugPoints.push_back(offset + points[3] + gridOffset + (rightSlope + forwardSlope) * gridSlopeOffset);
-    }
 }
 
 void IsometricPlaceholder::drawPoints() {
@@ -182,9 +95,6 @@ void IsometricPlaceholder::drawPoints() {
         leftColor.set(0, leC);
         rightColor.set(0, riC);
         stairColor.set(0, stairC);
-        if (isSelected) {
-            drawOutline();
-        }
     }
     draw_polygon(upPoints, upColor);
     draw_polygon(leftPoints, leftColor);
@@ -205,30 +115,32 @@ void IsometricPlaceholder::drawPoints() {
         float eZ { IsometricServer::getInstance().eZ };
 
         int correctedZ { clamp(debugZ, 0, sizeZInt) };
-        int addedLines { ceil(zRatio * correctedZ) };
+        int addedLines { ceil(zRatio * static_cast<float>(correctedZ)) };
 
         int zDelta { debugZ - correctedZ };
         auto zDeltaFloat = static_cast<real_t>(zDelta);
         real_t offset { (zRatio - 1) * zDeltaFloat };
         auto tileHeightFloat = static_cast<real_t>(tileHeight);
         auto tileWidthFloat = static_cast<real_t>(tileWidth);
-        const Vector2 &base { downPoints[0] + Vector2(0, (zDeltaFloat + offset) * tileHeightFloat - eZ * static_cast<real_t >(debugZ)) };
+        const Vector2 &base { downPoints[0] + Vector2(0, (zDeltaFloat + offset) * tileHeightFloat - eZ * static_cast<real_t>(debugZ)) };
 
         real_t maxX { mapSize.x - position3D.x - zDeltaFloat - offset };
         real_t maxY { mapSize.y - position3D.y - zDeltaFloat - offset };
 
-        maxX = min(maxX, size.x + addedLines - 1);
-        maxY = min(maxY, size.y + addedLines - 1);
+        maxX = min(maxX, size.x + static_cast<float>(addedLines) - 1);
+        maxY = min(maxY, size.y + static_cast<float>(addedLines) - 1);
 
         if (maxX > 0 && maxY > 0) {
             for (int i = 0; i < static_cast<int>(maxY + 1); i++) {
-                const Vector2 &from { base + Vector2(tileWidthFloat * 0.5f - i, tileHeightFloat * 0.5f * i) };
-                const Vector2 &to { base + Vector2(tileWidthFloat * 0.5f * (maxX - i), tileHeightFloat * 0.5f * (maxX + i)) };
+                auto iFloat = static_cast<real_t>(i);
+                const Vector2 &from { base + Vector2(tileWidthFloat * 0.5f - iFloat, tileHeightFloat * 0.5f * iFloat) };
+                const Vector2 &to { base + Vector2(tileWidthFloat * 0.5f * (maxX - iFloat), tileHeightFloat * 0.5f * (maxX + iFloat)) };
                 draw_line(from, to, Color(0, 0, 0, 1), 2.0);
             }
             for (int i = 0; i < static_cast<int>(maxX + 1); i++) {
-                const Vector2 &from { base + Vector2(tileWidthFloat * 0.5f * i, tileHeightFloat * 0.5f * i) };
-                const Vector2 &to { base + Vector2(tileWidthFloat * 0.5f * (i - maxY), tileHeightFloat * 0.5f * (maxY + i)) };
+                auto iFloat = static_cast<real_t>(i);
+                const Vector2 &from { base + Vector2(tileWidthFloat * 0.5f * iFloat, tileHeightFloat * 0.5f * iFloat) };
+                const Vector2 &to { base + Vector2(tileWidthFloat * 0.5f * (iFloat - maxY), tileHeightFloat * 0.5f * (maxY + iFloat)) };
                 draw_line(from, to, Color(0, 0, 0, 1), 2.0);
             }
         }
@@ -258,11 +170,6 @@ void IsometricPlaceholder::_onResize() {
     update();
 }
 
-void IsometricPlaceholder::_onSelect(bool selected) {
-    isSelected = selected;
-    update();
-}
-
 Ref<PlaceholderType> IsometricPlaceholder::getPlaceholderType() const {
     return placeholderType;
 }
@@ -273,13 +180,4 @@ void IsometricPlaceholder::setPlaceholderType(Ref<PlaceholderType> pType) {
         typeColor = placeholderType->getColor();
         updateColors();
     }
-}
-
-int IsometricPlaceholder::getSlopeType() {
-    return static_cast<int>(slopeType);
-}
-
-void IsometricPlaceholder::setSlopeType(int type) {
-    slopeType = (SlopeType) type;
-    update();
 }

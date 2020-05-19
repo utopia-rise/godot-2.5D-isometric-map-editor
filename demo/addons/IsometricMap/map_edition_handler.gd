@@ -120,8 +120,8 @@ func forward_canvas_gui_input(event: InputEvent) -> bool:
 				else:
 					return false
 	elif event is InputEventMouseButton:
-		if event.is_pressed():
-			if event.button_index == BUTTON_LEFT:
+		if event.button_index == BUTTON_LEFT:
+			if event.is_pressed():
 				var is_selecting_existing := check_and_select_existing()
 				if !is_selecting_existing:
 					var ortho_pos: Vector3 = IsoServer.get_3d_coord_from_screen(map.get_local_mouse_position(), stair_selector.selected_stair).round()
@@ -150,10 +150,7 @@ func forward_canvas_gui_input(event: InputEvent) -> bool:
 						return false
 				else:
 					return true
-			elif event.button_index == BUTTON_RIGHT:
-				pass
-		else:
-			if event.button_index == BUTTON_LEFT:
+			else:
 				if drag_action == DragAction.TILING:
 					if selected_positionable != null:
 						if selected_positionable.get_class() == "IsometricPlaceholder":
@@ -173,8 +170,11 @@ func forward_canvas_gui_input(event: InputEvent) -> bool:
 							return true
 						else:
 							drag_action = DragAction.NONE
-			elif event.button_index == BUTTON_RIGHT:
-				pass
+							return true
+				else:
+					check_and_select_existing()
+		elif event.button_index == BUTTON_RIGHT:
+			return false
 	elif event is InputEventKey:
 		event as InputEventKey
 		if(event.is_pressed()):

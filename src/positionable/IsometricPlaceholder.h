@@ -4,22 +4,17 @@
 #include <IsometricPositionable.h>
 #include <IsometricMap.h>
 #include <PlaceholderType.h>
+#include "IsometricElement.h"
 
 namespace godot {
 
-    enum class SlopeType {NONE = 0, LEFT = 1, RIGHT = 2, FORWARD = 3, BACKWARD = 4};
-
-    class IsometricPlaceholder : public IsometricPositionable {
-        GODOT_SUBCLASS(IsometricPlaceholder, IsometricPositionable)
+    class IsometricPlaceholder : public IsometricElement {
+        GODOT_SUBCLASS(IsometricPlaceholder, IsometricElement)
 
     private:
         Ref<PlaceholderType> placeholderType;
-        SlopeType slopeType = SlopeType::NONE;
 
         float tempAlpha = 0.15;
-        bool isSelected = false;
-
-        PoolVector2Array debugPoints;
 
         Color typeColor;
         PoolColorArray leftColor;
@@ -33,7 +28,6 @@ namespace godot {
 
         Vector3 mapSize;
 
-        void preparePoints();
         void drawPoints();
         void updateColors();
 
@@ -50,12 +44,9 @@ namespace godot {
 
         void _onGridUpdated(int stair) override;
         void _onResize() override;
-        void _onSelect(bool selected) override;
 
         Ref<PlaceholderType> getPlaceholderType() const;
         void setPlaceholderType(Ref<PlaceholderType> pType);
-        int getSlopeType();
-        void setSlopeType(int type);
     };
 
 }

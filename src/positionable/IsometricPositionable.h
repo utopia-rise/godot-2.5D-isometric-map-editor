@@ -4,8 +4,11 @@
 #include <gen/Node2D.hpp>
 #include <core/Godot.hpp>
 #include <type_traits>
+#include <OutlineDrawer.h>
 
 namespace godot {
+
+    enum class SlopeType {NONE = 0, LEFT = 1, RIGHT = 2, FORWARD = 3, BACKWARD = 4};
 
     class IsometricPositionable : public Node2D {
     GODOT_CLASS(IsometricPositionable, Node2D)
@@ -21,11 +24,21 @@ namespace godot {
         void updateZOrderSize(int change);
 
     protected:
+        OutlineDrawer *outlineDrawer;
+
         PoolVector2Array leftPoints;
         PoolVector2Array rightPoints;
         PoolVector2Array upPoints;
         PoolVector2Array downPoints;
 
+        PoolVector2Array debugPoints;
+
+        void preparePoints();
+        void setOutlineDrawer();
+        virtual SlopeType
+        calculateSlopeOffset(Vector2 *slopeOffset, real_t tileWidthFloat, real_t tileHeightFloat, real_t width,
+                             real_t depth,
+                             real_t ratio) const;
     public:
         Vector2 isoPosition;
         IsometricPositionable();
@@ -38,8 +51,6 @@ namespace godot {
         void _exit_tree();
         virtual String get_class() const;
         Transform2D getHexagoneCoordinates() const;
-
-        void drawOutline();
 
         AABB getAABB();
         void setAABB(AABB ab);

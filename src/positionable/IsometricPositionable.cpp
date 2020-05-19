@@ -1,10 +1,12 @@
 #include <IsometricPositionable.h>
 #include <IsometricServer.h>
+#include "IsometricPositionable.h"
+
 
 using namespace godot;
 
-IsometricPositionable::IsometricPositionable() : aabb({0, 0, 0}, {1, 1, 1}), zOrderSize(0), rendered(false),
-temporary(true), debugZ(0) {
+IsometricPositionable::IsometricPositionable() : debugPoints(), aabb({0, 0, 0}, {1, 1, 1}),
+zOrderSize(0), rendered(false), temporary(true), debugZ(0), outlineDrawer(nullptr) {
 
 }
 
@@ -15,7 +17,6 @@ void IsometricPositionable::_register_methods() {
     register_method("_exit_tree", &IsometricPositionable::_exit_tree);
     register_method("get_class", &IsometricPositionable::get_class);
     register_method("get_hexagone_coordinates", &IsometricPositionable::getHexagoneCoordinates);
-    register_method("drawOutline", &IsometricPositionable::drawOutline);
     register_method("get_aabb", &IsometricPositionable::getAABB);
     register_method("set_aabb", &IsometricPositionable::setAABB);
     register_method("_on_resize", &IsometricPositionable::_onResize);
@@ -62,26 +63,118 @@ Transform2D IsometricPositionable::getHexagoneCoordinates() const {
     return {minX, maxX, minY, maxY, hMin, hMax};
 }
 
-void IsometricPositionable::drawOutline() {
-//    Upper Lines
-    const Color &colorRed { Color(255, 0, 0, 1) };
-    constexpr real_t lineSize { 10.0f };
-    draw_line(upPoints[0], upPoints[1], colorRed, lineSize);
-    draw_line(upPoints[1], upPoints[2], colorRed, lineSize);
-    draw_line(upPoints[2], upPoints[3], colorRed, lineSize);
-    draw_line(upPoints[3], upPoints[0], colorRed, lineSize);
+void IsometricPositionable::preparePoints() {
+    const Vector3 &size { getSize3D() };
+    real_t w { size.x };
+    real_t d { size.y };
+    real_t h { size.z };
 
-//    Vertical Lines
-    draw_line(upPoints[0], downPoints[0], colorRed, lineSize);
-    draw_line(upPoints[1], downPoints[1], colorRed, lineSize);
-    draw_line(upPoints[2], downPoints[2], colorRed, lineSize);
-    draw_line(upPoints[3], downPoints[3], colorRed, lineSize);
+    int leftSlope { 0 };
+    int rightSlope { 0 };
+    int forwardSlope { 0 };
+    int backwardSlope { 0 };
 
-//    Lower Lines
-    draw_line(downPoints[0], downPoints[1], colorRed, lineSize);
-    draw_line(downPoints[1], downPoints[2], colorRed, lineSize);
-    draw_line(downPoints[2], downPoints[3], colorRed, lineSize);
-    draw_line(downPoints[3], downPoints[0], colorRed, lineSize);
+    int tileWidth { IsometricServer::getInstance().tileWidth };
+    int tileHeight { IsometricServer::getInstance().tileHeight };
+
+    Vector2 offset(0, static_cast<real_t>(-tileHeight) * 0.5f);
+
+    float ratio { 0 };
+
+    int debZ {getDebugZ() };
+
+    if (h > 0) {
+        ratio = static_cast<real_t>(debZ) / h;
+    }
+
+    auto tileWidthFloat = static_cast<real_t>(tileWidth);
+    auto tileHeightFloat = static_cast<real_t>(tileHeight);
+    Vector2 gridSlopeOffset;
+
+    const SlopeType &slopeType { calculateSlopeOffset(&gridSlopeOffset, tileWidthFloat, tileHeightFloat, w, d, ratio) };
+    switch (slopeType) {
+        case SlopeType::NONE:
+            break;
+        case SlopeType::LEFT:
+            leftSlope = 1;
+            break;
+        case SlopeType::RIGHT:
+            rightSlope = 1;
+            break;
+        case SlopeType::FORWARD:
+            forwardSlope = 1;
+            break;
+        case SlopeType::BACKWARD:
+            backwardSlope = 1;
+            break;
+    }
+
+    PoolVector2Array points;
+
+    //Lower points
+    points.push_back(Vector2(0, 0));
+    points.push_back(Vector2(tileWidthFloat * 0.5f * w, tileHeightFloat * 0.5f * w));
+    points.push_back(Vector2(tileWidthFloat * 0.5f * (w - d), tileHeightFloat * 0.5f * (d + w)));
+    points.push_back(Vector2(-tileWidthFloat * 0.5f * d, tileHeightFloat * 0.5f * d));
+
+    Vector2 heightOffset(0, - IsometricServer::getInstance().eZ * h);
+
+    //Upper points
+    points.push_back(points[0] + (1 - (rightSlope + backwardSlope)) * heightOffset);
+    points.push_back(points[1] + (1 - (leftSlope + backwardSlope)) * heightOffset);
+    points.push_back(points[2] + (1 - (leftSlope + forwardSlope)) * heightOffset);
+    points.push_back(points[3] + (1 - (rightSlope + forwardSlope)) * heightOffset);
+
+    upPoints.resize(0);
+    upPoints.push_back(offset + points[4]);
+    upPoints.push_back(offset + points[5]);
+    upPoints.push_back(offset + points[6]);
+    upPoints.push_back(offset + points[7]);
+
+    leftPoints.resize(0);
+    leftPoints.push_back(offset + points[2]);
+    leftPoints.push_back(offset + points[3]);
+    leftPoints.push_back(offset + points[7]);
+    leftPoints.push_back(offset + points[6]);
+
+    rightPoints.resize(0);
+    rightPoints.push_back(offset + points[1]);
+    rightPoints.push_back(offset + points[2]);
+    rightPoints.push_back(offset + points[6]);
+    rightPoints.push_back(offset + points[5]);
+
+    downPoints.resize(0);
+    downPoints.push_back(offset + points[0]);
+    downPoints.push_back(offset + points[1]);
+    downPoints.push_back(offset + points[2]);
+    downPoints.push_back(offset + points[3]);
+
+    if (debZ > -1) {
+        Vector2 gridOffset(0, - IsometricServer::getInstance().eZ * static_cast<real_t>(debZ));
+        debugPoints.resize(0);
+        debugPoints.push_back(offset + points[0] + gridOffset + (rightSlope + backwardSlope) * gridSlopeOffset);
+        debugPoints.push_back(offset + points[1] + gridOffset + (leftSlope + backwardSlope) * gridSlopeOffset);
+        debugPoints.push_back(offset + points[2] + gridOffset + (leftSlope + forwardSlope) * gridSlopeOffset);
+        debugPoints.push_back(offset + points[3] + gridOffset + (rightSlope + forwardSlope) * gridSlopeOffset);
+    }
+}
+
+void IsometricPositionable::setOutlineDrawer() {
+    preparePoints();
+    if (outlineDrawer) {
+        remove_child(outlineDrawer);
+    }
+    outlineDrawer = OutlineDrawer::_new();
+    outlineDrawer->setPointsAndColor(&upPoints, &downPoints, Color(255, 0, 0, 1));
+    add_child(outlineDrawer);
+    outlineDrawer->update();
+}
+
+SlopeType
+IsometricPositionable::calculateSlopeOffset(Vector2 *slopeOffset, real_t tileWidthFloat, real_t tileHeightFloat,
+                                            real_t width, real_t depth,
+                                            real_t ratio) const {
+    return SlopeType::NONE;
 }
 
 AABB IsometricPositionable::getAABB() {
@@ -150,7 +243,12 @@ void IsometricPositionable::_onGridUpdated(int stair) {
 }
 
 void IsometricPositionable::_onSelect(bool selected) {
-
+    if (selected) {
+        setOutlineDrawer();
+    } else if (outlineDrawer) {
+        remove_child(outlineDrawer);
+        outlineDrawer = nullptr;
+    }
 }
 
 bool IsometricPositionable::isTemporary() const {
