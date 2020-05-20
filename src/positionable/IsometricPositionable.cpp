@@ -1,6 +1,5 @@
 #include <IsometricPositionable.h>
 #include <IsometricServer.h>
-#include "IsometricPositionable.h"
 
 
 using namespace godot;

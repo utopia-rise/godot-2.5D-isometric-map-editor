@@ -1,5 +1,4 @@
 #include <IsometricTile.h>
-#include "IsometricTile.h"
 
 using namespace godot;
 

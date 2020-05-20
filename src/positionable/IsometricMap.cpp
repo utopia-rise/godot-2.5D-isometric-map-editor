@@ -1,6 +1,5 @@
 #include <IsometricMap.h>
 #include <IsometricServer.h>
-#include "IsometricMap.h"
 
 
 using namespace godot;
