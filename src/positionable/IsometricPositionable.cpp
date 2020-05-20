@@ -158,13 +158,13 @@ void IsometricPositionable::preparePoints() {
     }
 }
 
-void IsometricPositionable::setOutlineDrawer() {
+void IsometricPositionable::setOutlineDrawer(Color color) {
     preparePoints();
-    if (outlineDrawer) {
-        remove_child(outlineDrawer);
+    if (!outlineDrawer) {
+        outlineDrawer = OutlineDrawer::_new();
     }
-    outlineDrawer = OutlineDrawer::_new();
-    outlineDrawer->setPointsAndColor(&upPoints, &downPoints, Color(255, 0, 0, 1));
+    outlineDrawer->setPoints(&upPoints, &downPoints);
+    outlineDrawer->setColor(color);
     add_child(outlineDrawer);
     outlineDrawer->update();
 }
@@ -243,7 +243,7 @@ void IsometricPositionable::_onGridUpdated(int stair) {
 
 void IsometricPositionable::_onSelect(bool selected) {
     if (selected) {
-        setOutlineDrawer();
+        setOutlineDrawer(Color(255, 0, 0, 1));
     } else if (outlineDrawer) {
         remove_child(outlineDrawer);
         outlineDrawer = nullptr;

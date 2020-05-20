@@ -34,7 +34,7 @@ namespace godot {
         PoolVector2Array debugPoints;
 
         void preparePoints();
-        void setOutlineDrawer();
+        void setOutlineDrawer(Color color);
         virtual SlopeType
         calculateSlopeOffset(Vector2 *slopeOffset, real_t tileWidthFloat, real_t tileHeightFloat, real_t width,
                              real_t depth,

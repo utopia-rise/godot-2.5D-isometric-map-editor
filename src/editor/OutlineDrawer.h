@@ -23,7 +23,8 @@ namespace godot {
 
         void _init();
         void _draw();
-        void setPointsAndColor(PoolVector2Array *up, PoolVector2Array *down, const Color &c);
+        void setPoints(PoolVector2Array *up, PoolVector2Array *down);
+        void setColor(const Color &c);
     };
 
 }

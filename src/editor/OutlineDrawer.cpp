@@ -38,8 +38,11 @@ void OutlineDrawer::_draw() {
     draw_line(downP[3], downP[0], color, lineSize);
 }
 
-void OutlineDrawer::setPointsAndColor(PoolVector2Array *up, PoolVector2Array *down, const Color &c) {
+void OutlineDrawer::setPoints(PoolVector2Array *up, PoolVector2Array *down) {
     upPoints = up;
     downPoints = down;
+}
+
+void OutlineDrawer::setColor(const Color &c) {
     color = c;
 }
