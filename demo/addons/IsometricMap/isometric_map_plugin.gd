@@ -2,7 +2,7 @@ tool
 extends EditorPlugin
 
 var handlers: Dictionary = Dictionary()
-var current_handler: MapEditionHandler = null
+var current_handler: EditionHandler = null
 var isometric_asset_selector: IsometricAssetSelector = load("res://addons/IsometricMap/widget/IsometricAssetsSelector.tscn").instance()
 var editor_file_system: EditorFileSystem
 
@@ -15,15 +15,19 @@ func _enter_tree():
 	editor_file_system.connect("filesystem_changed", self, "on_filesystem_changed")
 
 func edit(object: Object) -> void:
-	if object.get_class() == "IsometricMap" && !(object.get_parent().get_class() == "IsometricMap"):
+	if object.get_class() == "IsometricMap" && object.get_parent().get_class() != "IsometricMap":
 		if handlers.has(object):
 			current_handler = handlers[object]
 		else:
 			var hdler: = MapEditionHandler.new(object, get_undo_redo(), self.get_editor_interface(), isometric_asset_selector)
 			handlers[object] = hdler
 			current_handler = hdler
-	elif object.get_class() == "IsometricPlaceholder" and current_handler != null:
+	elif object.get_class() == "IsometricPlaceholder" and current_handler != null and current_handler is MapEditionHandler:
 		current_handler.edit_placeholder(object)
+	elif object.get_class() == "IsometricTile" and object.get_parent().get_class() != "IsometricMap":
+		var hdler = TileEditionHandler.new(object, get_undo_redo())
+		handlers[object] = hdler
+		current_handler = hdler
 
 func handles(object: Object) -> bool:
 	var object_class = object.get_class()
@@ -31,7 +35,7 @@ func handles(object: Object) -> bool:
 
 func forward_canvas_gui_input(event: InputEvent) -> bool:
 	if is_instance_valid(current_handler) and current_handler != null:
-		return current_handler.forward_canvas_gui_input(event)
+		return current_handler._forward_canvas_gui_input(event)
 	else:
 		return false
 

@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node",
+"class": "EditionHandler",
+"language": "GDScript",
+"path": "res://addons/IsometricMap/Scripts/handlers/edition_handler.gd"
+}, {
 "base": "Tree",
 "class": "FileTree",
 "language": "GDScript",
@@ -59,10 +64,10 @@ _global_script_classes=[ {
 "language": "NativeScript",
 "path": "res://addons/IsometricMap/GdnsScripts/positionable/IsometricTile.gdns"
 }, {
-"base": "Node",
+"base": "EditionHandler",
 "class": "MapEditionHandler",
 "language": "GDScript",
-"path": "res://addons/IsometricMap/map_edition_handler.gd"
+"path": "res://addons/IsometricMap/Scripts/handlers/map_edition_handler.gd"
 }, {
 "base": "LineEdit",
 "class": "NumericLineEdit",
@@ -78,8 +83,14 @@ _global_script_classes=[ {
 "class": "StairSelector",
 "language": "GDScript",
 "path": "res://addons/IsometricMap/Scripts/stair_selector.gd"
+}, {
+"base": "EditionHandler",
+"class": "TileEditionHandler",
+"language": "GDScript",
+"path": "res://addons/IsometricMap/Scripts/handlers/tile_edition_handler.gd"
 } ]
 _global_script_class_icons={
+"EditionHandler": "",
 "FileTree": "",
 "GridCursor": "",
 "IsoPreviewGenerator": "",
@@ -93,7 +104,8 @@ _global_script_class_icons={
 "MapEditionHandler": "",
 "NumericLineEdit": "",
 "PlaceholderType": "",
-"StairSelector": ""
+"StairSelector": "",
+"TileEditionHandler": ""
 }
 
 [application]

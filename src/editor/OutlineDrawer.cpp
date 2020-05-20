@@ -17,7 +17,6 @@ void OutlineDrawer::_init() {
 
 void OutlineDrawer::_draw() {
 //    Upper Lines
-    constexpr real_t lineSize { 10.0f };
     PoolVector2Array upP = *upPoints;
     draw_line(upP[0], upP[1], color, lineSize);
     draw_line(upP[1], upP[2], color, lineSize);
@@ -45,4 +44,16 @@ void OutlineDrawer::setPoints(PoolVector2Array *up, PoolVector2Array *down) {
 
 void OutlineDrawer::setColor(const Color &c) {
     color = c;
+}
+
+const Color &OutlineDrawer::getColor() const {
+    return color;
+}
+
+void OutlineDrawer::setLineSize(real_t size) {
+    lineSize = size;
+}
+
+real_t OutlineDrawer::getLineSize() const {
+    return lineSize;
 }
