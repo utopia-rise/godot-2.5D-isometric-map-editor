@@ -1,4 +1,4 @@
-extends Node
+extends EditionHandler
 
 class_name MapEditionHandler
 
@@ -67,7 +67,7 @@ func edit_placeholder(placeholder: IsometricPlaceholder):
 	select_positionable(placeholder)
 	drag_action = DragAction.NONE
 
-func forward_canvas_gui_input(event: InputEvent) -> bool:
+func _forward_canvas_gui_input(event: InputEvent) -> bool:
 	if event is InputEventMouseMotion:
 		event as InputEventMouseMotion
 		if loaded_positionable != null and is_instance_valid(loaded_positionable):

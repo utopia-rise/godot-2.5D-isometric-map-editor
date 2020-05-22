@@ -16,6 +16,7 @@ void IsometricPositionable::_register_methods() {
     register_method("_exit_tree", &IsometricPositionable::_exit_tree);
     register_method("get_class", &IsometricPositionable::get_class);
     register_method("get_hexagone_coordinates", &IsometricPositionable::getHexagoneCoordinates);
+    register_method("set_outline_drawer", &IsometricPositionable::setOutlineDrawer);
     register_method("get_aabb", &IsometricPositionable::getAABB);
     register_method("set_aabb", &IsometricPositionable::setAABB);
     register_method("_on_resize", &IsometricPositionable::_onResize);
@@ -60,6 +61,18 @@ Transform2D IsometricPositionable::getHexagoneCoordinates() const {
     real_t hMin = leftPoint.x - leftPoint.y;
     real_t hMax = rightPoint.x - rightPoint.y;
     return {minX, maxX, minY, maxY, hMin, hMax};
+}
+
+void IsometricPositionable::setOutlineDrawer(Color color, real_t lineSize) {
+    preparePoints();
+    if (!outlineDrawer) {
+        outlineDrawer = OutlineDrawer::_new();
+        add_child(outlineDrawer);
+    }
+    outlineDrawer->setPoints(&upPoints, &downPoints);
+    outlineDrawer->setColor(color);
+    outlineDrawer->setLineSize(lineSize);
+    outlineDrawer->update();
 }
 
 void IsometricPositionable::preparePoints() {
@@ -158,17 +171,6 @@ void IsometricPositionable::preparePoints() {
     }
 }
 
-void IsometricPositionable::setOutlineDrawer() {
-    preparePoints();
-    if (outlineDrawer) {
-        remove_child(outlineDrawer);
-    }
-    outlineDrawer = OutlineDrawer::_new();
-    outlineDrawer->setPointsAndColor(&upPoints, &downPoints, Color(255, 0, 0, 1));
-    add_child(outlineDrawer);
-    outlineDrawer->update();
-}
-
 SlopeType
 IsometricPositionable::calculateSlopeOffset(Vector2 *slopeOffset, real_t tileWidthFloat, real_t tileHeightFloat,
                                             real_t width, real_t depth,
@@ -234,7 +236,9 @@ void IsometricPositionable::updateZOrderSize(int change) {
 }
 
 void IsometricPositionable::_onResize() {
-
+    if (outlineDrawer) {
+        setOutlineDrawer(outlineDrawer->getColor(), outlineDrawer->getLineSize());
+    }
 }
 
 void IsometricPositionable::_onGridUpdated(int stair) {
@@ -243,7 +247,7 @@ void IsometricPositionable::_onGridUpdated(int stair) {
 
 void IsometricPositionable::_onSelect(bool selected) {
     if (selected) {
-        setOutlineDrawer();
+        setOutlineDrawer(Color(255, 0, 0, 1), 10.0f);
     } else if (outlineDrawer) {
         remove_child(outlineDrawer);
         outlineDrawer = nullptr;

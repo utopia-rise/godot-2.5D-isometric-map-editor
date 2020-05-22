@@ -52,7 +52,7 @@ int IsometricElement::getSlopeType() {
 void IsometricElement::setSlopeType(int type) {
     slopeType = (SlopeType) type;
     if (outlineDrawer) {
-        setOutlineDrawer();
+        setOutlineDrawer(outlineDrawer->getColor(), outlineDrawer->getLineSize());
     }
     update();
 }

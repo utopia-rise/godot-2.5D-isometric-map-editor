@@ -51,6 +51,7 @@ String IsometricMap::get_class() const {
 }
 
 void IsometricMap::_onResize() {
+    IsometricPositionable::_onResize();
     grid3D.updateArraySize(getSize3D());
     editionGrid3D.updateArraySize(getSize3D());
 }
