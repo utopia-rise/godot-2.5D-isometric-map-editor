@@ -148,8 +148,8 @@ void IsometricPlaceholder::drawPoints() {
 }
 
 void IsometricPlaceholder::updateColors() {
-    leftColor = PoolColorArray(Array::make(typeColor.darkened(0.5)));
-    rightColor = PoolColorArray(Array::make(typeColor.darkened(0.25)));
+    leftColor = PoolColorArray(Array::make(typeColor.darkened(0.25)));
+    rightColor = PoolColorArray(Array::make(typeColor.darkened(0.5)));
     upColor = PoolColorArray(Array::make(typeColor));
     downColor = PoolColorArray(Array::make(typeColor.darkened(0.9)));
     sideSlopeColor = PoolColorArray(Array::make(typeColor.darkened(0.10)));
