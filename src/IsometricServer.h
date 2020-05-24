@@ -16,6 +16,7 @@ namespace godot {
     private:
         IsometricServer();
         ~IsometricServer() = default;
+        int calculateTileHeight() const;
         float calculateEz() const;
 
     public:
@@ -33,7 +34,6 @@ namespace godot {
         int getTileWidth() const;
         void setTileWidth(int tW);
         int getTileHeight() const;
-        void setTileHeight(int tH);
         int getAngle() const;
         void setAngle(int agl);
 

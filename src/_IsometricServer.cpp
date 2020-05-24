@@ -28,9 +28,7 @@ int _IsometricServer::getTileHeight() {
     return IsometricServer::getInstance().getTileHeight();
 }
 
-void _IsometricServer::setTileHeight(int tileHeight) {
-    IsometricServer::getInstance().setTileHeight(tileHeight);
-}
+void _IsometricServer::setTileHeight(int tileHeight) {}
 
 int _IsometricServer::getAngle() {
     return IsometricServer::getInstance().getAngle();

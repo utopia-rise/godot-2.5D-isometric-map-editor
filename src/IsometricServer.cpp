@@ -2,7 +2,8 @@
 
 using namespace godot;
 
-IsometricServer::IsometricServer(): tileWidth(256), tileHeight(128), angle(30) {
+IsometricServer::IsometricServer(): tileWidth(256), angle(30) {
+    tileHeight = calculateTileHeight();
     eZ = calculateEz();
     zRatio = eZ / static_cast<float>(tileHeight);
 }
@@ -18,17 +19,12 @@ int IsometricServer::getTileWidth() const {
 
 void IsometricServer::setTileWidth(int tW) {
     tileWidth = tW;
-    //TODO calculate tileHeight
+    tileHeight = calculateTileHeight();
+    eZ = calculateEz();
 }
 
 int IsometricServer::getTileHeight() const {
     return tileHeight;
-    //TODO remove and calculate with angle and tileWidth
-}
-
-void IsometricServer::setTileHeight(int tH) {
-    tileHeight = tH;
-    //TODO remove and calculate with angle and tileWidth
 }
 
 int IsometricServer::getAngle() const {
@@ -37,8 +33,8 @@ int IsometricServer::getAngle() const {
 
 void IsometricServer::setAngle(int agl) {
     angle = agl;
+    tileHeight = calculateTileHeight();
     eZ = calculateEz();
-    //TODO calculate tileHeight
 }
 
 float IsometricServer::getEZ() const {
@@ -70,8 +66,13 @@ Vector2 IsometricServer::getScreenCoordFrom3D(const Vector3 &pos) const {
     };
 }
 
+int IsometricServer::calculateTileHeight() const {
+    return static_cast<int>(round(tileWidth * sin(deg2rad(static_cast<float>(angle)))));
+}
+
 float IsometricServer::calculateEz() const {
-    return static_cast<float>((tileHeight / sin(deg2rad(angle)) / sqrt(2)) * cos(deg2rad(angle)));
+    return static_cast<float>((tileHeight / sin(deg2rad(static_cast<float>(angle))) / sqrt(2)) * cos(deg2rad(
+            static_cast<float>(angle))));
 }
 
 bool IsometricServer::doHexagoneOverlap(const Transform2D &hex1, const Transform2D &hex2) {
