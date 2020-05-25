@@ -115,7 +115,7 @@ void IsometricPlaceholder::drawPoints() {
         float eZ { IsometricServer::getInstance().eZ };
 
         int correctedZ { clamp(debugZ, 0, sizeZInt) };
-        int addedLines { ceil(zRatio * static_cast<float>(correctedZ)) };
+        int addedLines { static_cast<int>(ceil(static_cast<double>(zRatio * static_cast<real_t>(correctedZ)))) };
 
         int zDelta { debugZ - correctedZ };
         auto zDeltaFloat = static_cast<real_t>(zDelta);
