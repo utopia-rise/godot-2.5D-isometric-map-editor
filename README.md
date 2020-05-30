@@ -4,7 +4,7 @@ A Godot addon to create complex 2.5D Isometric Map.
 
 Classic tiled map does not permit to create complex isometric map with 3D logic. This tool is designed so. Here
 every basic node is an `IsometricPositionable`, which means it has 3D coordinated and size (an `AABB`). Then a
-topological render graph is generated so that tiles are well ordered, according to their 3D position.  
+topological graph is generated so that tiles are well ordered, according to their 3D position.  
 Here is a list of `IsometricPositionable`:
 - `IsometricMap`, an `IsometricPositionable` designed to contains other `IsometricPositionable`.
 - `IsometricTile`, basically a 3D bloc to create your map.
