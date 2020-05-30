@@ -19,3 +19,12 @@ re-usability of assets and easy fix.
 [1. Installation guide](.README/INSTALL.md)  
 [2. User guide](.README/USER_GUIDE.md)  
 [3. Compiling from sources](.README/COMPILING_FROM_SOURCES.md)  
+
+## Gifs
+![isometric tile design 0] ![isometric tile design 1] ![isometric map design 0] ![isometric map design 1]
+
+
+[isometric tile design 0]: .README/gif/isometric_tile_design_0.gif
+[isometric tile design 1]: .README/gif/isometric_tile_design_1.gif
+[isometric map design 0]: .README/gif/isometric_map_design_0.gif
+[isometric map design 1]: .README/gif/isometric_map_design_1.gif
