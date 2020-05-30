@@ -423,7 +423,7 @@ func create_new_placeholder() -> void:
 func check_and_select_existing() -> bool:
 	for z in range(map.size3d.z, 0, -1):
 		var ortho_pos: Vector3 = IsoServer.get_3d_coord_from_screen(map.get_local_mouse_position(), z-1).round()
-		var posi = map.get_positionable_at(ortho_pos)
+		var posi = map.get_positionable_at(ortho_pos, false)
 		if posi != null:
 			if posi.position3d.z + posi.size3d.z > stair_selector.selected_stair:
 				select_positionable(posi)
