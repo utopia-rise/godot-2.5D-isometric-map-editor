@@ -126,6 +126,10 @@ You can also increase a selected placeholder size on z axis by using **Z** key a
 ![isometric map design 3]
 Note that selecting is done by left click on a position that already contains a positionable.
 
+You can also create types for placeholders. To do so, create a new resource, add PlaceholderType *gdns* to the resource
+and change color and name. Then you can use this resource on a placeholder:
+![isometric map design 5]
+
 ### Removing elements
 
 You can remove positionable by selecting one and activate **backspace** key:
@@ -147,3 +151,4 @@ You can use **ctrl + z** and **ctrl + y** if you make a mistake.
 [isometric map design 2]: gif/isometric_map_design_2.gif
 [isometric map design 3]: gif/isometric_map_design_3.gif
 [isometric map design 4]: gif/isometric_map_design_4.gif
+[isometric map design 5]: gif/isometric_map_design_5.gif
