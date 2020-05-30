@@ -76,8 +76,19 @@ about in [Editor Commands](#editor-commands). This is here you will add isometri
 
 # Starting design
 
+In this section we will describe how to start creating 2.5D Isometric Maps.
+
+## Designing Tiles
+
+`IsometricTile` is a godot node. So it is as easy to design it as it is for other godot node, at the exception that you
+will have to place the child `Sprite` in the cube drawn to help you position it:
+![isometric tile design 0]
+
+## Designing Maps
+
 [scene inspector]: png/scene_inspector.png
 [scene choice]: png/scene_choice.png
 [isometric tile interface 0]: png/isometric_tile_interface_0.png
 [isometric tile interface 1]: png/isometric_tile_interface_1.png
 [isometric map interface 0]: png/isometric_map_interface_0.png
+[isometric tile design 0]: gif/isometric-tile-design-0.gif
