@@ -84,10 +84,10 @@ In this section we will describe how to start creating 2.5D Isometric Maps.
 
 `IsometricTile` is a godot node. So it is as easy to design it as it is for other godot node, at the exception that you
 will have to place the child `Sprite` in the cube drawn to help you position it:
-[isometric tile design 0]
+![isometric tile design 0]
 As it is a Godot node, you can extends it to create more variant by adding children. You can add other sprites,
 particles effects, sound, whatever node you want:
-[isometric tile design 1]
+![isometric tile design 1]
 So as you can see you can save a lot of time by thinking in a compositional way. Every modification on base will be
 repercuted on nodes that inherits.
 
@@ -108,22 +108,31 @@ Just keep in mind that this addon is a powerful tool to design by composition.
 To add tiles in a map, open the map you want to edit (or create one), and select your tile in
 **Isometric Positionable Inspector**. Then you can place a tile by making a simple click, or add several by maintaining
 left mouse button and moving the mouse:
-[isometric map design 0]
+![isometric map design 0]
 
 ### Adding map in maps
 
 You can add maps in maps, and act by composition. To add a map do as describe with tiles, but having a map selected in
 **Isometric Positionable Inspector**:
-[isometric map design 1]
+![isometric map design 1]
 
 ### Adding placeholder to a map
 
 If you don't have the asset you need you still can use placeholders to start design your world. Select placeholder field
 in **Isometric Positionable Inspector**, and then use drag and drop to set its dimensions. A single click will create a
 (1, 1, 1) sized placeholder:
-[isometric map design 2]
+![isometric map design 2]
 You can also increase a selected placeholder size on z axis by using **Z** key and decrease it by using **S** key:
+![isometric map design 3]
+Note that selecting is done by left click on a position that already contains a positionable.
 
+### Removing elements
+
+You can remove positionable by selecting one and activate **backspace** key:
+![isometric map design 4]
+Note that activating **ctrl + backspace** will remove all positionable on map.
+
+You can use **ctrl + z** and **ctrl + y** if you make a mistake.
 
 
 [scene inspector]: png/scene_inspector.png
@@ -136,3 +145,5 @@ You can also increase a selected placeholder size on z axis by using **Z** key a
 [isometric map design 0]: gif/isometric_map_design_0.gif
 [isometric map design 1]: gif/isometric_map_design_1.gif
 [isometric map design 2]: gif/isometric_map_design_2.gif
+[isometric map design 3]: gif/isometric_map_design_3.gif
+[isometric map design 4]: gif/isometric_map_design_4.gif
