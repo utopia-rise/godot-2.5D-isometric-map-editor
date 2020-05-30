@@ -1,6 +1,7 @@
 # User Guide
 
-Welcome to the Godot 2.5D user guide. This is designed to describe how to use 2.5D Isometric Map editor.
+Welcome to the Godot 2.5D isometric map editor user guide. This is designed to describe how to use 2.5D Isometric Map
+editor.
 
 # Editor commands
 
@@ -83,6 +84,10 @@ In this section we will describe how to start creating 2.5D Isometric Maps.
 `IsometricTile` is a godot node. So it is as easy to design it as it is for other godot node, at the exception that you
 will have to place the child `Sprite` in the cube drawn to help you position it:
 ![isometric tile design 0]
+As it is a Godot node, you can extends it to create more variant by adding children. You can add other sprites,
+particles effects, sound, whatever node you want:
+![isometric tile design 1]
+So as you can see you can save a lot of time by thinking in a compositional way.
 
 ## Designing Maps
 
@@ -91,4 +96,5 @@ will have to place the child `Sprite` in the cube drawn to help you position it:
 [isometric tile interface 0]: png/isometric_tile_interface_0.png
 [isometric tile interface 1]: png/isometric_tile_interface_1.png
 [isometric map interface 0]: png/isometric_map_interface_0.png
-[isometric tile design 0]: gif/isometric-tile-design-0.gif
+[isometric tile design 0]: gif/isometric_tile_design_0.gif
+[isometric tile design 1]: gif/isometric_tile_design_1.gif
