@@ -16,7 +16,6 @@ namespace godot {
 
         float tempAlpha = 0.15;
 
-        Color typeColor;
         PoolColorArray leftColor;
         PoolColorArray rightColor;
         PoolColorArray upColor;
@@ -33,7 +32,7 @@ namespace godot {
 
         void setMapSize(const Vector3 &size);
     public:
-        IsometricPlaceholder();
+        IsometricPlaceholder() = default;
         ~IsometricPlaceholder() = default;
 
         static void _register_methods();

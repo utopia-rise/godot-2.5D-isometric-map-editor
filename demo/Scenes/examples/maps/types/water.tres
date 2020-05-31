@@ -1,8 +1,0 @@
-[gd_resource type="Resource" load_steps=2 format=2]
-
-[ext_resource path="res://addons/IsometricMap/Scripts/ressource/placeholder_type.gd" type="Script" id=1]
-
-[resource]
-script = ExtResource( 1 )
-type_name = "water"
-color = Color( 0, 0.662745, 0.890196, 1 )
