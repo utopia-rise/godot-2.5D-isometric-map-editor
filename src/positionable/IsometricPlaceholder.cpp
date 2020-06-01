@@ -6,14 +6,10 @@
 
 using namespace godot;
 
-IsometricPlaceholder::IsometricPlaceholder(): typeColor(0.83, 0.83, 0.83, 1) {
-
-}
-
 void IsometricPlaceholder::_register_methods() {
     register_property("placeholder_type", &IsometricPlaceholder::setPlaceholderType,
             &IsometricPlaceholder::getPlaceholderType,
-            (Ref<PlaceholderType>) ResourceLoader::get_singleton()->load("res://addons/IsometricMap/prefab/types/default.tres"));
+                      (Ref<PlaceholderType>) nullptr);
 
     register_method("_init", &IsometricPlaceholder::_init);
     register_method("_draw", &IsometricPlaceholder::_draw);
@@ -22,7 +18,7 @@ void IsometricPlaceholder::_register_methods() {
 
 void IsometricPlaceholder::_init() {
     IsometricPositionable::_init();
-    updateColors();
+    setPlaceholderType(placeholderType);
 }
 
 void IsometricPlaceholder::_draw() {
@@ -148,13 +144,13 @@ void IsometricPlaceholder::drawPoints() {
 }
 
 void IsometricPlaceholder::updateColors() {
-    leftColor = PoolColorArray(Array::make(typeColor.darkened(0.25)));
-    rightColor = PoolColorArray(Array::make(typeColor.darkened(0.5)));
-    upColor = PoolColorArray(Array::make(typeColor));
-    downColor = PoolColorArray(Array::make(typeColor.darkened(0.9)));
-    sideSlopeColor = PoolColorArray(Array::make(typeColor.darkened(0.10)));
-    forwardSlopeColor = PoolColorArray(Array::make(typeColor.darkened(0.10)));
-    backwardSlopeColor = PoolColorArray(Array::make(typeColor.lightened(0.10)));
+    leftColor = PoolColorArray(Array::make(placeholderType->getColor().darkened(0.25)));
+    rightColor = PoolColorArray(Array::make(placeholderType->getColor().darkened(0.5)));
+    upColor = PoolColorArray(Array::make(placeholderType->getColor()));
+    downColor = PoolColorArray(Array::make(placeholderType->getColor().darkened(0.9)));
+    sideSlopeColor = PoolColorArray(Array::make(placeholderType->getColor().darkened(0.10)));
+    forwardSlopeColor = PoolColorArray(Array::make(placeholderType->getColor().darkened(0.10)));
+    backwardSlopeColor = PoolColorArray(Array::make(placeholderType->getColor().lightened(0.10)));
 }
 
 void IsometricPlaceholder::setMapSize(const Vector3 &size) {
@@ -175,10 +171,11 @@ Ref<PlaceholderType> IsometricPlaceholder::getPlaceholderType() const {
 }
 
 void IsometricPlaceholder::setPlaceholderType(Ref<PlaceholderType> pType) {
-    placeholderType = pType;
-    if (pType.ptr()) {
-        typeColor = placeholderType->getColor();
-        updateColors();
-        update();
+    if (pType.is_valid()) {
+        placeholderType = pType;
+    } else {
+        placeholderType = Ref<PlaceholderType>(ResourceLoader::get_singleton()->load("res://addons/IsometricMap/prefab/types/default.tres").ptr());
     }
+    updateColors();
+    update();
 }
