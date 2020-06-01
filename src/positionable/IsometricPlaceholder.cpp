@@ -18,6 +18,7 @@ void IsometricPlaceholder::_register_methods() {
 
 void IsometricPlaceholder::_init() {
     IsometricPositionable::_init();
+    setPlaceholderType(placeholderType);
 }
 
 void IsometricPlaceholder::_draw() {
