@@ -179,5 +179,6 @@ void IsometricPlaceholder::setPlaceholderType(Ref<PlaceholderType> pType) {
     if (pType.ptr()) {
         typeColor = placeholderType->getColor();
         updateColors();
+        update();
     }
 }
