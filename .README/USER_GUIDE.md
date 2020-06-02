@@ -32,7 +32,24 @@ editor.
 
 In this section we will deal with 2D screen dimensions of your engine cube meter *(a cube of size (1, 1, 1))*.
 
-**TODO**
+In IsometricServer Autoload singleton you have properties you can set according to the game design of your game:
+![isometric server inspector]
+
+Tile Width represents this, in px:  
+![tile width]
+
+Angle represents the angle of view, from the ground to the "camera". Here are some examples:
+
+- 30°: ![angle 30]
+- 60°: ![angle 60]
+
+These are the two you can set, then *tile height* is calculated using *tile width and angle*. Its formula is:
+`tile_width * sin(angle)`.
+
+Another dimension you should know to be able to draw tiles with the correct dimensions is the *"cube real height"*
+projection, which is this value:  
+![real height]  
+The calculus to get this projection is: `(tile_width / sqrt(2)) * cos(angle)`.
 
 # Editor interface presentation
 
@@ -139,6 +156,11 @@ Note that activating **ctrl + backspace** will remove all positionable on map.
 You can use **ctrl + z** and **ctrl + y** if you make a mistake.
 
 
+[isometric server inspector]: png/iso_server_inspector.png
+[tile width]: png/tile_width.png
+[angle 30]: png/angle_30.png
+[angle 60]: png/angle_60.png
+[real height]: png/height_representation.png
 [scene inspector]: png/scene_inspector.png
 [scene choice]: png/scene_choice.png
 [isometric tile interface 0]: png/isometric_tile_interface_0.png
