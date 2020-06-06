@@ -30,13 +30,13 @@ func _draw():
 	var e_z: int = IsoServer.get_ez()
 	var offset: Vector2 = Vector2(0, - tile_depth * 0.5)
 	var height_offset = Vector2(0, e_z * selected_stair)
-	for i in range(0, map_depth):
+	for i in range(0, map_depth + 1):
 		var from: Vector2 = Vector2(-tile_width * 0.5 * i, tile_depth * 0.5 * i) + offset - height_offset
-		var to: Vector2 = Vector2(tile_width * 0.5 * (map_width - 1 - i), tile_depth * 0.5 * (i + map_width - 1)) + offset - height_offset
+		var to: Vector2 = Vector2(tile_width * 0.5 * (map_width - i), tile_depth * 0.5 * (i + map_width)) + offset - height_offset
 		draw_line(from, to, Color.black, 2.0)
-	for i in range(0, map_width):
+	for i in range(0, map_width + 1):
 		var from: Vector2 = Vector2(tile_width * 0.5 * i, tile_depth * 0.5 * i) + offset - height_offset
-		var to: Vector2 = Vector2(tile_width * 0.5 * (i - map_depth + 1), tile_depth * 0.5 * (map_depth - 1 + i)) + offset - height_offset
+		var to: Vector2 = Vector2(tile_width * 0.5 * (i - map_depth), tile_depth * 0.5 * (map_depth + i)) + offset - height_offset
 		draw_line(from, to, Color.black, 2.0)
 
 func move_selected_stair(up: bool) -> bool:
