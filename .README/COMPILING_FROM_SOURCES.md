@@ -34,7 +34,7 @@ Go in `godot-cpp` folder and build for the platform you want, following the
 
 As ios is not documented, here is the command line to use:  
 ```shell script
-scons platform=ios generate_bindings=yes ios_arch=[arch]
+scons platform=ios target=release generate_bindings=yes ios_arch=[arch]
 ```
 with: 
 - `[arch] = {armv7, arm64, x86_64}`
@@ -45,8 +45,10 @@ You should then have you compiled library in `godot-cpp/bin` folder.
 
 Head to `godot-2.5D-isometric-map-editor` folder.  
 Excepted for android, which does not use scons but ndk-build, the command is the same than the one for bindings, without
-the `generate_bindings` arguments.  
-*Example*: `scons platform=windows bits=64`
+the `generate_bindings` arguments.
+ 
+*Example*: `scons platform=windows target=release bits=64`  
+You can also avoid target parameter if you want a debug build.
 
 You should have the built addon in `godot-2.5D-isometric-map-editor/bin` folder.
 

@@ -14,11 +14,34 @@ All of those are Godot nodes. This means you can quickly derive from one, use a 
 change an element used in many maps without taking care of editing those maps. In other words, this tool is designed for
 re-usability of assets and easy fix.
 
+## Compatibility
+
+### Operating Systems and platforms
+
+This plugin is compatible with Windows, Linux, OSX (x64), android and ios (armv7 and armv8) for execution.  
+You can use the editor tool on all desktop platforms (x64).
+
+### Godot version
+
+We support Godot 3.2.x versions.
+
 ## Documentation
 
 [1. Installation guide](.README/INSTALL.md)  
 [2. User guide](.README/USER_GUIDE.md)  
-[3. Compiling from sources](.README/COMPILING_FROM_SOURCES.md)  
+[3. Compiling from sources](.README/COMPILING_FROM_SOURCES.md)
+
+## Authors
+
+You can find authors in
+[CONTRIBUTORS](https://github.com/utopia-rise/godot-2.5D-isometric-map-editor/graphs/contributors) section.
+
+This project has first begun internally in Utopia-Rise as a proof of concept (gdscript based). Special thanks to the
+team for testing this addon. It helped us to get from proof of concept to this beginning of more robust addon. Special
+thanks to [CedNaru](https://github.com/CedNaru) for his active work on designing the tool and topological graph
+generation.
+
+Feel free to contribute and report bugs ! We're waiting for your issues and PR !
 
 ## Gifs
 ![isometric tile design 0] ![isometric tile design 1] ![isometric map design 0] ![isometric map design 1]
