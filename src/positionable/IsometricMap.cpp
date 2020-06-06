@@ -20,6 +20,7 @@ void IsometricMap::_register_methods() {
     register_method("is_overlapping", &IsometricMap::isOverlapping);
     register_method("is_overlapping_aabb", &IsometricMap::isOverlappingAABB);
     register_method("has", &IsometricMap::has);
+    register_method("get_positionable_children", &IsometricMap::getPositionableChildren);
     register_method("flatten", &IsometricMap::flatten);
 
     register_method("_on_resize", &IsometricMap::_onResize);
@@ -189,6 +190,25 @@ bool IsometricMap::isOverlappingAABB(AABB aabb) {
 
 bool IsometricMap::has(IsometricPositionable *isometricPositionable) {
     return grid3D.has(isometricPositionable);
+}
+
+/**
+ * Returns positionable contained in this map.
+ *
+ * This should not be used often.
+ *
+ * @return a copy array containing positionable children.
+ */
+Array IsometricMap::getPositionableChildren() const {
+    Array positionableChildren;
+    const Array &gridArray = grid3D.getInternalArray();
+    for (int i = 0; i < gridArray.size(); i++) {
+        const Variant &element = gridArray[i];
+        if (element) {
+            positionableChildren.append(element);
+        }
+    }
+    return positionableChildren;
 }
 
 IsometricMap *IsometricMap::flatten() {

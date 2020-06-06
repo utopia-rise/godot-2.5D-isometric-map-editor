@@ -332,24 +332,28 @@ func add_dimension_before(axe: int) -> void:
 	var reverse_direction: int
 	var future_aabb: AABB
 	var current_aabb = map.get_aabb() #TODO : add method to get aabb
+	var childrenArray: Array = map.get_positionable_children().duplicate()
 	if axe == Axes.X:
 		future_aabb = AABB(current_aabb.position, current_aabb.size + Vector3(1, 0, 0))
 		direction_to_move = Direction.RIGHT
 		reverse_direction = Direction.LEFT
+		childrenArray.sort_custom(SortByAxis, "sort_by_x_descending")
 	elif axe == Axes.Y:
 		future_aabb = AABB(current_aabb.position, current_aabb.size + Vector3(0, 1, 0))
 		direction_to_move = Direction.BACKWARD
 		reverse_direction = Direction.FORWARD
+		childrenArray.sort_custom(SortByAxis, "sort_by_y_descending")
 	elif axe == Axes.Z:
 		future_aabb = AABB(current_aabb.position, current_aabb.size + Vector3(0, 0, 1))
 		direction_to_move = Direction.UP
 		reverse_direction = Direction.DOWN
+		childrenArray.sort_custom(SortByAxis, "sort_by_z_descending")
 	undo_redo.create_action("add_dimension_before")
 	undo_redo.add_do_method(map, "set_aabb", future_aabb)
-	for child in map.get_children():
-		if isIsopositionable(child):
-			undo_redo.add_do_method(self, "move_iso_positionable", child, direction_to_move, false)
-			undo_redo.add_undo_method(self, "move_iso_positionable", child, reverse_direction, false)
+	for child in childrenArray:
+		undo_redo.add_do_method(self, "move_iso_positionable", child, direction_to_move, false)
+	for i in range(childrenArray.size() - 1, -1, -1):
+		undo_redo.add_undo_method(self, "move_iso_positionable", childrenArray[i], reverse_direction, false)
 	undo_redo.add_undo_method(map, "set_aabb", current_aabb)
 	undo_redo.commit_action()
 
@@ -477,3 +481,13 @@ func on_map_selected() -> void:
 func isIsopositionable(object):
 	var object_class = object.get_class()
 	return object_class == "IsometricTile" or object_class == "IsometricMap" or object_class == "IsometricPlaceholder"
+
+class SortByAxis:
+	static func sort_by_x_descending(a, b) -> bool:
+		return a.position3d.x > b.position3d.x
+	
+	static func sort_by_y_descending(a, b) -> bool:
+		return a.position3d.y > b.position3d.y
+	
+	static func sort_by_z_descending(a, b) -> bool:
+		return a.position3d.z > b.position3d.z
