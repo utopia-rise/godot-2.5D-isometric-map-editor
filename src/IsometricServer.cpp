@@ -71,8 +71,7 @@ int IsometricServer::calculateTileHeight() const {
 }
 
 float IsometricServer::calculateEz() const {
-    return static_cast<float>((tileHeight / sin(deg2rad(static_cast<float>(angle))) / sqrt(2)) * cos(deg2rad(
-            static_cast<float>(angle))));
+    return static_cast<float>((tileWidth / sqrt(2)) * cos(deg2rad(static_cast<float>(angle))));
 }
 
 bool IsometricServer::doHexagoneOverlap(const Transform2D &hex1, const Transform2D &hex2) {
