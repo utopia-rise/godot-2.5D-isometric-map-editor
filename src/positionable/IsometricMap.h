@@ -39,6 +39,7 @@ namespace godot {
         bool isOverlapping(IsometricPositionable *positionable);
         bool isOverlappingAABB(AABB aabb);
         bool has(IsometricPositionable *isometricPositionable);
+        Array getPositionableChildren() const;
 
         IsometricMap *flatten();
 
