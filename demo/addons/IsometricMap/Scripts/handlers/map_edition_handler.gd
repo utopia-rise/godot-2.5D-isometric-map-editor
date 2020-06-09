@@ -209,7 +209,8 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 					return true
 				KEY_E:
 					if drag_action == DragAction.NONE:
-						return move_grid(true)
+						move_grid(true)
+					return true
 				KEY_D:
 					if drag_action == DragAction.NONE:
 						return move_grid(false)
