@@ -192,13 +192,6 @@ bool IsometricMap::has(IsometricPositionable *isometricPositionable) {
     return grid3D.has(isometricPositionable);
 }
 
-/**
- * Returns positionable contained in this map.
- *
- * This should not be used often.
- *
- * @return a copy array containing positionable children.
- */
 Array IsometricMap::getPositionableChildren() const {
     Array positionableChildren;
     const Array &gridArray = grid3D.getInternalArray();
