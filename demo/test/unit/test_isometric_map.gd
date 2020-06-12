@@ -113,3 +113,4 @@ func test_assert_flatten_isometricmap():
 	var ch = flatten_map.get_children()
 	expected_child_count = 5
 	assert_eq(flatten_map.get_children().size(), expected_child_count, "Flatten map should have " + str(expected_child_count) + "children.")
+	assert_eq(positionable.position3d, Vector3(0, 0, 0), "Original positionable's position should not have changed")
