@@ -28,7 +28,15 @@ namespace godot {
         void _init();
         String get_class() const override;
 
+        /**
+         * @return SlopeType of IsometricElement.
+         */
         int getSlopeType();
+
+        /**
+         * Sets SlopeType of IsometricElement to `type` value.
+         * @param type
+         */
         void setSlopeType(int type);
     };
 
