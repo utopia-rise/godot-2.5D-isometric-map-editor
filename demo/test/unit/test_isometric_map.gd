@@ -93,7 +93,10 @@ func test_assert_flatten_isometricmap():
 	inner_map.add_iso_positionable(second_in_inner)
 	var second_inner = IsometricMap.new()
 	second_inner.position3d = Vector3(5, 0, 0)
+	second_inner.size3d = Vector3(1, 1, 2)
 	var positionable = IsometricPositionable.new()
+	positionable.position3d = Vector3(0, 0, 1)
+	positionable.name = "posi"
 	second_inner.add_iso_positionable(positionable)
 	var positionable_at_root = IsometricPositionable.new()
 	positionable_at_root.position3d = Vector3(5, 1, 0)
@@ -113,4 +116,5 @@ func test_assert_flatten_isometricmap():
 	var ch = flatten_map.get_children()
 	expected_child_count = 5
 	assert_eq(flatten_map.get_children().size(), expected_child_count, "Flatten map should have " + str(expected_child_count) + "children.")
-	assert_eq(positionable.position3d, Vector3(0, 0, 0), "Original positionable's position should not have changed")
+	assert_eq(positionable.position3d, Vector3(0, 0, 1), "Original positionable's position should not have changed")
+	assert_eq(flatten_map.get_node("posi").position3d, Vector3(5, 0, 1), "Positionable should have a sum of its former position and its former parent.")
