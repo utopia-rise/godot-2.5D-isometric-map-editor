@@ -6,6 +6,10 @@
 
 namespace godot {
 
+    /**
+     * Represents a tile, i.e. a drawing unit created with assets (like sprite, particles emitter, whatever node you
+     * want).
+     */
     class IsometricTile : public IsometricElement {
         GODOT_SUBCLASS(IsometricTile, IsometricElement)
 
