@@ -10,6 +10,11 @@ namespace godot {
 
     enum class SlopeType {NONE = 0, LEFT = 1, RIGHT = 2, FORWARD = 3, BACKWARD = 4};
 
+    /**
+     * Represents a parallelepiped that has 3D position and size.
+     * This 3D object is then projected in the 2D part of engine.
+     * IsometricPositionable is the base class of all 3D objects of this addon.
+     */
     class IsometricPositionable : public Node2D {
     GODOT_CLASS(IsometricPositionable, Node2D)
 
