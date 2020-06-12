@@ -11,6 +11,7 @@ namespace godot {
      * Used in editor.
      * It prints the outline of a positionable when selected in map edition mode.
      * Also prints outline when editing IsometricTile.
+     * @inherit Node2D
      */
     class OutlineDrawer : public Node2D {
         GODOT_CLASS(OutlineDrawer, Node2D)

@@ -9,6 +9,7 @@ namespace godot {
 
     /**
      * Represents a 3D object that is a drawing unit, i.e. that is not a composition of other IsometricPositionable.
+     * @inherit godot::IsometricPositionable
      */
     class IsometricElement : public IsometricPositionable {
         GODOT_SUBCLASS(IsometricElement, IsometricPositionable)

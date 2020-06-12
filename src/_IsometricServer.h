@@ -12,6 +12,7 @@ namespace godot {
 
     /**
      * Exposes IsometricServer singleton to outside of this GDNative.
+     * @inherit godot::Node
      */
     class _IsometricServer: public Node {
         GODOT_CLASS(_IsometricServer, Node)
