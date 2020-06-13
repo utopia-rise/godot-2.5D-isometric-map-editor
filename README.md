@@ -1,4 +1,4 @@
-# Godot 2.5D Isometric Map Editor
+# Godot 2.5D Isometric Map Editor (WIP)
 
 A Godot addon to create complex 2.5D Isometric Map.
 
@@ -13,6 +13,8 @@ Here is a list of `IsometricPositionable`:
 All of those are Godot nodes. This means you can quickly derive from one, use a tile or a map in several maps, and 
 change an element used in many maps without taking care of editing those maps. In other words, this tool is designed for
 re-usability of assets and easy fix.
+
+*/!\Disclaimer* This project is still work in progress and not ready for production.
 
 ## Compatibility
 
