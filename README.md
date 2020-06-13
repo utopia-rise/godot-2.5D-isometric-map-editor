@@ -14,7 +14,7 @@ All of those are Godot nodes. This means you can quickly derive from one, use a 
 change an element used in many maps without taking care of editing those maps. In other words, this tool is designed for
 re-usability of assets and easy fix.
 
-*/!\Disclaimer* This project is still work in progress and not ready for production.
+**/!\Disclaimer** This project is still work in progress and not ready for production.
 
 ## Compatibility
 
