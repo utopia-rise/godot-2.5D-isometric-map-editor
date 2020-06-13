@@ -1,13 +1,12 @@
 #ifndef ISOMETRICMAPEDITOR_ISOMETRICTILE_H
 #define ISOMETRICMAPEDITOR_ISOMETRICTILE_H
 
-#include <IsometricPositionable.h>
-#include "IsometricElement.h"
+#include <StaticIsometricElement.h>
 
 namespace godot {
 
-    class IsometricTile : public IsometricElement {
-        GODOT_SUBCLASS(IsometricTile, IsometricElement)
+    class IsometricTile : public StaticIsometricElement {
+        GODOT_SUBCLASS(IsometricTile, StaticIsometricElement)
 
     public:
         static void _register_methods();
