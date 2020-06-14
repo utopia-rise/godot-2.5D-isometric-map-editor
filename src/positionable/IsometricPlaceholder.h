@@ -41,8 +41,8 @@ namespace godot {
         void _draw();
         String get_class() const override;
 
-        void _onGridUpdated(int stair) override;
-        void _onResize() override;
+        void onGridUpdated(int stair) override;
+        void onResize() override;
 
         Ref<PlaceholderType> getPlaceholderType() const;
         void setPlaceholderType(Ref<PlaceholderType> pType);

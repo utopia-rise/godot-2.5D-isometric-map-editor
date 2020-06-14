@@ -6,6 +6,7 @@
 #include <IsometricPlaceholder.h>
 #include <positionable/IsometricElement.h>
 #include <positionable/StaticIsometricElement.h>
+#include <positionable/physics/DefaultStaticBody.h>
 
 using namespace godot;
 
@@ -27,6 +28,7 @@ extern "C" void GDN_EXPORT iso_map_nativescript_init(void *handle){
     register_tool_class<IsometricPlaceholder>();
     register_tool_class<PlaceholderType>();
     register_tool_class<OutlineDrawer>();
+    register_tool_class<DefaultStaticBody>();
     register_tool_class<_IsometricServer>();
 }
 

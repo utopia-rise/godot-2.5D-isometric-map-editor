@@ -2,16 +2,24 @@
 #define ISOMETRICMAPEDITOR_STATICISOMETRICELEMENT_H
 
 #include <IsometricElement.h>
-#include <gen/StaticBody.hpp>
+#include <positionable/physics/DefaultStaticBody.h>
 
 namespace godot {
 
+    /**
+     * IsometricElement that cannot move. IE, no position control on it in game.
+     */
     class StaticIsometricElement : public IsometricElement {
         GODOT_SUBCLASS(StaticIsometricElement, IsometricElement)
 
     private:
-        StaticBody *defaultBody;
+        bool hasDefaultBody;
+        DefaultStaticBody *defaultBody;
 
+        /**
+         * Sets or remove defaultBody in function of hasDefaultBody
+         */
+        void updateDefaultBody();
     public:
         StaticIsometricElement();
         ~StaticIsometricElement() = default;
@@ -19,18 +27,22 @@ namespace godot {
         static void _register_methods();
 
         void _init();
+        void _enter_tree();
         String get_class() const override;
 
         /**
-         * @return true if has default body.
+         * @return true if should have default body.
          */
-        bool hasDefaultBody() const;
+        bool getHasDefaultBody() const;
 
         /**
-         * Sets default body if `b` is true. Otherwise it will remove defaultBody if exists.
+         * Sets if StaticIsometricElement should have default body.
          * @param b
          */
-        void setDefaultBody(bool b);
+        void setHasDefaultBody(bool b);
+
+        void setAABB(AABB ab) override;
+        void setPosition3D(Vector3 pos) override;
     };
 }
 

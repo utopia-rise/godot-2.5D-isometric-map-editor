@@ -23,8 +23,8 @@ void IsometricMap::_register_methods() {
     register_method("get_positionable_children", &IsometricMap::getPositionableChildren);
     register_method("flatten", &IsometricMap::flatten);
 
-    register_method("_on_resize", &IsometricMap::_onResize);
-    register_method("_on_grid_updated", &IsometricMap::_onGridUpdated);
+    register_method("_on_resize", &IsometricMap::onResize);
+    register_method("_on_grid_updated", &IsometricMap::onGridUpdated);
 }
 
 void IsometricMap::_init() {
@@ -51,18 +51,18 @@ String IsometricMap::get_class() const {
     return "IsometricMap";
 }
 
-void IsometricMap::_onResize() {
-    IsometricPositionable::_onResize();
+void IsometricMap::onResize() {
+    IsometricPositionable::onResize();
     grid3D.updateArraySize(getSize3D());
     editionGrid3D.updateArraySize(getSize3D());
 }
 
-void IsometricMap::_onGridUpdated(int stair) {
+void IsometricMap::onGridUpdated(int stair) {
     const Array &children { get_children() };
     for (int i = 0; i < children.size(); i++) {
         auto *isometricPositionable = cast_to<IsometricPositionable>(children[i]);
         if (isometricPositionable) {
-            isometricPositionable->_onGridUpdated(stair - static_cast<int>(getPosition3D().z));
+            isometricPositionable->onGridUpdated(stair - static_cast<int>(getPosition3D().z));
         }
     }
 }

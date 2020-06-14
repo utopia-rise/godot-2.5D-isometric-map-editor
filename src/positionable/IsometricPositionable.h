@@ -53,9 +53,9 @@ namespace godot {
         void setOutlineDrawer(Color color, real_t lineSize);
 
         AABB getAABB();
-        void setAABB(AABB ab);
+        virtual void setAABB(AABB ab);
         Vector3 getPosition3D() const;
-        void setPosition3D(Vector3 pos);
+        virtual void setPosition3D(Vector3 pos);
         Vector3 getSize3D() const;
         void setSize3D(Vector3 s);
         int getZOrderSize() const;
@@ -67,9 +67,9 @@ namespace godot {
         int getDebugZ() const;
         void setDebugZ(int dZ);
 
-        virtual void _onResize();
-        virtual void _onGridUpdated(int stair);
-        virtual void _onSelect(bool selected);
+        virtual void onResize();
+        virtual void onGridUpdated(int stair);
+        virtual void onSelect(bool selected);
     };
 }
 
