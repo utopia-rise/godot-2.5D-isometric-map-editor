@@ -125,5 +125,15 @@ void StaticIsometricElement::setSlopeType(int type) {
     if (outlineDrawer) {
         setOutlineDrawer(outlineDrawer->getColor(), outlineDrawer->getLineSize());
     }
+    if (defaultBody) {
+        defaultBody->updateCollisionShape(static_cast<SlopeType>(getSlopeType()), getSize3D());
+    }
     update();
+}
+
+void StaticIsometricElement::onResize() {
+    IsometricPositionable::onResize();
+    if (defaultBody) {
+        defaultBody->updateCollisionShape(static_cast<SlopeType>(getSlopeType()), getSize3D());
+    }
 }

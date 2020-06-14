@@ -18,11 +18,6 @@ namespace godot {
     private:
         CollisionShape *collisionShape;
 
-        /**
-         * Add base (lower) points of slope shapes.
-         * @param poolVector3Array
-         */
-        static void addBasePointsForSlope(PoolVector3Array &poolVector3Array, const Vector3 &size, const Vector3 &originPoint);
     public:
         static void _register_methods();
 

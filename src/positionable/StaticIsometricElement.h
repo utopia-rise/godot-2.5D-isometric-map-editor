@@ -54,6 +54,8 @@ namespace godot {
 
         void setAABB(AABB ab) override;
         void setPosition3D(Vector3 pos) override;
+
+        void onResize() override;
     };
 }
 

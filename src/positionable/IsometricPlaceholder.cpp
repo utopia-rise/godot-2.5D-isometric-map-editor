@@ -163,6 +163,7 @@ void IsometricPlaceholder::onGridUpdated(int stair) {
 }
 
 void IsometricPlaceholder::onResize() {
+    StaticIsometricElement::onResize();
     update();
 }
 
