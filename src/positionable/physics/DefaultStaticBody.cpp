@@ -27,7 +27,7 @@ void DefaultStaticBody::updateCollisionShape(SlopeType slopeType, const Vector3 
 
     ConvexPolygonShape *shape = ConvexPolygonShape::_new();
     PoolVector3Array poolVector3Array;
-    const Vector3 &originPoint {-0.5, -0.5, -0.5};
+    Vector3 originPoint;
     poolVector3Array.push_back(originPoint);
     poolVector3Array.push_back(originPoint + Vector3(0, 0, size.y));
     poolVector3Array.push_back(originPoint + Vector3(size.x, 0, 0));
