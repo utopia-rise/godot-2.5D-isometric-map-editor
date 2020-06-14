@@ -29,7 +29,6 @@ src/positionable/IsometricMap.cpp \
 src/positionable/IsometricTile.cpp \
 src/positionable/IsometricPlaceholder.cpp \
 src/positionable/StaticIsometricElement.cpp \
-src/positionable/IsometricElement.cpp \
 src/positionable/PlaceholderType.cpp \
 src/positionable/physics/DefaultStaticBody.cpp \
 src/containers/Grid3D.cpp \
