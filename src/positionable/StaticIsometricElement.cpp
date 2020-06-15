@@ -97,8 +97,8 @@ void StaticIsometricElement::updateDefaultBody() {
 
 void StaticIsometricElement::setAABB(AABB ab) {
     IsometricPositionable::setAABB(ab);
-    if (is_inside_tree()) {
-        const Vector3 &pos = ab.position;
+    const Vector3 &pos = ab.position;
+    if (defaultBody) {
         defaultBody->set_global_transform({
             {1, 0, 0, 0, 1, 0, 0, 0, 1},
             {pos.x, pos.z, pos.y}
@@ -108,7 +108,7 @@ void StaticIsometricElement::setAABB(AABB ab) {
 
 void StaticIsometricElement::setPosition3D(Vector3 pos) {
     IsometricPositionable::setPosition3D(pos);
-    if (is_inside_tree()) {
+    if (defaultBody) {
         defaultBody->set_global_transform({
             {1, 0, 0, 0, 1, 0, 0, 0, 1},
             {pos.x, pos.z, pos.y}
