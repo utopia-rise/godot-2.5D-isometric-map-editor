@@ -363,7 +363,6 @@ func move_iso_positionable(iso_positionable, direction: int, as_action: bool) ->
 		var current_position = current_aabb.position
 		var current_size = current_aabb.size
 		var future_position: Vector3
-		map.remove_iso_positionable(iso_positionable)
 		if direction == Direction.UP:
 			future_position = current_position + Vector3(0, 0, 1)
 		elif direction == Direction.DOWN:
@@ -382,7 +381,8 @@ func move_iso_positionable(iso_positionable, direction: int, as_action: bool) ->
 		if !map.is_overlapping_aabb(future_aabb) and is_position_positive and is_in_map:
 			if as_action:
 				undo_redo.create_action("move_iso_positionable")
-				undo_redo.add_do_method(iso_positionable, "set_aabb", future_aabb)
+				undo_redo.add_do_method(map, "remove_iso_positionable", iso_positionable)
+				undo_redo.add_do_method(iso_positionable, "set_aabb", future_aabb) 
 				undo_redo.add_do_method(map, "add_iso_positionable", iso_positionable)
 				undo_redo.add_do_method(iso_positionable, "set_owner", editor_interface.get_edited_scene_root())
 				undo_redo.add_do_method(iso_positionable, "_on_grid_updated", stair_selector.selected_stair)
@@ -393,14 +393,11 @@ func move_iso_positionable(iso_positionable, direction: int, as_action: bool) ->
 				undo_redo.add_undo_method(iso_positionable, "_on_grid_updated", stair_selector.selected_stair)
 				undo_redo.commit_action()
 			else:
+				map.remove_iso_positionable(iso_positionable)
 				iso_positionable.set_aabb(future_aabb)
 				map.add_iso_positionable(iso_positionable)
 				iso_positionable.set_owner(editor_interface.get_edited_scene_root())
 				iso_positionable._on_grid_updated(stair_selector.selected_stair)
-		else:
-			map.add_iso_positionable(iso_positionable)
-			iso_positionable.set_owner(editor_interface.get_edited_scene_root())
-			iso_positionable._on_grid_updated(stair_selector.selected_stair)
 
 func select_positionable(positionable):
 	print("selecting " + str(positionable))
