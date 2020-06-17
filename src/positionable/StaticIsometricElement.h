@@ -10,7 +10,7 @@ namespace godot {
      * IsometricElement that cannot move. IE, no position control on it in game.
      */
     class StaticIsometricElement : public IsometricElement<DefaultStaticBody> {
-        GODOT_SUBCLASS(StaticIsometricElement, IsometricElement)
+        GODOT_SUBCLASS(StaticIsometricElement, IsometricPositionable)
 
     private:
         SlopeType slopeType;
@@ -37,6 +37,9 @@ namespace godot {
          */
         int getSlopeType() const override;
         void setSlopeType(int type);
+
+        bool getHasDefaultBody() const;
+        void setHasDefaultBody(bool b);
     };
 }
 

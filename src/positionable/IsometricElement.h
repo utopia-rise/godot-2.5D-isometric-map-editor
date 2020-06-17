@@ -7,7 +7,6 @@ namespace godot {
 
     template <class T>
     class IsometricElement : public IsometricPositionable {
-        GODOT_SUBCLASS(IsometricElement, IsometricPositionable)
 
     protected:
         bool hasMoved;
@@ -23,9 +22,6 @@ namespace godot {
         IsometricElement();
         ~IsometricElement() = default;
 
-//        static void _register_methods();
-
-        void _init();
         void _enter_tree();
         String get_class() const override;
 
@@ -53,11 +49,6 @@ namespace godot {
     template<class T>
     IsometricElement<T>::IsometricElement(): hasMoved(false), hasDefaultBody(true), defaultBody(nullptr) {
 
-    }
-
-    template<class T>
-    void IsometricElement<T>::_init() {
-        IsometricPositionable::_init();
     }
 
     template<class T>

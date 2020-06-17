@@ -13,11 +13,16 @@ void StaticIsometricElement::_register_methods() {
     register_property("has_default_body", &StaticIsometricElement::setHasDefaultBody, &StaticIsometricElement::getHasDefaultBody,
                       true);
 
+    register_method("_init", &StaticIsometricElement::_init);
     register_method("_enter_tree", &StaticIsometricElement::_enter_tree);
 }
 
 void StaticIsometricElement::_init() {
     IsometricPositionable::_init();
+}
+
+void StaticIsometricElement::_enter_tree() {
+    IsometricElement<DefaultStaticBody>::_enter_tree();
 }
 
 String StaticIsometricElement::get_class() const {
@@ -58,4 +63,12 @@ void StaticIsometricElement::setSlopeType(int type) {
     }
     hasMoved = true;
     update();
+}
+
+bool StaticIsometricElement::getHasDefaultBody() const {
+    return IsometricElement<DefaultStaticBody>::getHasDefaultBody();
+}
+
+void StaticIsometricElement::setHasDefaultBody(bool b) {
+    IsometricElement<DefaultStaticBody>::setHasDefaultBody(b);
 }

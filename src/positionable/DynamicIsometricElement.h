@@ -8,7 +8,7 @@
 namespace godot {
 
     class DynamicIsometricElement : public IsometricElement<DefaultKinematicBody> {
-        GODOT_SUBCLASS(DynamicIsometricElement, IsometricElement)
+        GODOT_SUBCLASS(DynamicIsometricElement, IsometricPositionable)
 
     public:
         DynamicIsometricElement() = default;
@@ -17,7 +17,11 @@ namespace godot {
         static void _register_methods();
 
         void _init();
+        void _enter_tree();
         String get_class() const override;
+
+        bool getHasDefaultBody() const;
+        void setHasDefaultBody(bool b);
     };
 
 }
