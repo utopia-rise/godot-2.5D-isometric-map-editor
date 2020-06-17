@@ -18,21 +18,6 @@ void StaticIsometricElement::_init() {
     IsometricPositionable::_init();
 }
 
-void StaticIsometricElement::_enter_tree() {
-    IsometricPositionable::_enter_tree();
-    const Array &children = get_children();
-    if (hasDefaultBody) {
-        for (int i = 0; i < children.size(); i++) {
-            auto *defaultStaticBody = cast_to<DefaultStaticBody>(children[i]);
-            if (defaultStaticBody) {
-                defaultBody = defaultStaticBody;
-                break;
-            }
-        }
-    }
-    updateDefaultBody();
-}
-
 String StaticIsometricElement::get_class() const {
     return "StaticIsometricElement";
 }
@@ -60,41 +45,6 @@ StaticIsometricElement::calculateSlopeOffset(Vector2 *slopeOffset, real_t tileWi
     return slopeType;
 }
 
-void StaticIsometricElement::setHasDefaultBody(bool b) {
-    IsometricElement::setHasDefaultBody(b);
-    if (is_inside_tree()) {
-        updateDefaultBody();
-    }
-}
-
-void StaticIsometricElement::updateDefaultBody() {
-    if (hasDefaultBody) {
-        if (!defaultBody) {
-            defaultBody = DefaultStaticBody::_new();
-            add_child(defaultBody);
-            defaultBody->setParent(this);
-            defaultBody->set_owner(this);
-            hasMoved = true;
-        }
-    } else {
-        if (defaultBody) {
-            remove_child(defaultBody);
-            defaultBody->queue_free();
-            defaultBody = nullptr;
-        }
-    }
-}
-
-void StaticIsometricElement::setAABB(AABB ab) {
-    IsometricPositionable::setAABB(ab);
-    hasMoved = true;
-}
-
-void StaticIsometricElement::setPosition3D(Vector3 pos) {
-    IsometricPositionable::setPosition3D(pos);
-    hasMoved = true;
-}
-
 int StaticIsometricElement::getSlopeType() const {
     return static_cast<int>(slopeType);
 }
@@ -104,15 +54,6 @@ void StaticIsometricElement::setSlopeType(int type) {
     if (outlineDrawer) {
         setOutlineDrawer(outlineDrawer->getColor(), outlineDrawer->getLineSize());
     }
-    if (defaultBody) {
-        defaultBody->updateCollisionShape();
-    }
+    hasMoved = true;
     update();
-}
-
-void StaticIsometricElement::onResize() {
-    IsometricPositionable::onResize();
-    if (defaultBody) {
-        defaultBody->updateCollisionShape();
-    }
 }
