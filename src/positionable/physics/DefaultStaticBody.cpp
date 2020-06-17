@@ -5,25 +5,43 @@
 
 using namespace godot;
 
-DefaultStaticBody::DefaultStaticBody(): collisionShape(nullptr) {
+DefaultStaticBody::DefaultStaticBody(): collisionShape(nullptr), parent(nullptr) {
 
 }
 
 void DefaultStaticBody::_register_methods() {
     register_method("_init", &DefaultStaticBody::_init);
+    register_method("_process", &DefaultStaticBody::_process);
 }
 
 void DefaultStaticBody::_init() {
 
 }
 
-void DefaultStaticBody::updateCollisionShape(SlopeType slopeType, const Vector3 &size) {
+void DefaultStaticBody::_process(float delta) {
+    if (parent->getHasMoved()) {
+        const Vector3 &parentPosition = parent->getPosition3D();
+
+        set_global_transform({
+            {1, 0, 0, 0, 1, 0, 0, 0, 1},
+            {parentPosition.x, parentPosition.z, parentPosition.y}
+        });
+        updateCollisionShape();
+
+        parent->setHasMoved(false);
+    }
+}
+
+void DefaultStaticBody::updateCollisionShape() {
     if (collisionShape) {
         remove_child(collisionShape);
         collisionShape->queue_free();
     }
 
     collisionShape = CollisionShape::_new();
+
+    auto slopeType = static_cast<SlopeType>(parent->getSlopeType());
+    const Vector3 &size = parent->getSize3D();
 
     ConvexPolygonShape *shape = ConvexPolygonShape::_new();
     PoolVector3Array poolVector3Array;
@@ -62,4 +80,8 @@ void DefaultStaticBody::updateCollisionShape(SlopeType slopeType, const Vector3 
     collisionShape->set_shape(shape);
     add_child(collisionShape);
     collisionShape->set_owner(this);
+}
+
+void DefaultStaticBody::setParent(IsometricElement<DefaultStaticBody> *staticIsometricElement) {
+    parent = staticIsometricElement;
 }

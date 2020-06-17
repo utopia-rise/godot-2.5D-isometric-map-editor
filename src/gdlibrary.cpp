@@ -20,6 +20,7 @@ extern "C" void GDN_EXPORT iso_map_gdnative_terminate(godot_gdnative_terminate_o
 extern "C" void GDN_EXPORT iso_map_nativescript_init(void *handle){
     Godot::nativescript_init(handle);
     register_tool_class<IsometricPositionable>();
+    register_tool_class<IsometricElement<DefaultStaticBody>>();
     register_tool_class<StaticIsometricElement>();
     register_tool_class<IsometricMap>();
     register_tool_class<IsometricTile>();

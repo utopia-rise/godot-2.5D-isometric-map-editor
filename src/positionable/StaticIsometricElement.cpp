@@ -2,13 +2,11 @@
 
 using namespace godot;
 
-StaticIsometricElement::StaticIsometricElement(): hasDefaultBody(true), defaultBody(nullptr) {
+StaticIsometricElement::StaticIsometricElement(): slopeType(SlopeType::NONE) {
 
 }
 
 void StaticIsometricElement::_register_methods() {
-    register_property("has_default_body", &StaticIsometricElement::setHasDefaultBody,
-                      &StaticIsometricElement::getHasDefaultBody, true);
     register_property("slope_type", &StaticIsometricElement::setSlopeType, &StaticIsometricElement::getSlopeType,
                       static_cast<int>(SlopeType::NONE), GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT,
                       GODOT_PROPERTY_HINT_ENUM, "NONE,LEFT,RIGHT,FORWARD,BACKWARD");
@@ -62,12 +60,8 @@ StaticIsometricElement::calculateSlopeOffset(Vector2 *slopeOffset, real_t tileWi
     return slopeType;
 }
 
-bool StaticIsometricElement::getHasDefaultBody() const {
-    return hasDefaultBody;
-}
-
 void StaticIsometricElement::setHasDefaultBody(bool b) {
-    hasDefaultBody = b;
+    IsometricElement::setHasDefaultBody(b);
     if (is_inside_tree()) {
         updateDefaultBody();
     }
@@ -77,14 +71,10 @@ void StaticIsometricElement::updateDefaultBody() {
     if (hasDefaultBody) {
         if (!defaultBody) {
             defaultBody = DefaultStaticBody::_new();
-            defaultBody->updateCollisionShape(static_cast<SlopeType>(getSlopeType()), getSize3D());
             add_child(defaultBody);
-            const Vector3 &position = getPosition3D();
-            defaultBody->set_global_transform({
-                {1, 0, 0, 0, 1, 0, 0, 0, 1},
-                {position.x, position.z, position.y}
-            });
+            defaultBody->setParent(this);
             defaultBody->set_owner(this);
+            hasMoved = true;
         }
     } else {
         if (defaultBody) {
@@ -97,26 +87,15 @@ void StaticIsometricElement::updateDefaultBody() {
 
 void StaticIsometricElement::setAABB(AABB ab) {
     IsometricPositionable::setAABB(ab);
-    const Vector3 &pos = ab.position;
-    if (defaultBody) {
-        defaultBody->set_global_transform({
-            {1, 0, 0, 0, 1, 0, 0, 0, 1},
-            {pos.x, pos.z, pos.y}
-        });
-    }
+    hasMoved = true;
 }
 
 void StaticIsometricElement::setPosition3D(Vector3 pos) {
     IsometricPositionable::setPosition3D(pos);
-    if (defaultBody) {
-        defaultBody->set_global_transform({
-            {1, 0, 0, 0, 1, 0, 0, 0, 1},
-            {pos.x, pos.z, pos.y}
-        });
-    }
+    hasMoved = true;
 }
 
-int StaticIsometricElement::getSlopeType() {
+int StaticIsometricElement::getSlopeType() const {
     return static_cast<int>(slopeType);
 }
 
@@ -126,7 +105,7 @@ void StaticIsometricElement::setSlopeType(int type) {
         setOutlineDrawer(outlineDrawer->getColor(), outlineDrawer->getLineSize());
     }
     if (defaultBody) {
-        defaultBody->updateCollisionShape(static_cast<SlopeType>(getSlopeType()), getSize3D());
+        defaultBody->updateCollisionShape();
     }
     update();
 }
@@ -134,6 +113,6 @@ void StaticIsometricElement::setSlopeType(int type) {
 void StaticIsometricElement::onResize() {
     IsometricPositionable::onResize();
     if (defaultBody) {
-        defaultBody->updateCollisionShape(static_cast<SlopeType>(getSlopeType()), getSize3D());
+        defaultBody->updateCollisionShape();
     }
 }

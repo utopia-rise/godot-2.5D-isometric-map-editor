@@ -6,8 +6,10 @@
 #include <gen/StaticBody.hpp>
 #include <positionable/IsometricPositionable.h>
 #include <gen/CollisionShape.hpp>
+#include <positionable/IsometricElement.h>
 
 namespace godot {
+
     /**
      * Default StaticBody for StaticIsometricElement with collision shapes calculated with dimensions of element.
      * @see godot::StaticIsometricElement
@@ -17,6 +19,7 @@ namespace godot {
 
     private:
         CollisionShape *collisionShape;
+        IsometricElement<DefaultStaticBody> *parent;
 
     public:
         static void _register_methods();
@@ -26,12 +29,20 @@ namespace godot {
 
         void _init();
 
+        void _process(float delta);
+
         /**
          * Update collision shape according to slope type and dimensions.
          * @param slopeType
          * @param size
          */
-        void updateCollisionShape(SlopeType slopeType, const Vector3 &size);
+        void updateCollisionShape();
+
+        /**
+         * Sets the parent node of this DefaultStaticBody. Should be a StaticIsometricElement.
+         * @param staticIsometricElement
+         */
+        void setParent(IsometricElement<DefaultStaticBody> *staticIsometricElement);
     };
 }
 

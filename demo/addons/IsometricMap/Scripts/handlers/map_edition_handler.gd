@@ -126,7 +126,7 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 				if !is_selecting_existing:
 					var ortho_pos: Vector3 = IsoServer.get_3d_coord_from_screen(map.get_local_mouse_position(), stair_selector.selected_stair).round()
 					var is_in_plane := 0 <= ortho_pos.x and 1 + ortho_pos.x <= map.size3d.x and 0 <= ortho_pos.y and 1 + ortho_pos.y <= map.size3d.y
-					if is_in_plane and 0 <= ortho_pos.z and ortho_pos.z + loaded_positionable.size3d.z <= map.size3d.z:
+					if loaded_positionable != null and is_in_plane and 0 <= ortho_pos.z and ortho_pos.z + loaded_positionable.size3d.z <= map.size3d.z:
 						select_positionable(loaded_positionable)
 						if selected_positionable.get_class() == "IsometricMap":
 								add_real_positionable(true)
