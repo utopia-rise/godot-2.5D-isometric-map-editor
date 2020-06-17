@@ -1,8 +1,6 @@
 #include <DefaultStaticBody.h>
 #include <gen/CollisionShape.hpp>
 #include <positionable/IsometricPositionable.h>
-#include <gen/ConvexPolygonShape.hpp>
-#include <Area.hpp>
 
 using namespace godot;
 

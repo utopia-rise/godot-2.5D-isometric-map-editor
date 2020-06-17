@@ -23,7 +23,7 @@ namespace godot {
         IsometricElement();
         ~IsometricElement() = default;
 
-        static void _register_methods();
+//        static void _register_methods();
 
         void _init();
         void _enter_tree();
@@ -56,17 +56,11 @@ namespace godot {
     }
 
     template<class T>
-    void IsometricElement<T>::_register_methods() {
-        register_property("has_default_body", &IsometricElement::setHasDefaultBody, &IsometricElement::getHasDefaultBody,
-                          true);
-    }
-
-    template<class T>
     void IsometricElement<T>::_init() {
         IsometricPositionable::_init();
     }
 
-    template<typename T>
+    template<class T>
     void IsometricElement<T>::_enter_tree() {
         IsometricPositionable::_enter_tree();
         const Array &children = get_children();

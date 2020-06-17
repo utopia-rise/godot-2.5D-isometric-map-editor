@@ -30,7 +30,7 @@ namespace godot {
     };
 
     template<class T>
-    DefaultBody<T>::DefaultBody(): parent(nullptr) {
+    DefaultBody<T>::DefaultBody(): collisionShape(nullptr), parent(nullptr) {
 
     }
 

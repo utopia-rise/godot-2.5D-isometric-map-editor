@@ -10,6 +10,8 @@ void StaticIsometricElement::_register_methods() {
     register_property("slope_type", &StaticIsometricElement::setSlopeType, &StaticIsometricElement::getSlopeType,
                       static_cast<int>(SlopeType::NONE), GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT,
                       GODOT_PROPERTY_HINT_ENUM, "NONE,LEFT,RIGHT,FORWARD,BACKWARD");
+    register_property("has_default_body", &StaticIsometricElement::setHasDefaultBody, &StaticIsometricElement::getHasDefaultBody,
+                      true);
 
     register_method("_enter_tree", &StaticIsometricElement::_enter_tree);
 }
