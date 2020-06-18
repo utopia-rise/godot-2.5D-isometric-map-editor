@@ -25,8 +25,8 @@ namespace godot {
         ~DefaultStaticBody() = default;
 
         void _init();
-
-        void _process(float delta);
+        void _enter_tree();
+        void _physics_process(float delta);
 
         /**
          * Update collision shape according to slope type and dimensions.

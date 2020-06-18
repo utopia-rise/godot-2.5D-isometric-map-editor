@@ -112,8 +112,8 @@ namespace godot {
         if (hasDefaultBody) {
             if (!defaultBody) {
                 defaultBody = T::_new();
-                add_child(defaultBody);
                 defaultBody->setParent(this);
+                add_child(defaultBody);
                 defaultBody->set_owner(this);
                 hasMoved = true;
             }

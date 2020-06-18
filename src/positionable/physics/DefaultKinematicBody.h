@@ -22,7 +22,8 @@ namespace godot {
         ~DefaultKinematicBody() = default;
 
         void _init();
-        void _process(float delta);
+        void _enter_tree();
+        void _physics_process(float delta);
 
         void updateCollisionShapes() override;
     };

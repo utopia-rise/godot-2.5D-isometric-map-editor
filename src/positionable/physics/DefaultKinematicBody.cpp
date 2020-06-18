@@ -11,23 +11,39 @@ DefaultKinematicBody::DefaultKinematicBody(): speed(200) {
 
 void DefaultKinematicBody::_register_methods() {
     register_method("_init", &DefaultKinematicBody::_init);
-    register_method("_process", &DefaultKinematicBody::_process);
+    register_method("_enter_tree", &DefaultKinematicBody::_enter_tree);
+    register_method("_physics_process", &DefaultKinematicBody::_physics_process);
 }
 
 void DefaultKinematicBody::_init() {
 
 }
 
-void DefaultKinematicBody::_process(float delta) {
+void DefaultKinematicBody::_enter_tree() {
+    convexPolygonShape = ConvexPolygonShape::_new();
+    shapeOwner = create_shape_owner(this);
+    if (parent) {
+        const Vector3 &parentPosition { parent->getPosition3D() };
+
+        set_global_transform({
+            {1, 0, 0, 0, 1, 0, 0, 0, 1},
+            {parentPosition.x, parentPosition.z, parentPosition.y}
+        });
+        updateCollisionShapes();
+    }
+}
+
+void DefaultKinematicBody::_physics_process(float delta) {
     if (parent) {
         if (parent->getHasMoved()) {
-            const Vector3 &parentPosition = parent->getPosition3D();
+            const Vector3 &parentPosition { parent->getPosition3D() };
 
             set_global_transform({
                 {1, 0, 0, 0, 1, 0, 0, 0, 1},
                 {parentPosition.x, parentPosition.z, parentPosition.y}
             });
-            updateCollisionShapes();
+
+            calculateCollisionShape();
 
             parent->setHasMoved(false);
         }
@@ -56,13 +72,6 @@ void DefaultKinematicBody::_process(float delta) {
 }
 
 void DefaultKinematicBody::updateCollisionShapes() {
-    if (collisionShape) {
-        remove_child(collisionShape);
-        collisionShape->queue_free();
-    }
-
     calculateCollisionShape();
-
-    add_child(collisionShape);
-    collisionShape->set_owner(this);
+    shape_owner_add_shape(shapeOwner, convexPolygonShape);
 }
