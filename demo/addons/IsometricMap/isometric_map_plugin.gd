@@ -15,23 +15,24 @@ func _enter_tree():
 	editor_file_system.connect("filesystem_changed", self, "on_filesystem_changed")
 
 func edit(object: Object) -> void:
-	if object.get_class() == "IsometricMap" && object.get_parent().get_class() != "IsometricMap":
+	var clazz: String = object.get_class()
+	if clazz == "IsometricMap" && object.get_parent().get_class() != "IsometricMap":
 		if handlers.has(object):
 			current_handler = handlers[object]
 		else:
 			var hdler: = MapEditionHandler.new(object, get_undo_redo(), self.get_editor_interface(), isometric_asset_selector)
 			handlers[object] = hdler
 			current_handler = hdler
-	elif object.get_class() == "IsometricPlaceholder" and current_handler != null and current_handler is MapEditionHandler:
+	elif clazz == "IsometricPlaceholder" and current_handler != null and current_handler is MapEditionHandler:
 		current_handler.edit_placeholder(object)
-	elif object.get_class() == "IsometricTile" and object.get_parent().get_class() != "IsometricMap":
-		var hdler = TileEditionHandler.new(object, get_undo_redo())
+	elif (clazz == "IsometricTile" || clazz == "DynamicIsometricElement") and object.get_parent().get_class() != "IsometricMap":
+		var hdler = ElementEditionHandler.new(object, get_undo_redo())
 		handlers[object] = hdler
 		current_handler = hdler
 
 func handles(object: Object) -> bool:
 	var object_class = object.get_class()
-	return object_class == "IsometricMap" or object_class == "IsometricTile" or object_class == "IsometricPositionable" or object_class == "IsometricPlaceholder"
+	return object_class == "IsometricMap" or object_class == "IsometricTile" or object_class == "IsometricPositionable" or object_class == "IsometricPlaceholder" or object_class == "DynamicIsometricElement"
 
 func forward_canvas_gui_input(event: InputEvent) -> bool:
 	if is_instance_valid(current_handler) and current_handler != null:

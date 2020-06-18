@@ -1,11 +1,11 @@
 extends EditionHandler
 
-class_name TileEditionHandler
+class_name ElementEditionHandler
 
 var undo_redo: UndoRedo
-var tile: IsometricTile
+var element
 
-func _init(tile: IsometricTile, undo_redo: UndoRedo):
+func _init(element, undo_redo: UndoRedo):
 	self.undo_redo = undo_redo
-	self.tile = tile
-	tile.set_outline_drawer(Color(0, 0, 0, 1), 1.0)
+	self.element = element
+	element.set_outline_drawer(Color(0, 0, 0, 1), 1.0)
