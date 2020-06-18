@@ -39,6 +39,8 @@ namespace godot {
         bool getHasMoved() const;
         void setHasMoved(bool hm);
 
+        void updatePositionFromBody(PhysicsBody *physicsBody);
+
         virtual int getSlopeType() const;
 
         void setAABB(AABB ab) override;
@@ -89,6 +91,12 @@ namespace godot {
     template<class T>
     void IsometricElement<T>::setHasMoved(bool hm) {
         hasMoved = hm;
+    }
+
+    template<class T>
+    void IsometricElement<T>::updatePositionFromBody(PhysicsBody *physicsBody) {
+        const Vector3 &origin = physicsBody->get_global_transform().origin;
+        IsometricPositionable::setPosition3D({origin.x, origin.z, origin.y});
     }
 
     template<class T>

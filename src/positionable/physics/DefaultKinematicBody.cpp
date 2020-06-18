@@ -68,8 +68,7 @@ void DefaultKinematicBody::_physics_process(float delta) {
 
         move_and_collide(direction * delta * speed);
 
-        const Vector3 &origin = get_global_transform().origin;
-        parent->setPosition3D( {origin.x, origin.z, origin.y} );
+        parent->updatePositionFromBody(this);
     }
 }
 
