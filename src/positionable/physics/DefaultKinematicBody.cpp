@@ -77,7 +77,7 @@ void DefaultKinematicBody::updateCollisionShapes() {
     shape_owner_add_shape(shapeOwner, convexPolygonShape);
 }
 
-float DefaultKinematicBody::getSpeed() {
+float DefaultKinematicBody::getSpeed() const {
     return speed;
 }
 

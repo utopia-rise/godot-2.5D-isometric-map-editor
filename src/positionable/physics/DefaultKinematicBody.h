@@ -27,7 +27,7 @@ namespace godot {
 
         void updateCollisionShapes() override;
 
-        float getSpeed();
+        float getSpeed() const;
         void setSpeed(float s);
     };
 }
