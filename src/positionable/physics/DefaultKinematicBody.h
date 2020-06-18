@@ -13,7 +13,7 @@ namespace godot {
         GODOT_SUBCLASS(DefaultKinematicBody, KinematicBody);
 
     private:
-        int speed;
+        float speed;
 
     public:
         static void _register_methods();
@@ -26,6 +26,9 @@ namespace godot {
         void _physics_process(float delta);
 
         void updateCollisionShapes() override;
+
+        float getSpeed();
+        void setSpeed(float s);
     };
 }
 

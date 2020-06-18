@@ -60,6 +60,7 @@ namespace godot {
                 auto *body = cast_to<T>(children[i]);
                 if (body) {
                     defaultBody = body;
+                    defaultBody->setParent(this);
                     break;
                 }
             }
