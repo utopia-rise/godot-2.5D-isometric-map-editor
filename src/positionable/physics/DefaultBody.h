@@ -14,7 +14,7 @@ namespace godot {
     protected:
         IsometricElement<T> *parent;
         ConvexPolygonShape *convexPolygonShape;
-        int shapeOwner;
+        CollisionShape *collisionShape;
 
         void calculateCollisionShape();
         virtual void updateCollisionShapes();
@@ -31,7 +31,7 @@ namespace godot {
     };
 
     template<class T>
-    DefaultBody<T>::DefaultBody(): parent(nullptr), convexPolygonShape(nullptr), shapeOwner(0) {
+    DefaultBody<T>::DefaultBody(): parent(nullptr), convexPolygonShape(nullptr), collisionShape(nullptr) {
 
     }
 
@@ -83,6 +83,7 @@ namespace godot {
         }
 
         convexPolygonShape->set_points(poolVector3Array);
+        collisionShape->set_shape(convexPolygonShape);
     }
 
 }

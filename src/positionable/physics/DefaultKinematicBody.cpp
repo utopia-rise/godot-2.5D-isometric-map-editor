@@ -22,8 +22,8 @@ void DefaultKinematicBody::_init() {
 }
 
 void DefaultKinematicBody::_enter_tree() {
+    collisionShape = CollisionShape::_new();
     convexPolygonShape = ConvexPolygonShape::_new();
-    shapeOwner = create_shape_owner(this);
     if (parent) {
         const Vector3 &parentPosition { parent->getPosition3D() };
         set_global_transform({
@@ -74,7 +74,8 @@ void DefaultKinematicBody::_physics_process(float delta) {
 
 void DefaultKinematicBody::updateCollisionShapes() {
     calculateCollisionShape();
-    shape_owner_add_shape(shapeOwner, convexPolygonShape);
+    add_child(collisionShape);
+    collisionShape->set_owner(this);
 }
 
 float DefaultKinematicBody::getSpeed() const {

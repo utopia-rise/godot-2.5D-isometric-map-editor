@@ -63,6 +63,7 @@ namespace godot {
                 if (body) {
                     defaultBody = body;
                     defaultBody->setParent(this);
+                    defaultBody->set_owner(this);
                     break;
                 }
             }
