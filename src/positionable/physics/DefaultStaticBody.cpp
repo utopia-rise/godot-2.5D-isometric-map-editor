@@ -17,6 +17,7 @@ void DefaultStaticBody::_init() {
 void DefaultStaticBody::_enter_tree() {
     convexPolygonShape = ConvexPolygonShape::_new();
     shapeOwner = create_shape_owner(this);
+    updateCollisionShapes();
 }
 
 void DefaultStaticBody::_physics_process(float delta) {
