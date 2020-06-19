@@ -22,8 +22,7 @@ void DefaultKinematicBody::_init() {
 }
 
 void DefaultKinematicBody::_enter_tree() {
-    collisionShape = CollisionShape::_new();
-    convexPolygonShape = ConvexPolygonShape::_new();
+    initializeShapes();
     if (parent) {
         const Vector3 &parentPosition { parent->getPosition3D() };
         set_global_transform({

@@ -15,8 +15,7 @@ void DefaultStaticBody::_init() {
 }
 
 void DefaultStaticBody::_enter_tree() {
-    collisionShape = CollisionShape::_new();
-    convexPolygonShape = ConvexPolygonShape::_new();
+    initializeShapes();
     updateCollisionShapes();
 }
 

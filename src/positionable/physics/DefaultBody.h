@@ -16,6 +16,8 @@ namespace godot {
         ConvexPolygonShape *convexPolygonShape;
         CollisionShape *collisionShape;
 
+        void initializeShapes();
+
         void calculateCollisionShape();
         virtual void updateCollisionShapes();
 
@@ -43,6 +45,12 @@ namespace godot {
     template<class T>
     void DefaultBody<T>::updateCollisionShapes() {
 
+    }
+
+    template<class T>
+    void DefaultBody<T>::initializeShapes() {
+        collisionShape = CollisionShape::_new();
+        convexPolygonShape = ConvexPolygonShape::_new();
     }
 
     template<class T>
