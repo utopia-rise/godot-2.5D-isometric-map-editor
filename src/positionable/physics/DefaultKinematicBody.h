@@ -14,6 +14,7 @@ namespace godot {
 
     private:
         float speed;
+        float gravity;
 
     protected:
         void updateCollisionShapes() override;
@@ -30,6 +31,9 @@ namespace godot {
 
         float getSpeed() const;
         void setSpeed(float s);
+
+        float getGravity() const;
+        void setGravity(float g);
     };
 }
 

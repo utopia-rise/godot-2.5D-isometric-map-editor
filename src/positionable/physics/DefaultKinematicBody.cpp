@@ -5,12 +5,14 @@
 
 using namespace godot;
 
-DefaultKinematicBody::DefaultKinematicBody(): speed(1) {
+DefaultKinematicBody::DefaultKinematicBody(): speed(1), gravity(9.8) {
 
 }
 
 void DefaultKinematicBody::_register_methods() {
     register_property("speed", &DefaultKinematicBody::setSpeed, &DefaultKinematicBody::getSpeed, 1.0f);
+    register_property("gravity", &DefaultKinematicBody::setGravity, &DefaultKinematicBody::getGravity,
+            9.8f);
 
     register_method("_init", &DefaultKinematicBody::_init);
     register_method("_enter_tree", &DefaultKinematicBody::_enter_tree);
@@ -52,22 +54,22 @@ void DefaultKinematicBody::_physics_process(float delta) {
         if (!Engine::get_singleton()->is_editor_hint()) {
             Input *input = Input::get_singleton();
 
-            Vector3 direction;
+            Vector3 direction {0, -gravity, 0};
 
             if (input->is_action_pressed("player_goes_forward")) {
-                direction += Vector3(-1, 0, -1);
+                direction += Vector3(-1, 0, -1) * speed;
             }
             if (input->is_action_pressed("player_goes_backward")) {
-                direction += Vector3(1, 0, 1);
+                direction += Vector3(1, 0, 1) * speed;
             }
             if (input->is_action_pressed("player_goes_left")) {
-                direction += Vector3(-1, 0, 1);
+                direction += Vector3(-1, 0, 1) * speed;
             }
             if (input->is_action_pressed("player_goes_right")) {
-                direction += Vector3(1, 0, -1);
+                direction += Vector3(1, 0, -1) * speed;
             }
 
-            move_and_collide(direction * delta * speed);
+            move_and_collide(direction * delta);
 
             parent->updatePositionFromBody(this);
         }
@@ -86,4 +88,12 @@ float DefaultKinematicBody::getSpeed() const {
 
 void DefaultKinematicBody::setSpeed(float s) {
     speed = s;
+}
+
+float DefaultKinematicBody::getGravity() const {
+    return gravity;
+}
+
+void DefaultKinematicBody::setGravity(float g) {
+    gravity = g;
 }
