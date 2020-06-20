@@ -18,7 +18,7 @@ namespace godot {
 
         void initializeShapes();
 
-        void calculateCollisionShape();
+        void calculateCollisionShape(const Vector3 &originPoint = {0, 0, 0});
 
         virtual void updateCollisionShapes();
 
@@ -56,17 +56,16 @@ namespace godot {
     }
 
     template<class T>
-    void DefaultBody<T>::calculateCollisionShape() {
+    void DefaultBody<T>::calculateCollisionShape(const Vector3 &originPoint) {
         auto slopeType = static_cast<SlopeType>(parent->getSlopeType());
         const Vector3 &size = parent->getSize3D();
 
         const Vector3 &convertedSize{size.x, size.z, size.y};
-        Vector3 originPoint;
         PoolVector3Array poolVector3Array;
         poolVector3Array.push_back(originPoint);
-        poolVector3Array.push_back({originPoint.x, 0, convertedSize.z});
-        poolVector3Array.push_back({convertedSize.x, 0, originPoint.z});
-        poolVector3Array.push_back({convertedSize.x,0, convertedSize.z});
+        poolVector3Array.push_back({originPoint.x, originPoint.y, convertedSize.z});
+        poolVector3Array.push_back({convertedSize.x, originPoint.y, originPoint.z});
+        poolVector3Array.push_back({convertedSize.x,originPoint.y, convertedSize.z});
 
         switch (slopeType) {
             case SlopeType::NONE:

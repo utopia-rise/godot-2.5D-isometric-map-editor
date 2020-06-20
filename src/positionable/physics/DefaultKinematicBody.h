@@ -16,6 +16,10 @@ namespace godot {
         float speed;
         float gravity;
 
+        CollisionShape *rayCollisionShape;
+
+        void prepareRayShape();
+
     protected:
         void updateCollisionShapes() override;
 
