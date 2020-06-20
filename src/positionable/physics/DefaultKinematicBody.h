@@ -15,6 +15,9 @@ namespace godot {
     private:
         float speed;
 
+    protected:
+        void updateCollisionShapes() override;
+
     public:
         static void _register_methods();
 
@@ -24,8 +27,6 @@ namespace godot {
         void _init();
         void _enter_tree();
         void _physics_process(float delta);
-
-        void updateCollisionShapes() override;
 
         float getSpeed() const;
         void setSpeed(float s);

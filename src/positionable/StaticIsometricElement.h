@@ -38,8 +38,8 @@ namespace godot {
         int getSlopeType() const override;
         void setSlopeType(int type);
 
-        bool getHasDefaultBody() const;
-        void setHasDefaultBody(bool b);
+        bool getHasDefaultBody() const override;
+        void setHasDefaultBody(bool b) override;
     };
 }
 

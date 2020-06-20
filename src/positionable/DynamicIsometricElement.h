@@ -20,8 +20,8 @@ namespace godot {
         void _enter_tree();
         String get_class() const override;
 
-        bool getHasDefaultBody() const;
-        void setHasDefaultBody(bool b);
+        bool getHasDefaultBody() const override;
+        void setHasDefaultBody(bool b) override;
     };
 
 }

@@ -8,7 +8,7 @@
 
 namespace godot {
 
-    template <class T>
+    template<class T>
     class DefaultBody {
 
     protected:
@@ -19,10 +19,12 @@ namespace godot {
         void initializeShapes();
 
         void calculateCollisionShape();
+
         virtual void updateCollisionShapes();
 
     public:
         DefaultBody();
+
         ~DefaultBody() = default;
 
         /**
@@ -58,42 +60,42 @@ namespace godot {
         auto slopeType = static_cast<SlopeType>(parent->getSlopeType());
         const Vector3 &size = parent->getSize3D();
 
-        PoolVector3Array poolVector3Array;
+        const Vector3 &convertedSize{size.x, size.z, size.y};
         Vector3 originPoint;
+        PoolVector3Array poolVector3Array;
         poolVector3Array.push_back(originPoint);
-        poolVector3Array.push_back(originPoint + Vector3(0, 0, size.y));
-        poolVector3Array.push_back(originPoint + Vector3(size.x, 0, 0));
-        poolVector3Array.push_back(originPoint + Vector3(size.x, 0, size.y));
+        poolVector3Array.push_back({originPoint.x, 0, convertedSize.z});
+        poolVector3Array.push_back({convertedSize.x, 0, originPoint.z});
+        poolVector3Array.push_back({convertedSize.x,0, convertedSize.z});
 
         switch (slopeType) {
             case SlopeType::NONE:
-                poolVector3Array.push_back(originPoint + Vector3(0, size.z, 0));
-                poolVector3Array.push_back(originPoint + Vector3(0, size.z, size.y));
-                poolVector3Array.push_back(originPoint + Vector3(size.x, size.z, 0));
-                poolVector3Array.push_back(originPoint + Vector3(size.x, size.z, size.y));
+                poolVector3Array.push_back({originPoint.x, convertedSize.y, originPoint.z});
+                poolVector3Array.push_back({originPoint.x, convertedSize.y, convertedSize.z});
+                poolVector3Array.push_back({convertedSize.x, convertedSize.y, originPoint.z});
+                poolVector3Array.push_back(convertedSize);
                 break;
             case SlopeType::LEFT:
-                poolVector3Array.push_back(originPoint + Vector3(0, size.z, 0));
-                poolVector3Array.push_back(originPoint + Vector3(0, size.z, size.y));
+                poolVector3Array.push_back({originPoint.x, convertedSize.y, originPoint.z});
+                poolVector3Array.push_back({originPoint.x, convertedSize.y, convertedSize.z});
                 break;
             case SlopeType::RIGHT:
-                poolVector3Array.push_back(originPoint + Vector3(size.x, size.z, 0));
-                poolVector3Array.push_back(originPoint + Vector3(size.x, size.z, size.y));
+                poolVector3Array.push_back({convertedSize.x, convertedSize.y, originPoint.z});
+                poolVector3Array.push_back(convertedSize);
                 break;
             case SlopeType::FORWARD:
-                poolVector3Array.push_back(originPoint + Vector3(0, size.z, 0));
-                poolVector3Array.push_back(originPoint + Vector3(size.x, size.z, 0));
+                poolVector3Array.push_back({originPoint.x, convertedSize.y, originPoint.z});
+                poolVector3Array.push_back({convertedSize.x, convertedSize.y, originPoint.z});
                 break;
             case SlopeType::BACKWARD:
-                poolVector3Array.push_back(originPoint + Vector3(0, size.z, size.y));
-                poolVector3Array.push_back(originPoint + Vector3(size.x, size.z, size.y));
+                poolVector3Array.push_back({originPoint.x, convertedSize.y, convertedSize.z});
+                poolVector3Array.push_back(convertedSize);
                 break;
         }
 
         convexPolygonShape->set_points(poolVector3Array);
         collisionShape->set_shape(convexPolygonShape);
     }
-
 }
 
 

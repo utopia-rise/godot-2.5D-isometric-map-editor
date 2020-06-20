@@ -1,7 +1,7 @@
 #include <DefaultKinematicBody.h>
-#include <gen/CollisionShape.hpp>
 #include <Input.hpp>
 #include <KinematicCollision.hpp>
+#include <gen/Engine.hpp>
 
 using namespace godot;
 
@@ -46,28 +46,31 @@ void DefaultKinematicBody::_physics_process(float delta) {
             calculateCollisionShape();
 
             parent->setHasMoved(false);
+            return;
         }
 
-        Input *input = Input::get_singleton();
+        if (!Engine::get_singleton()->is_editor_hint()) {
+            Input *input = Input::get_singleton();
 
-        Vector3 direction;
+            Vector3 direction;
 
-        if (input->is_action_pressed("player_goes_forward")) {
-            direction += Vector3(-1, 0, -1);
-        }
-        if (input->is_action_pressed("player_goes_backward")) {
-            direction += Vector3(1, 0, 1);
-        }
-        if (input->is_action_pressed("player_goes_left")) {
-            direction += Vector3(-1, 0, 1);
-        }
-        if (input->is_action_pressed("player_goes_right")) {
-            direction += Vector3(1, 0, -1);
-        }
+            if (input->is_action_pressed("player_goes_forward")) {
+                direction += Vector3(-1, 0, -1);
+            }
+            if (input->is_action_pressed("player_goes_backward")) {
+                direction += Vector3(1, 0, 1);
+            }
+            if (input->is_action_pressed("player_goes_left")) {
+                direction += Vector3(-1, 0, 1);
+            }
+            if (input->is_action_pressed("player_goes_right")) {
+                direction += Vector3(1, 0, -1);
+            }
 
-        move_and_collide(direction * delta * speed);
+            move_and_collide(direction * delta * speed);
 
-        parent->updatePositionFromBody(this);
+            parent->updatePositionFromBody(this);
+        }
     }
 }
 

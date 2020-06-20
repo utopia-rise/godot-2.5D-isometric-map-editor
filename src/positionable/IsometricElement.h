@@ -28,13 +28,13 @@ namespace godot {
         /**
          * @return true if should have default body.
          */
-        bool getHasDefaultBody() const;
+        virtual bool getHasDefaultBody() const;
 
         /**
          * Sets if StaticIsometricElement should have default body.
          * @param b
          */
-        void setHasDefaultBody(bool b);
+        virtual void setHasDefaultBody(bool b);
 
         bool getHasMoved() const;
         void setHasMoved(bool hm);

@@ -18,6 +18,9 @@ namespace godot {
     class DefaultStaticBody : public StaticBody, public DefaultBody<DefaultStaticBody> {
         GODOT_CLASS(DefaultStaticBody, StaticBody)
 
+    protected:
+        void updateCollisionShapes() override;
+
     public:
         static void _register_methods();
 
@@ -27,14 +30,6 @@ namespace godot {
         void _init();
         void _enter_tree();
         void _physics_process(float delta);
-
-        /**
-         * Update collision shape according to slope type and dimensions.
-         * @param slopeType
-         * @param size
-         */
-        void updateCollisionShapes() override;
-
     };
 }
 
