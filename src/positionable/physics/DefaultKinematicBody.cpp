@@ -85,7 +85,7 @@ void DefaultKinematicBody::_physics_process(float delta) {
                 direction += Vector3(1, 0, -1).normalized() * speed;
             }
 
-            move_and_slide(direction);
+            move_and_slide(direction, {0, 1, 0});
 
             parent->updatePositionFromBody(this);
         }
