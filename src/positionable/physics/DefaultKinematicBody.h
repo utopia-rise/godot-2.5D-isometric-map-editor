@@ -6,10 +6,11 @@
 #include <KinematicBody.hpp>
 #include <positionable/IsometricElement.h>
 #include <DefaultBody.h>
+#include <gen/CapsuleShape.hpp>
 
 namespace godot {
 
-    class DefaultKinematicBody : public KinematicBody, public DefaultBody<DefaultKinematicBody> {
+    class DefaultKinematicBody : public KinematicBody, public DefaultBody<DefaultKinematicBody, CapsuleShape> {
         GODOT_SUBCLASS(DefaultKinematicBody, KinematicBody);
 
     private:
@@ -17,10 +18,12 @@ namespace godot {
         float gravity;
 
         CollisionShape *rayCollisionShape;
+        Vector3 linearVelocity;
 
         void prepareRayShape();
 
     protected:
+        void calculateCollisionShape() override;
         void updateCollisionShapes() override;
 
     public:

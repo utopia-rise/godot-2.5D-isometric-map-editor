@@ -15,10 +15,11 @@ namespace godot {
      * Default StaticBody for StaticIsometricElement with collision shapes calculated with dimensions of element.
      * @see godot::StaticIsometricElement
      */
-    class DefaultStaticBody : public StaticBody, public DefaultBody<DefaultStaticBody> {
+    class DefaultStaticBody : public StaticBody, public DefaultBody<DefaultStaticBody, ConvexPolygonShape> {
         GODOT_CLASS(DefaultStaticBody, StaticBody)
 
     protected:
+        void calculateCollisionShape() override;
         void updateCollisionShapes() override;
 
     public:
