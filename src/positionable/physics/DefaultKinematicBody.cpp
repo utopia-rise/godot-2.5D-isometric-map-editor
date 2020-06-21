@@ -90,8 +90,6 @@ void DefaultKinematicBody::_physics_process(float delta) {
 
             linearVelocity = move_and_slide(linearVelocity, {0, 1, 0});
 
-            Godot::print(get_transform().origin);
-
             parent->updatePositionFromBody(this);
         }
     }
