@@ -45,6 +45,11 @@ namespace godot {
     }
 
     template<class T, class U>
+    void DefaultBody<T, U>::calculateCollisionShape() {
+
+    }
+
+    template<class T, class U>
     void DefaultBody<T, U>::updateCollisionShapes() {
 
     }

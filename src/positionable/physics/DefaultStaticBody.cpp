@@ -73,6 +73,8 @@ void DefaultStaticBody::calculateCollisionShape() {
 
 void DefaultStaticBody::updateCollisionShapes() {
     calculateCollisionShape();
-    add_child(collisionShape);
+    if (!collisionShape->get_parent()) {
+        add_child(collisionShape);
+    }
     collisionShape->set_owner(this);
 }
