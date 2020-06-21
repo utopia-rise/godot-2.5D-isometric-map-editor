@@ -36,7 +36,7 @@ void DefaultKinematicBody::_enter_tree() {
         });
         collisionShape->set_global_transform({
             {1, 0, 0, 0, 1, 0, 0, 0, 1},
-            {parentPosition.x + parentSize.x * 0.5f, parentPosition.z + 0.5f, parentPosition.y + parentSize.y * 0.5f}
+            {parentPosition.x + parentSize.x * 0.5f, parentPosition.z + 0.5f * parentSize.z, parentPosition.y + parentSize.y * 0.5f}
         });
         collisionShape->rotate_x(deg2rad(90));
         updateCollisionShapes();
@@ -55,7 +55,7 @@ void DefaultKinematicBody::_physics_process(float delta) {
             });
             collisionShape->set_global_transform({
                 {1, 0, 0, 0, 1, 0, 0, 0, 1},
-                {parentPosition.x + parentSize.x * 0.5f, parentPosition.z + 0.5f, parentPosition.y + parentSize.y * 0.5f}
+                {parentPosition.x + parentSize.x * 0.5f, parentPosition.z + 0.5f * parentSize.z, parentPosition.y + parentSize.y * 0.5f}
             });
             collisionShape->rotate_x(deg2rad(90));
 

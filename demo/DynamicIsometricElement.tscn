@@ -22,4 +22,3 @@ move_lock_x = true
 move_lock_y = true
 script = SubResource( 1 )
 speed = 3.0
-gravity = 9.8
