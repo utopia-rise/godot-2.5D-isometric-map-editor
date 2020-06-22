@@ -58,16 +58,6 @@ After installing the addon using the steps above, find the `res://addons/Isometr
 and then uncheck, the `Singleton` property.
 ![gdns workaround]
 
-Make sure to do this for the following files for safety:
-```json
-GdnsScripts/IsometricServer.gdns
-GdnsScripts/positionable/IsometricMap.gdns
-GdnsScripts/positionable/IsometricPlaceholder.gdns
-GdnsScripts/positionable/IsometricPositionable.gdns
-GdnsScripts/positionable/IsometricTile.gdns
-GdnsScripts/positionable/PlaceholderType.gdns
-```
-
 The end result will look the same as when you started - an unchecked box. However this will correctly populate and, more
 importantly, save the `base` field in the `_global_script_classes` section in the `project.godot` file.
 
