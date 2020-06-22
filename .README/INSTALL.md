@@ -55,7 +55,7 @@ point in the future so users won't have to do this manual process.
 
 After installing the addon using the steps above, find the `res://addons/IsometricMap/GdnsScripts/` directory and open each
 `.gdns` file located within. This should bring up the file properties in the inspector. For each file, proceed to check,
-and then uncheck, the `Singleton` property.
+and then uncheck, the `Singleton` property:  
 ![gdns workaround]
 
 The end result will look the same as when you started - an unchecked box. However this will correctly populate and, more
@@ -64,7 +64,7 @@ importantly, save the `base` field in the `_global_script_classes` section in th
 Save, restart Godot, and your project should now allow full use of the addon.
 
 You can further verify the workaround has worked by opening up your `project.godot` file in an editor and checking each
-IsometricMap gdns entry to ensure the `base` field is populated like so:
+IsometricMap gdns entry to ensure the `base` field is populated like so:  
 ```json
 {
 "base": "Node2D",
