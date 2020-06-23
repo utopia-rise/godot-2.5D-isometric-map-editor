@@ -4,8 +4,8 @@ class_name IsometricStaticBody
 
 var parent
 
-func _init(parent):
-	self.parent = parent
+func _enter_tree():
+	self.parent = get_parent()
 
 func _physics_process(delta):
 	if parent != null && parent.has_moved():

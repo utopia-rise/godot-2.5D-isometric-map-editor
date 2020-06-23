@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://addons/IsometricMap/GdnsScripts/positionable/PlaceholderType.gdns" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+type_name = "Ground"
+color = Color( 0.341176, 0.207843, 0.0235294, 1 )

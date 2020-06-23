@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Scenes/examples/dynamic/DefaultCharacter.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/examples/dynamic/SimpleCharacterImpl.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/examples/maps/CollisionDojo.tscn" type="PackedScene" id=2]
 
 [node name="CollisionDojo" instance=ExtResource( 2 )]
@@ -74,23 +74,103 @@ z_index = 256
 [node name="OpenSourceBlock44" parent="." index="43"]
 z_index = 346
 
+[node name="OpenSourceBlock45" parent="." index="44"]
+position = Vector2( 0, -156.767 )
+iso_position = Vector2( 0, -156.767 )
+
+[node name="OpenSourceBlock46" parent="." index="45"]
+position = Vector2( -128, -92.7673 )
+iso_position = Vector2( -128, -92.7673 )
+
+[node name="OpenSourceBlock47" parent="." index="46"]
+position = Vector2( -256, -28.7673 )
+iso_position = Vector2( -256, -28.7673 )
+
+[node name="OpenSourceBlock48" parent="." index="47"]
+position = Vector2( -384, 35.2327 )
+iso_position = Vector2( -384, 35.2327 )
+
+[node name="OpenSourceBlock49" parent="." index="48"]
+position = Vector2( -512, 99.2327 )
+iso_position = Vector2( -512, 99.2327 )
+
+[node name="OpenSourceBlock50" parent="." index="49"]
+position = Vector2( -640, 163.233 )
+iso_position = Vector2( -640, 163.233 )
+
+[node name="OpenSourceBlock51" parent="." index="50"]
+position = Vector2( -768, 227.233 )
+iso_position = Vector2( -768, 227.233 )
+
+[node name="OpenSourceBlock52" parent="." index="51"]
+position = Vector2( -896, 291.233 )
+iso_position = Vector2( -896, 291.233 )
+
+[node name="OpenSourceBlock53" parent="." index="52"]
+position = Vector2( -1024, 355.233 )
+iso_position = Vector2( -1024, 355.233 )
+
+[node name="OpenSourceBlock54" parent="." index="53"]
+position = Vector2( -1152, 419.233 )
+iso_position = Vector2( -1152, 419.233 )
+
+[node name="OpenSourceBlock55" parent="." index="54"]
+position = Vector2( -1280, 483.233 )
+iso_position = Vector2( -1280, 483.233 )
+
+[node name="OpenSourceBlock56" parent="." index="55"]
+position = Vector2( -1408, 547.233 )
+iso_position = Vector2( -1408, 547.233 )
+
+[node name="OpenSourceBlock69" parent="." index="56"]
+position = Vector2( 128, -92.7673 )
+iso_position = Vector2( 128, -92.7673 )
+
+[node name="OpenSourceBlock57" parent="." index="57"]
+position = Vector2( 256, -28.7673 )
+iso_position = Vector2( 256, -28.7673 )
+
+[node name="OpenSourceBlock58" parent="." index="58"]
+position = Vector2( 384, 35.2327 )
+iso_position = Vector2( 384, 35.2327 )
+
+[node name="OpenSourceBlock59" parent="." index="59"]
+position = Vector2( 512, 99.2327 )
+iso_position = Vector2( 512, 99.2327 )
+
+[node name="OpenSourceBlock60" parent="." index="60"]
+position = Vector2( 640, 163.233 )
+iso_position = Vector2( 640, 163.233 )
+
 [node name="OpenSourceBlock61" parent="." index="61"]
+position = Vector2( 896, 291.233 )
 z_index = 260
+iso_position = Vector2( 896, 291.233 )
 
 [node name="OpenSourceBlock62" parent="." index="62"]
+position = Vector2( 1024, 355.233 )
 z_index = 290
+iso_position = Vector2( 1024, 355.233 )
 
 [node name="OpenSourceBlock63" parent="." index="63"]
+position = Vector2( 768, 227.233 )
 z_index = 230
+iso_position = Vector2( 768, 227.233 )
 
 [node name="OpenSourceBlock64" parent="." index="64"]
+position = Vector2( 1152, 419.233 )
 z_index = 320
+iso_position = Vector2( 1152, 419.233 )
 
 [node name="OpenSourceBlock65" parent="." index="65"]
+position = Vector2( 1280, 483.233 )
 z_index = 350
+iso_position = Vector2( 1280, 483.233 )
 
 [node name="OpenSourceBlock66" parent="." index="66"]
+position = Vector2( 1408, 547.233 )
 z_index = 380
+iso_position = Vector2( 1408, 547.233 )
 
 [node name="OpenSourceBlockChild41" parent="." index="107"]
 z_index = 220
@@ -254,87 +334,215 @@ z_index = 266
 [node name="OpenSourceBlockChild100" parent="." index="166"]
 z_index = 268
 
+[node name="OpenSourceBlock67" parent="." index="167"]
+position = Vector2( -1280, 611.233 )
+iso_position = Vector2( -1280, 611.233 )
+
+[node name="OpenSourceBlock68" parent="." index="168"]
+position = Vector2( -1152, 675.233 )
+iso_position = Vector2( -1152, 675.233 )
+
+[node name="OpenSourceBlock70" parent="." index="169"]
+position = Vector2( -1024, 739.233 )
+iso_position = Vector2( -1024, 739.233 )
+
 [node name="OpenSourceBlock71" parent="." index="170"]
+position = Vector2( -896, 803.233 )
 z_index = 222
+iso_position = Vector2( -896, 803.233 )
 
 [node name="OpenSourceBlock72" parent="." index="171"]
+position = Vector2( -768, 867.233 )
 z_index = 252
+iso_position = Vector2( -768, 867.233 )
 
 [node name="OpenSourceBlock73" parent="." index="172"]
+position = Vector2( -640, 931.233 )
 z_index = 282
+iso_position = Vector2( -640, 931.233 )
 
 [node name="OpenSourceBlock74" parent="." index="173"]
+position = Vector2( -512, 995.233 )
 z_index = 312
+iso_position = Vector2( -512, 995.233 )
 
 [node name="OpenSourceBlock75" parent="." index="174"]
+position = Vector2( -384, 1059.23 )
 z_index = 342
+iso_position = Vector2( -384, 1059.23 )
 
 [node name="OpenSourceBlock76" parent="." index="175"]
+position = Vector2( -256, 1123.23 )
 z_index = 372
+iso_position = Vector2( -256, 1123.23 )
 
 [node name="OpenSourceBlock77" parent="." index="176"]
+position = Vector2( -128, 1187.23 )
 z_index = 422
+iso_position = Vector2( -128, 1187.23 )
 
 [node name="OpenSourceBlock78" parent="." index="177"]
+position = Vector2( 0, 1251.23 )
 z_index = 428
+iso_position = Vector2( 0, 1251.23 )
 
 [node name="OpenSourceBlock79" parent="." index="178"]
+position = Vector2( 128, 1187.23 )
 z_index = 424
+iso_position = Vector2( 128, 1187.23 )
 
 [node name="OpenSourceBlock80" parent="." index="179"]
+position = Vector2( 256, 1123.23 )
 z_index = 418
+iso_position = Vector2( 256, 1123.23 )
 
 [node name="OpenSourceBlock81" parent="." index="180"]
+position = Vector2( 384, 1059.23 )
 z_index = 414
+iso_position = Vector2( 384, 1059.23 )
 
 [node name="OpenSourceBlock82" parent="." index="181"]
+position = Vector2( 512, 995.233 )
 z_index = 410
+iso_position = Vector2( 512, 995.233 )
 
 [node name="OpenSourceBlock83" parent="." index="182"]
+position = Vector2( 640, 931.233 )
 z_index = 406
+iso_position = Vector2( 640, 931.233 )
 
 [node name="OpenSourceBlock84" parent="." index="183"]
+position = Vector2( 768, 867.233 )
 z_index = 402
+iso_position = Vector2( 768, 867.233 )
 
 [node name="OpenSourceBlock85" parent="." index="184"]
+position = Vector2( 896, 803.233 )
 z_index = 398
+iso_position = Vector2( 896, 803.233 )
 
 [node name="OpenSourceBlock86" parent="." index="185"]
+position = Vector2( 1024, 739.233 )
 z_index = 394
+iso_position = Vector2( 1024, 739.233 )
 
 [node name="OpenSourceBlock87" parent="." index="186"]
+position = Vector2( 1152, 675.233 )
 z_index = 390
+iso_position = Vector2( 1152, 675.233 )
 
 [node name="OpenSourceBlock88" parent="." index="187"]
+position = Vector2( 1280, 611.233 )
 z_index = 386
+iso_position = Vector2( 1280, 611.233 )
+
+[node name="OpenSourceBlock89" parent="." index="188"]
+position = Vector2( 0, -313.535 )
+iso_position = Vector2( 0, -313.535 )
+
+[node name="OpenSourceBlock90" parent="." index="189"]
+position = Vector2( -128, -249.535 )
+iso_position = Vector2( -128, -249.535 )
+
+[node name="OpenSourceBlock91" parent="." index="190"]
+position = Vector2( -256, -185.535 )
+iso_position = Vector2( -256, -185.535 )
+
+[node name="OpenSourceBlock92" parent="." index="191"]
+position = Vector2( -384, -121.535 )
+iso_position = Vector2( -384, -121.535 )
+
+[node name="OpenSourceBlock94" parent="." index="193"]
+position = Vector2( -640, 6.4653 )
+iso_position = Vector2( -640, 6.4653 )
+
+[node name="OpenSourceBlock96" parent="." index="195"]
+position = Vector2( -896, 134.465 )
+iso_position = Vector2( -896, 134.465 )
+
+[node name="OpenSourceBlock101" parent="." index="196"]
+position = Vector2( -1024, 198.465 )
+iso_position = Vector2( -1024, 198.465 )
+
+[node name="OpenSourceBlock97" parent="." index="197"]
+position = Vector2( -1152, 262.465 )
+iso_position = Vector2( -1152, 262.465 )
+
+[node name="OpenSourceBlock98" parent="." index="198"]
+position = Vector2( -1280, 326.465 )
+iso_position = Vector2( -1280, 326.465 )
+
+[node name="OpenSourceBlock99" parent="." index="199"]
+position = Vector2( -1408, 390.465 )
+iso_position = Vector2( -1408, 390.465 )
+
+[node name="OpenSourceBlock100" parent="." index="200"]
+position = Vector2( 128, -249.535 )
+iso_position = Vector2( 128, -249.535 )
+
+[node name="OpenSourceBlock102" parent="." index="201"]
+position = Vector2( 256, -185.535 )
+iso_position = Vector2( 256, -185.535 )
+
+[node name="OpenSourceBlock103" parent="." index="202"]
+position = Vector2( 384, -121.535 )
+iso_position = Vector2( 384, -121.535 )
 
 [node name="OpenSourceBlock105" parent="." index="204"]
+position = Vector2( 640, 6.4653 )
 z_index = 228
+iso_position = Vector2( 640, 6.4653 )
 
 [node name="OpenSourceBlock106" parent="." index="205"]
 z_index = 258
 
 [node name="OpenSourceBlock107" parent="." index="206"]
+position = Vector2( 896, 134.465 )
 z_index = 288
+iso_position = Vector2( 896, 134.465 )
 
 [node name="OpenSourceBlock108" parent="." index="207"]
+position = Vector2( 1024, 198.465 )
 z_index = 318
+iso_position = Vector2( 1024, 198.465 )
 
 [node name="OpenSourceBlock109" parent="." index="208"]
+position = Vector2( 1152, 262.465 )
 z_index = 348
+iso_position = Vector2( 1152, 262.465 )
 
 [node name="OpenSourceBlock110" parent="." index="209"]
+position = Vector2( 1280, 326.465 )
 z_index = 378
+iso_position = Vector2( 1280, 326.465 )
 
 [node name="OpenSourceBlock111" parent="." index="210"]
+position = Vector2( 1408, 390.465 )
 z_index = 384
+iso_position = Vector2( 1408, 390.465 )
 
-[node name="DynamicIsometricElement" parent="." index="215" instance=ExtResource( 1 )]
-position = Vector2( 640, 419.233 )
+[node name="Node2D3" parent="." index="211"]
+position = Vector2( 256, 227.233 )
+iso_position = Vector2( 256, 227.233 )
+
+[node name="Node2D4" parent="." index="212"]
+position = Vector2( -640, 419.233 )
+iso_position = Vector2( -640, 419.233 )
+
+[node name="OpenSourceBlock112" parent="." index="213"]
+position = Vector2( -384, 547.233 )
+iso_position = Vector2( -384, 547.233 )
+
+[node name="OpenSourceBlock113" parent="." index="214"]
+position = Vector2( -512, 611.233 )
+iso_position = Vector2( -512, 611.233 )
+
+[node name="SimpleCharacterImpl" parent="." index="215" instance=ExtResource( 1 )]
+position = Vector2( 640, 675.233 )
 z_index = 430
-iso_position = Vector2( 640, 419.233 )
-position3d = Vector3( 7, 2, 1 )
+iso_position = Vector2( 640, 675.233 )
+position3d = Vector3( 9, 4, 1 )
 
-[node name="Camera2D" type="Camera2D" parent="DynamicIsometricElement" index="2"]
+[node name="Camera2D" type="Camera2D" parent="SimpleCharacterImpl" index="2"]
 current = true
 zoom = Vector2( 2, 2 )

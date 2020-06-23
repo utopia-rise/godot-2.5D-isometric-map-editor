@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://addons/IsometricMap/GdnsScripts/positionable/DynamicIsometricElement.gdns" type="Script" id=1]
+[ext_resource path="res://Scripts/physics/example_kinematic_body_simple_impl.gd" type="Script" id=2]
+[ext_resource path="res://Assets/Characters/Human/Human_0_Run1.png" type="Texture" id=3]
+
+[sub_resource type="CapsuleShape" id=1]
+radius = 0.22
+height = 0.66
+
+[node name="SimpleCharacterImpl" type="Node2D"]
+script = ExtResource( 1 )
+size3d = Vector3( 0.4, 0.2, 1 )
+has_default_body = false
+
+[node name="ExampleKinematicBodySimpleImpl" type="KinematicBody" parent="."]
+script = ExtResource( 2 )
+gravity = 9.8
+speed = 3
+
+[node name="CollisionShape" type="CollisionShape" parent="ExampleKinematicBodySimpleImpl"]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0.22, 0.55, 0.22 )
+shape = SubResource( 1 )
+
+[node name="Human_0_Run1" type="Sprite" parent="."]
+position = Vector2( 19.0481, -270.562 )
+scale = Vector2( 1.01719, 1.14835 )
+texture = ExtResource( 3 )
