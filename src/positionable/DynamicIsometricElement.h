@@ -22,6 +22,11 @@ namespace godot {
 
         bool getHasDefaultBody() const override;
         void setHasDefaultBody(bool b) override;
+
+        bool getHasMoved() const override;
+        void setHasMoved(bool hm) override;
+
+        void updatePositionFromBody(PhysicsBody *physicsBody) override;
     };
 
 }

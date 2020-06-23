@@ -15,6 +15,8 @@ void StaticIsometricElement::_register_methods() {
 
     register_method("_init", &StaticIsometricElement::_init);
     register_method("_enter_tree", &StaticIsometricElement::_enter_tree);
+    register_method("has_moved", &StaticIsometricElement::getHasMoved);
+    register_method("set_has_moved", &StaticIsometricElement::setHasMoved);
 }
 
 void StaticIsometricElement::_init() {
@@ -71,4 +73,16 @@ bool StaticIsometricElement::getHasDefaultBody() const {
 
 void StaticIsometricElement::setHasDefaultBody(bool b) {
     IsometricElement<DefaultStaticBody>::setHasDefaultBody(b);
+}
+
+bool StaticIsometricElement::getHasMoved() const {
+    return IsometricElement<DefaultStaticBody>::getHasMoved();
+}
+
+void StaticIsometricElement::setHasMoved(bool hm) {
+    IsometricElement<DefaultStaticBody>::setHasMoved(hm);
+}
+
+void StaticIsometricElement::updatePositionFromBody(PhysicsBody *physicsBody) {
+
 }

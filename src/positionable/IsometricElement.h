@@ -36,10 +36,10 @@ namespace godot {
          */
         virtual void setHasDefaultBody(bool b);
 
-        bool getHasMoved() const;
-        void setHasMoved(bool hm);
+        virtual bool getHasMoved() const;
+        virtual void setHasMoved(bool hm);
 
-        void updatePositionFromBody(PhysicsBody *physicsBody);
+        virtual void updatePositionFromBody(PhysicsBody *physicsBody);
 
         virtual int getSlopeType() const;
 
