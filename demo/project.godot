@@ -34,11 +34,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scripts/physics/example_kinematic_body_simple_impl.gd"
 }, {
-"base": "IsometricStaticBody",
-"class": "ExampleStaticBodyAutoshapeImpl",
-"language": "GDScript",
-"path": "res://Scripts/physics/example_static_body_autoshape_impl.gd"
-}, {
 "base": "Tree",
 "class": "FileTree",
 "language": "GDScript",
@@ -125,7 +120,6 @@ _global_script_class_icons={
 "ElementEditionHandler": "",
 "ExampleKinematicBodyAutoshapeImpl": "",
 "ExampleKinematicBodySimpleImpl": "",
-"ExampleStaticBodyAutoshapeImpl": "",
 "FileTree": "",
 "GridCursor": "",
 "IsoPreviewGenerator": "",
