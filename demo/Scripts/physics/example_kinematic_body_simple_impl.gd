@@ -2,14 +2,10 @@ tool
 extends IsometricKinematicBody
 class_name ExampleKinematicBodySimpleImpl
 
-var shape: CollisionShape
 var linear_velocity: Vector3
 
 export(float) var gravity: float
 export(int) var speed: int
-
-func _ready():
-	shape = $CollisionShape
 
 func _recalibrate_from_parent() -> void:
 	._recalibrate_from_parent()
