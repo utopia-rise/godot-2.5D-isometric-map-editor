@@ -126,17 +126,18 @@ Array IsometricMap::getFlattenPositionables(const Vector3 &offset) {
     for (int i = 0; i < children.size(); i++) {
         auto *positionable = cast_to<IsometricPositionable>(children[i]);
         if (positionable) {
-            if (auto *map = dynamic_cast<IsometricMap *>(positionable)) {
+            if (auto *map = cast_to<IsometricMap>(positionable)) {
                 const Array &innerPositionables = map->getFlattenPositionables(offset + map->getPosition3D());
                 for (int j = 0; j < innerPositionables.size(); j++) {
                     auto *innerPositionable = cast_to<IsometricPositionable>(innerPositionables[j]);
                     if (innerPositionable) {
-                        positionables.append(innerPositionable->duplicate());
+                        positionables.append(innerPositionable);
                     }
                 }
             } else {
-                positionable->setPosition3D(offset + positionable->getPosition3D());
-                positionables.append(positionable->duplicate());
+                auto *duplicatePositionable = cast_to<IsometricPositionable>(positionable->duplicate());
+                duplicatePositionable->setPosition3D(offset + positionable->getPosition3D());
+                positionables.append(duplicatePositionable);
             }
         }
     }
