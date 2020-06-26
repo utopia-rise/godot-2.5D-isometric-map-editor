@@ -47,49 +47,49 @@ is_temporary = false
 
 [node name="OpenSourceBlock7" parent="." instance=ExtResource( 5 )]
 position = Vector2( -256, 384 )
-z_index = 65
+z_index = 69
 iso_position = Vector2( -256, 384 )
 position3d = Vector3( 2, 4, 0 )
 is_temporary = false
 
 [node name="OpenSourceBlock10" parent="." instance=ExtResource( 5 )]
 position = Vector2( -128, 448 )
-z_index = 83
+z_index = 87
 iso_position = Vector2( -128, 448 )
 position3d = Vector3( 3, 4, 0 )
 is_temporary = false
 
 [node name="OpenSourceBlock8" parent="." instance=ExtResource( 5 )]
 position = Vector2( 0, 512 )
-z_index = 107
+z_index = 111
 iso_position = Vector2( 0, 512 )
 position3d = Vector3( 4, 4, 0 )
 is_temporary = false
 
 [node name="OpenSourceBlock9" parent="." instance=ExtResource( 5 )]
 position = Vector2( 128, 448 )
-z_index = 101
+z_index = 105
 iso_position = Vector2( 128, 448 )
 position3d = Vector3( 4, 3, 0 )
 is_temporary = false
 
 [node name="OpenSourceBlock11" parent="." instance=ExtResource( 5 )]
 position = Vector2( 256, 384 )
-z_index = 95
+z_index = 99
 iso_position = Vector2( 256, 384 )
 position3d = Vector3( 4, 2, 0 )
 is_temporary = false
 
 [node name="OpenSourceBlock12" parent="." instance=ExtResource( 5 )]
 position = Vector2( 384, 320 )
-z_index = 89
+z_index = 93
 iso_position = Vector2( 384, 320 )
 position3d = Vector3( 4, 1, 0 )
 is_temporary = false
 
 [node name="OpenSourceBlock13" parent="." instance=ExtResource( 5 )]
 position = Vector2( 512, 256 )
-z_index = 85
+z_index = 89
 iso_position = Vector2( 512, 256 )
 position3d = Vector3( 4, 0, 0 )
 is_temporary = false
@@ -103,7 +103,7 @@ is_temporary = false
 
 [node name="OpenSourceBlock16" parent="." instance=ExtResource( 5 )]
 position = Vector2( 384, 192 )
-z_index = 67
+z_index = 71
 iso_position = Vector2( 384, 192 )
 position3d = Vector3( 3, 0, 0 )
 is_temporary = false
@@ -131,28 +131,28 @@ is_temporary = false
 
 [node name="OpenSourceBlock20" parent="." instance=ExtResource( 5 )]
 position = Vector2( -128, 320 )
-z_index = 51
+z_index = 57
 iso_position = Vector2( -128, 320 )
 position3d = Vector3( 2, 3, 0 )
 is_temporary = false
 
 [node name="OpenSourceBlock21" parent="." instance=ExtResource( 5 )]
 position = Vector2( 0, 384 )
-z_index = 75
+z_index = 79
 iso_position = Vector2( 0, 384 )
 position3d = Vector3( 3, 3, 0 )
 is_temporary = false
 
 [node name="OpenSourceBlock22" parent="." instance=ExtResource( 5 )]
 position = Vector2( 128, 320 )
-z_index = 73
+z_index = 77
 iso_position = Vector2( 128, 320 )
 position3d = Vector3( 3, 2, 0 )
 is_temporary = false
 
 [node name="OpenSourceBlock23" parent="." instance=ExtResource( 5 )]
 position = Vector2( 256, 256 )
-z_index = 71
+z_index = 75
 iso_position = Vector2( 256, 256 )
 position3d = Vector3( 3, 1, 0 )
 is_temporary = false
@@ -166,21 +166,21 @@ is_temporary = false
 
 [node name="OpenSourceBlock25" parent="." instance=ExtResource( 5 )]
 position = Vector2( 0, 256 )
-z_index = 41
+z_index = 43
 iso_position = Vector2( 0, 256 )
 position3d = Vector3( 2, 2, 0 )
 is_temporary = false
 
 [node name="OpenSourceBlock26" parent="." instance=ExtResource( 5 )]
 position = Vector2( -256, 227.233 )
-z_index = 77
+z_index = 81
 iso_position = Vector2( -256, 227.233 )
 position3d = Vector3( 2, 4, 1 )
 is_temporary = false
 
 [node name="OpenSourceBlock27" parent="." instance=ExtResource( 5 )]
 position = Vector2( -384, 163.233 )
-z_index = 53
+z_index = 59
 iso_position = Vector2( -384, 163.233 )
 position3d = Vector3( 1, 4, 1 )
 is_temporary = false
@@ -206,65 +206,58 @@ iso_position = Vector2( -256, -28.7673 )
 position3d = Vector3( 0, 2, 1 )
 is_temporary = false
 
-[node name="OpenSourceBlock30" parent="." instance=ExtResource( 5 )]
-position = Vector2( -128, -92.7673 )
-z_index = 6
-iso_position = Vector2( -128, -92.7673 )
-position3d = Vector3( 0, 1, 1 )
-is_temporary = false
-
 [node name="OpenSourceBlock32" parent="." instance=ExtResource( 5 )]
 position = Vector2( 512, 99.2327 )
-z_index = 87
+z_index = 91
 iso_position = Vector2( 512, 99.2327 )
 position3d = Vector3( 4, 0, 1 )
 is_temporary = false
 
 [node name="OpenSourceBlock33" parent="." instance=ExtResource( 5 )]
 position = Vector2( 384, 163.233 )
-z_index = 93
+z_index = 97
 iso_position = Vector2( 384, 163.233 )
 position3d = Vector3( 4, 1, 1 )
 is_temporary = false
 
 [node name="OpenSourceBlock34" parent="." instance=ExtResource( 5 )]
 position = Vector2( 256, 227.233 )
-z_index = 99
+z_index = 103
 iso_position = Vector2( 256, 227.233 )
 position3d = Vector3( 4, 2, 1 )
 is_temporary = false
 
 [node name="OpenSourceBlock35" parent="." instance=ExtResource( 5 )]
 position = Vector2( 128, 291.233 )
-z_index = 105
+z_index = 109
 iso_position = Vector2( 128, 291.233 )
 position3d = Vector3( 4, 3, 1 )
 is_temporary = false
 
 [node name="OpenSourceBlock36" parent="." instance=ExtResource( 5 )]
 position = Vector2( 0, 355.233 )
-z_index = 109
+z_index = 113
 iso_position = Vector2( 0, 355.233 )
 position3d = Vector3( 4, 4, 1 )
 is_temporary = false
 
 [node name="OpenSourceBlock37" parent="." instance=ExtResource( 5 )]
 position = Vector2( 384, 35.2327 )
-z_index = 69
+z_index = 73
 iso_position = Vector2( 384, 35.2327 )
 position3d = Vector3( 3, 0, 1 )
 is_temporary = false
 
 [node name="OpenSourceBlock39" parent="." instance=ExtResource( 5 )]
 position = Vector2( 384, -121.535 )
-z_index = 79
+z_index = 83
 iso_position = Vector2( 384, -121.535 )
 position3d = Vector3( 3, 0, 2 )
 is_temporary = false
 
 [node name="OpenSourceBlock40" parent="." instance=ExtResource( 5 )]
 position = Vector2( 256, -185.535 )
-z_index = 37
+z_index = 39
 iso_position = Vector2( 256, -185.535 )
 position3d = Vector3( 2, 0, 2 )
 is_temporary = false
@@ -285,14 +278,14 @@ is_temporary = false
 
 [node name="OpenSourceBlock45" parent="." instance=ExtResource( 5 )]
 position = Vector2( 512, -57.5347 )
-z_index = 91
+z_index = 95
 iso_position = Vector2( 512, -57.5347 )
 position3d = Vector3( 4, 0, 2 )
 is_temporary = false
 
 [node name="OpenSourceBlock38" parent="." instance=ExtResource( 5 )]
 position = Vector2( 128, -406.302 )
-z_index = 35
+z_index = 37
 iso_position = Vector2( 128, -406.302 )
 position3d = Vector3( 1, 0, 3 )
 is_temporary = false
@@ -306,142 +299,162 @@ is_temporary = false
 
 [node name="OpenSourceBlock50" parent="." instance=ExtResource( 5 )]
 position = Vector2( -128, -406.302 )
-z_index = 43
+z_index = 45
 iso_position = Vector2( -128, -406.302 )
 position3d = Vector3( 0, 1, 3 )
 is_temporary = false
 
 [node name="OpenSourceBlock51" parent="." instance=ExtResource( 5 )]
 position = Vector2( -256, -342.302 )
-z_index = 55
+z_index = 51
 iso_position = Vector2( -256, -342.302 )
 position3d = Vector3( 0, 2, 3 )
 is_temporary = false
 
 [node name="OpenSourceBlock52" parent="." instance=ExtResource( 5 )]
 position = Vector2( -384, -278.302 )
-z_index = 57
+z_index = 61
 iso_position = Vector2( -384, -278.302 )
 position3d = Vector3( 0, 3, 3 )
 is_temporary = false
 
 [node name="OpenSourceBlock53" parent="." instance=ExtResource( 5 )]
 position = Vector2( -512, -214.302 )
-z_index = 111
+z_index = 115
 iso_position = Vector2( -512, -214.302 )
 position3d = Vector3( 0, 4, 3 )
 is_temporary = false
 
 [node name="OpenSourceBlock54" parent="." instance=ExtResource( 5 )]
 position = Vector2( -384, -150.302 )
-z_index = 113
+z_index = 117
 iso_position = Vector2( -384, -150.302 )
 position3d = Vector3( 1, 4, 3 )
 is_temporary = false
 
-[node name="OpenSourceBlock57" parent="." instance=ExtResource( 5 )]
-position = Vector2( -256, -86.3021 )
-z_index = 119
-iso_position = Vector2( -256, -86.3021 )
-position3d = Vector3( 2, 4, 3 )
-is_temporary = false
-
 [node name="OpenSourceBlock55" parent="." instance=ExtResource( 5 )]
 position = Vector2( 256, -342.302 )
-z_index = 45
+z_index = 47
 iso_position = Vector2( 256, -342.302 )
 position3d = Vector3( 2, 0, 3 )
 is_temporary = false
 
 [node name="Node2D4" type="Node2D" parent="."]
 position = Vector2( -128, -278.302 )
-z_index = 59
+z_index = 63
 script = ExtResource( 3 )
 iso_position = Vector2( -128, -278.302 )
 position3d = Vector3( 1, 2, 3 )
 size3d = Vector3( 1, 2, 1 )
 is_temporary = false
-debug_z = -2
+debug_z = -3
 slope_type = 4
 placeholder_type = ExtResource( 1 )
 
 [node name="Node2D5" type="Node2D" parent="."]
 position = Vector2( 0, -185.535 )
-z_index = 47
+z_index = 49
 script = ExtResource( 3 )
 iso_position = Vector2( 0, -185.535 )
 position3d = Vector3( 1, 1, 2 )
 size3d = Vector3( 2, 1, 1 )
 is_temporary = false
-debug_z = -1
+debug_z = -2
 slope_type = 1
 placeholder_type = ExtResource( 1 )
 
 [node name="Node2D3" type="Node2D" parent="."]
 position = Vector2( 256, 99.2327 )
-z_index = 81
+z_index = 85
 script = ExtResource( 3 )
 iso_position = Vector2( 256, 99.2327 )
 position3d = Vector3( 3, 1, 1 )
 size3d = Vector3( 1, 3, 1 )
 is_temporary = false
+debug_z = -1
 slope_type = 3
 placeholder_type = ExtResource( 1 )
 
 [node name="OpenSourceBlock14" parent="." instance=ExtResource( 5 )]
 position = Vector2( 384, 6.4653 )
-z_index = 97
+z_index = 101
 iso_position = Vector2( 384, 6.4653 )
 position3d = Vector3( 4, 1, 2 )
 is_temporary = false
 
 [node name="OpenSourceBlock31" parent="." instance=ExtResource( 5 )]
 position = Vector2( 256, 70.4653 )
-z_index = 103
+z_index = 107
 iso_position = Vector2( 256, 70.4653 )
 position3d = Vector3( 4, 2, 2 )
 is_temporary = false
 
-[node name="OpenSourceBlock47" parent="." instance=ExtResource( 5 )]
-position = Vector2( 0, -214.302 )
-z_index = 115
-iso_position = Vector2( 0, -214.302 )
-position3d = Vector3( 2, 2, 3 )
-is_temporary = false
-
-[node name="OpenSourceBlock49" parent="." instance=ExtResource( 5 )]
-position = Vector2( -128, -150.302 )
-z_index = 117
-iso_position = Vector2( -128, -150.302 )
-position3d = Vector3( 2, 3, 3 )
-is_temporary = false
-
-[node name="OpenSourceBlock" parent="." instance=ExtResource( 5 )]
-position = Vector2( 0, -57.5347 )
-z_index = 61
-iso_position = Vector2( 0, -57.5347 )
-position3d = Vector3( 2, 2, 2 )
-is_temporary = false
-
-[node name="OpenSourceBlock42" type="Node2D" parent="." instance=ExtResource( 5 )]
+[node name="OpenSourceBlock42" parent="." instance=ExtResource( 5 )]
 position = Vector2( -128, 163.233 )
-z_index = 63
-script = ExtResource( 4 )
+z_index = 67
 iso_position = Vector2( -128, 163.233 )
 position3d = Vector3( 2, 3, 1 )
 is_temporary = false
 
-[node name="OpenSourceBlock46" type="Node2D" parent="." instance=ExtResource( 5 )]
+[node name="OpenSourceBlock46" parent="." instance=ExtResource( 5 )]
 position = Vector2( 128, 35.2327 )
-z_index = 39
-script = ExtResource( 4 )
+z_index = 41
 iso_position = Vector2( 128, 35.2327 )
 position3d = Vector3( 2, 1, 1 )
 is_temporary = false
 
+[node name="OpenSourceBlock47" parent="." instance=ExtResource( 5 )]
+position = Vector2( 128, -249.535 )
+z_index = 35
+iso_position = Vector2( 128, -249.535 )
+position3d = Vector3( 1, 0, 2 )
+is_temporary = false
+
+[node name="OpenSourceBlock30" parent="." instance=ExtResource( 5 )]
+position = Vector2( -128, -92.7673 )
+z_index = 6
+iso_position = Vector2( -128, -92.7673 )
+position3d = Vector3( 0, 1, 1 )
+is_temporary = false
+
+[node name="OpenSourceBlock49" parent="." instance=ExtResource( 5 )]
+position = Vector2( -128, -121.535 )
+z_index = 53
+iso_position = Vector2( -128, -121.535 )
+position3d = Vector3( 1, 2, 2 )
+is_temporary = false
+
+[node name="OpenSourceBlock" parent="." instance=ExtResource( 5 )]
+position = Vector2( -256, -86.3021 )
+z_index = 123
+iso_position = Vector2( -256, -86.3021 )
+position3d = Vector3( 2, 4, 3 )
+is_temporary = false
+
+[node name="OpenSourceBlock57" parent="." instance=ExtResource( 5 )]
+position = Vector2( 0, -57.5347 )
+z_index = 65
+iso_position = Vector2( 0, -57.5347 )
+position3d = Vector3( 2, 2, 2 )
+is_temporary = false
+
+[node name="OpenSourceBlock58" parent="." instance=ExtResource( 5 )]
+position = Vector2( 0, -214.302 )
+z_index = 119
+iso_position = Vector2( 0, -214.302 )
+position3d = Vector3( 2, 2, 3 )
+is_temporary = false
+
+[node name="OpenSourceBlock61" parent="." instance=ExtResource( 5 )]
+position = Vector2( -128, -150.302 )
+z_index = 121
+iso_position = Vector2( -128, -150.302 )
+position3d = Vector3( 2, 3, 3 )
+is_temporary = false
+
 [node name="OpenSourceBlock56" type="Node2D" parent="." instance=ExtResource( 5 )]
 position = Vector2( 0, 99.2327 )
-z_index = 49
+z_index = 55
 script = ExtResource( 4 )
 iso_position = Vector2( 0, 99.2327 )
 position3d = Vector3( 2, 2, 1 )

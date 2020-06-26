@@ -1,10 +1,14 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://addons/IsometricMap/GdnsScripts/positionable/DynamicIsometricElement.gdns" type="Script" id=1]
-[ext_resource path="res://Scripts/physics/rolling_ball_body.gd" type="Script" id=2]
+[ext_resource path="res://addons/IsometricMap/Scripts/physics/isometric_rigid_body.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Isometric/ball.png" type="Texture" id=3]
 
-[sub_resource type="SphereShape" id=1]
+[sub_resource type="PhysicsMaterial" id=1]
+friction = 0.0
+bounce = 0.5
+
+[sub_resource type="SphereShape" id=2]
 radius = 0.25
 
 [node name="RollingBall" type="Node2D"]
@@ -17,10 +21,10 @@ position = Vector2( 16.2505, -81.6917 )
 scale = Vector2( 0.165, 0.165 )
 texture = ExtResource( 3 )
 
-[node name="RollingBallBody" type="KinematicBody" parent="."]
+[node name="IsometricRigidBody" type="RigidBody" parent="."]
+physics_material_override = SubResource( 1 )
 script = ExtResource( 2 )
-gravity = 100.0
 
-[node name="CollisionShape" type="CollisionShape" parent="RollingBallBody"]
+[node name="CollisionShape" type="CollisionShape" parent="IsometricRigidBody"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0.25, 0.25 )
-shape = SubResource( 1 )
+shape = SubResource( 2 )

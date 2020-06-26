@@ -79,6 +79,11 @@ _global_script_classes=[ {
 "language": "NativeScript",
 "path": "res://addons/IsometricMap/GdnsScripts/positionable/IsometricPositionable.gdns"
 }, {
+"base": "RigidBody",
+"class": "IsometricRigidBody",
+"language": "GDScript",
+"path": "res://addons/IsometricMap/Scripts/physics/isometric_rigid_body.gd"
+}, {
 "base": "Node",
 "class": "IsometricServer",
 "language": "NativeScript",
@@ -134,6 +139,7 @@ _global_script_class_icons={
 "IsometricMapInspector": "",
 "IsometricPlaceholder": "",
 "IsometricPositionable": "",
+"IsometricRigidBody": "",
 "IsometricServer": "",
 "IsometricStaticBody": "",
 "IsometricTile": "",
