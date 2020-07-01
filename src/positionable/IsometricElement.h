@@ -7,6 +7,10 @@
 
 namespace godot {
 
+    /**
+     * Represents a 3D object that is a drawing unit, i.e. that is not a composition of other IsometricPositionable.
+     * @inherit godot::IsometricPositionable
+     */
     class IsometricElement : public IsometricPositionable {
         GODOT_SUBCLASS(IsometricElement, IsometricPositionable)
 
@@ -28,7 +32,15 @@ namespace godot {
         void _init();
         String get_class() const override;
 
+        /**
+         * @return SlopeType of IsometricElement.
+         */
         int getSlopeType();
+
+        /**
+         * Sets SlopeType of IsometricElement to `type` value.
+         * @param type
+         */
         void setSlopeType(int type);
     };
 

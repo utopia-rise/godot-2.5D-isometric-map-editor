@@ -6,6 +6,12 @@
 
 namespace godot {
 
+    /**
+     * Represents a type of IsometricPlaceholder.
+     * This is a POD. It should be serialized in a godot resource file.
+     * This enable to design some types of terrain without having assets yet.
+     * @inherit godot::Resource
+     */
     class PlaceholderType : public Resource {
         GODOT_CLASS(PlaceholderType, Resource)
 

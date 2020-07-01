@@ -8,6 +8,11 @@
 
 namespace godot {
 
+    /**
+     * IsometricElement to design maps without having the assets yet.
+     * A PlaceholderType resource can be provided to set color according to what placeholder represents.
+     * Should be used for development and prototyping only.
+     */
     class IsometricPlaceholder : public IsometricElement {
         GODOT_SUBCLASS(IsometricPlaceholder, IsometricElement)
 
@@ -27,9 +32,21 @@ namespace godot {
 
         Vector3 mapSize;
 
+        /**
+         * Draw the placeholder using prepared points by IsometricPositionable::preparePoints
+         * @see IsometricPositionable::preparePoints
+         */
         void drawPoints();
+
+        /**
+         * Update colors of placeholder sides using PlaceholderType resource.
+         */
         void updateColors();
 
+        /**
+         * @deprecated
+         * @param size
+         */
         void setMapSize(const Vector3 &size);
     public:
         IsometricPlaceholder() = default;
@@ -44,7 +61,15 @@ namespace godot {
         void _onGridUpdated(int stair) override;
         void _onResize() override;
 
+        /**
+         * @return PlaceholderType of placeholder.
+         */
         Ref<PlaceholderType> getPlaceholderType() const;
+
+        /**
+         * Sets type of placeholder.
+         * @param pType
+         */
         void setPlaceholderType(Ref<PlaceholderType> pType);
     };
 
