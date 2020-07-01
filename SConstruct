@@ -383,36 +383,37 @@ platform = env['platform']
 if platform == "osx":
     cpp_bindings_libname += '.a'
     env.Append(CPPPATH=[env['headers_dir'], env['cpp_bindings_dir'] + 'include/', env['cpp_bindings_dir'] + 'include/core/',
-               env['cpp_bindings_dir'] + 'include/gen/', 'src/', 'src/containers', 'src/helpers', 'src/positionable', 'src/editor'])
+               env['cpp_bindings_dir'] + 'include/gen/', 'src/', 'src/containers', 'src/helpers', 'src/positionable', 'src/positionable/physics', 'src/editor'])
     env.Append(LIBS=[cpp_bindings_libname])
     env.Append(LIBPATH=[ env['cpp_bindings_dir'] + 'bin/'])
 elif platform == "linux":
     env.Append(CPPPATH=[env['headers_dir'], env['cpp_bindings_dir'] + 'include/', env['cpp_bindings_dir'] + 'include/core/',
-               env['cpp_bindings_dir'] + 'include/gen/', 'src/', 'src/containers', 'src/helpers', 'src/positionable', 'src/editor'])
+               env['cpp_bindings_dir'] + 'include/gen/', 'src/', 'src/containers', 'src/helpers', 'src/positionable', 'src/positionable/physics', 'src/editor'])
     env.Append(LIBS=[cpp_bindings_libname])
     env.Append(LIBPATH=[ env['cpp_bindings_dir'] + 'bin/'])
 elif platform == "windows":
     cpp_bindings_libname += '.lib'
     env.Append(CPPPATH=[env['headers_dir'], env['cpp_bindings_dir'] + 'include/', env['cpp_bindings_dir'] + 'include/core/',
-                        env['cpp_bindings_dir'] + 'include/gen/', 'src/', 'src/containers', 'src/helpers', 'src/positionable', 'src/editor'])
+                        env['cpp_bindings_dir'] + 'include/gen/', 'src/', 'src/containers', 'src/helpers', 'src/positionable', 'src/positionable/physics', 'src/editor'])
     env.Append(LIBS=[cpp_bindings_libname])
     env.Append(LIBPATH=[ env['cpp_bindings_dir'] + 'bin/'])
 elif platform == "ios":
     cpp_bindings_libname += '.a'
     env.Append(CPPPATH=[env['headers_dir'], env['cpp_bindings_dir'] + 'include/', env['cpp_bindings_dir'] + 'include/core/',
-                        env['cpp_bindings_dir'] + 'include/gen/', 'src/', 'src/containers', 'src/helpers', 'src/positionable', 'src/editor'])
+                        env['cpp_bindings_dir'] + 'include/gen/', 'src/', 'src/containers', 'src/helpers', 'src/positionable', 'src/positionable/physics', 'src/editor'])
     env.Append(LIBS=[cpp_bindings_libname])
     env.Append(LIBPATH=[ env['cpp_bindings_dir'] + 'bin/'])
 elif platform == "android":
     cpp_bindings_libname += '.a'
     env.Append(CPPPATH=[env['headers_dir'], env['cpp_bindings_dir'] + 'include/', env['cpp_bindings_dir'] + 'include/core/',
-                        env['cpp_bindings_dir'] + 'include/gen/', 'src/', 'src/containers', 'src/helpers', 'src/positionable', 'src/editor'])
+                        env['cpp_bindings_dir'] + 'include/gen/', 'src/', 'src/containers', 'src/helpers', 'src/positionable', 'src/positionable/physics', 'src/editor'])
     env.Append(LIBS=[cpp_bindings_libname])
     env.Append(LIBPATH=[ env['cpp_bindings_dir'] + 'bin/'])
 
 sources = []
 add_sources(sources, "./src", 'cpp')
 add_sources(sources, "./src/positionable", 'cpp')
+add_sources(sources, "./src/positionable/physics", 'cpp')
 add_sources(sources, "./src/containers", 'cpp')
 add_sources(sources, "./src/helpers", 'cpp')
 add_sources(sources, "./src/editor", 'cpp')

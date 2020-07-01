@@ -9,10 +9,30 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node2D",
+"class": "DynamicIsometricElement",
+"language": "NativeScript",
+"path": "res://addons/IsometricMap/GdnsScripts/positionable/DynamicIsometricElement.gdns"
+}, {
 "base": "Node",
 "class": "EditionHandler",
 "language": "GDScript",
 "path": "res://addons/IsometricMap/Scripts/handlers/edition_handler.gd"
+}, {
+"base": "EditionHandler",
+"class": "ElementEditionHandler",
+"language": "GDScript",
+"path": "res://addons/IsometricMap/Scripts/handlers/tile_edition_handler.gd"
+}, {
+"base": "IsometricKinematicBody",
+"class": "ExampleKinematicBodyAutoshapeImpl",
+"language": "GDScript",
+"path": "res://Scripts/physics/example_kinematic_body_autoshape_impl.gd"
+}, {
+"base": "IsometricKinematicBody",
+"class": "ExampleKinematicBodySimpleImpl",
+"language": "GDScript",
+"path": "res://Scripts/physics/example_kinematic_body_simple_impl.gd"
 }, {
 "base": "Tree",
 "class": "FileTree",
@@ -34,6 +54,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/IsometricMap/widget/isometric_asset_selector.gd"
 }, {
+"base": "KinematicBody",
+"class": "IsometricKinematicBody",
+"language": "GDScript",
+"path": "res://addons/IsometricMap/Scripts/physics/isometric_kinematic_body.gd"
+}, {
 "base": "Node2D",
 "class": "IsometricMap",
 "language": "NativeScript",
@@ -54,10 +79,20 @@ _global_script_classes=[ {
 "language": "NativeScript",
 "path": "res://addons/IsometricMap/GdnsScripts/positionable/IsometricPositionable.gdns"
 }, {
+"base": "RigidBody",
+"class": "IsometricRigidBody",
+"language": "GDScript",
+"path": "res://addons/IsometricMap/Scripts/physics/isometric_rigid_body.gd"
+}, {
 "base": "Node",
 "class": "IsometricServer",
 "language": "NativeScript",
 "path": "res://addons/IsometricMap/GdnsScripts/IsometricServer.gdns"
+}, {
+"base": "StaticBody",
+"class": "IsometricStaticBody",
+"language": "GDScript",
+"path": "res://addons/IsometricMap/Scripts/physics/isometric_static_body.gd"
 }, {
 "base": "Node2D",
 "class": "IsometricTile",
@@ -79,33 +114,40 @@ _global_script_classes=[ {
 "language": "NativeScript",
 "path": "res://addons/IsometricMap/GdnsScripts/positionable/PlaceholderType.gdns"
 }, {
+"base": "IsometricKinematicBody",
+"class": "RollingBallBody",
+"language": "GDScript",
+"path": "res://Scripts/physics/rolling_ball_body.gd"
+}, {
 "base": "Node2D",
 "class": "StairSelector",
 "language": "GDScript",
 "path": "res://addons/IsometricMap/Scripts/stair_selector.gd"
-}, {
-"base": "EditionHandler",
-"class": "TileEditionHandler",
-"language": "GDScript",
-"path": "res://addons/IsometricMap/Scripts/handlers/tile_edition_handler.gd"
 } ]
 _global_script_class_icons={
+"DynamicIsometricElement": "",
 "EditionHandler": "",
+"ElementEditionHandler": "",
+"ExampleKinematicBodyAutoshapeImpl": "",
+"ExampleKinematicBodySimpleImpl": "",
 "FileTree": "",
 "GridCursor": "",
 "IsoPreviewGenerator": "",
 "IsometricAssetSelector": "",
+"IsometricKinematicBody": "",
 "IsometricMap": "",
 "IsometricMapInspector": "",
 "IsometricPlaceholder": "",
 "IsometricPositionable": "",
+"IsometricRigidBody": "",
 "IsometricServer": "",
+"IsometricStaticBody": "",
 "IsometricTile": "",
 "MapEditionHandler": "",
 "NumericLineEdit": "",
 "PlaceholderType": "",
-"StairSelector": "",
-"TileEditionHandler": ""
+"RollingBallBody": "",
+"StairSelector": ""
 }
 
 [application]
@@ -126,6 +168,26 @@ enabled=PoolStringArray( "IsometricMap", "godot-plugin-refresher", "gut" )
 move_z_volume={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":90,"unicode":0,"echo":false,"script":null)
+ ]
+}
+player_goes_forward={
+"deadzone": 0.5,
+"events": [ Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":1,"axis_value":-1.0,"script":null)
+ ]
+}
+player_goes_backward={
+"deadzone": 0.5,
+"events": [ Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":1,"axis_value":1.0,"script":null)
+ ]
+}
+player_goes_left={
+"deadzone": 0.5,
+"events": [ Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":0,"axis_value":-1.0,"script":null)
+ ]
+}
+player_goes_right={
+"deadzone": 0.5,
+"events": [ Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":0,"axis_value":1.0,"script":null)
  ]
 }
 

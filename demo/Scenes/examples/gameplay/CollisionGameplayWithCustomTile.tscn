@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://addons/IsometricMap/GdnsScripts/positionable/IsometricTile.gdns" type="Script" id=1]
+[ext_resource path="res://Scenes/examples/dynamic/DefaultCharacter.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/examples/maps/CollisionDojo.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/examples/tiles/without_default_shape/SlopeTile.tscn" type="PackedScene" id=4]
+
+[node name="CollisionGPWithCustomTile" type="Node2D"]
+
+[node name="CollisionDojo" parent="." instance=ExtResource( 3 )]
+
+[node name="DynamicIsometricElement" parent="CollisionDojo" instance=ExtResource( 2 )]
+position = Vector2( 640, 675.233 )
+z_index = 434
+iso_position = Vector2( 640, 675.233 )
+position3d = Vector3( 9, 4, 1 )
+
+[node name="Camera2D" type="Camera2D" parent="CollisionDojo/DynamicIsometricElement"]
+current = true
+zoom = Vector2( 2, 2 )
+
+[node name="SlopeTile" type="Node2D" parent="CollisionDojo" instance=ExtResource( 4 )]
+position = Vector2( -256, 227.233 )
+z_index = 112
+script = ExtResource( 1 )
+iso_position = Vector2( -256, 227.233 )
+position3d = Vector3( 2, 4, 1 )
+is_temporary = false
+slope_type = 1
+has_default_body = false

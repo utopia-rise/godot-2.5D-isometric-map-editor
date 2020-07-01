@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://addons/IsometricMap/GdnsScripts/positionable/IsometricTile.gdns" type="Script" id=1]
+[ext_resource path="res://Assets/Isometric/slope_E.png" type="Texture" id=2]
+[ext_resource path="res://addons/IsometricMap/Scripts/physics/isometric_static_body.gd" type="Script" id=3]
+
+[sub_resource type="ConvexPolygonShape" id=1]
+points = PoolVector3Array( 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1 )
+
+[node name="SlopeTile" type="Node2D"]
+script = ExtResource( 1 )
+slope_type = 1
+has_default_body = false
+
+[node name="slope_E" type="Sprite" parent="."]
+position = Vector2( 0.340576, -192 )
+texture = ExtResource( 2 )
+
+[node name="IsometricStaticBody" type="StaticBody" parent="."]
+script = ExtResource( 3 )
+
+[node name="CollisionShape" type="CollisionShape" parent="IsometricStaticBody"]
+shape = SubResource( 1 )

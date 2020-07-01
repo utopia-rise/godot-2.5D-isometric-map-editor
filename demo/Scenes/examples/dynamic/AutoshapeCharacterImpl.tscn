@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scripts/physics/example_kinematic_body_autoshape_impl.gd" type="Script" id=1]
+[ext_resource path="res://addons/IsometricMap/GdnsScripts/positionable/DynamicIsometricElement.gdns" type="Script" id=2]
+[ext_resource path="res://Assets/Characters/Human/Human_0_Run7.png" type="Texture" id=3]
+
+[node name="AutoshapeCharacterImpl" type="Node2D"]
+script = ExtResource( 2 )
+size3d = Vector3( 0.4, 0.2, 1 )
+has_default_body = false
+
+[node name="Human_0_Run7" type="Sprite" parent="."]
+position = Vector2( 15.9192, -255.444 )
+scale = Vector2( 0.991113, 1.05777 )
+texture = ExtResource( 3 )
+
+[node name="ExampleKinematicBodyAutoshapeImpl" type="KinematicBody" parent="."]
+script = ExtResource( 1 )
+gravity = 9.8
+speed = 3

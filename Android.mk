@@ -28,8 +28,11 @@ src/positionable/IsometricPositionable.cpp \
 src/positionable/IsometricMap.cpp \
 src/positionable/IsometricTile.cpp \
 src/positionable/IsometricPlaceholder.cpp \
-src/positionable/IsometricElement.cpp \
+src/positionable/StaticIsometricElement.cpp \
+src/positionable/DynamicIsometricElement.cpp \
 src/positionable/PlaceholderType.cpp \
+src/positionable/physics/DefaultStaticBody.cpp \
+src/positionable/physics/DefaultKinematicBody.cpp \
 src/containers/Grid3D.cpp \
 src/editor/OutlineDrawer.cpp \
 
@@ -42,6 +45,7 @@ src \
 src/containers \
 src/helpers \
 src/positionable \
+src/positionable/physics \
 src/editor \
 
 LOCAL_STATIC_LIBRARIES := godot-prebuilt

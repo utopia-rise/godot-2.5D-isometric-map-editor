@@ -8,7 +8,7 @@ void IsometricTile::_register_methods() {
 }
 
 void IsometricTile::_init() {
-    IsometricElement::_init();
+    StaticIsometricElement::_init();
 }
 
 String IsometricTile::get_class() const {

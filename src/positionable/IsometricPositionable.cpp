@@ -19,9 +19,9 @@ void IsometricPositionable::_register_methods() {
     register_method("set_outline_drawer", &IsometricPositionable::setOutlineDrawer);
     register_method("get_aabb", &IsometricPositionable::getAABB);
     register_method("set_aabb", &IsometricPositionable::setAABB);
-    register_method("_on_resize", &IsometricPositionable::_onResize);
-    register_method("_on_grid_updated", &IsometricPositionable::_onGridUpdated);
-    register_method("_on_select", &IsometricPositionable::_onSelect);
+    register_method("_on_resize", &IsometricPositionable::onResize);
+    register_method("_on_grid_updated", &IsometricPositionable::onGridUpdated);
+    register_method("_on_select", &IsometricPositionable::onSelect);
 
     register_property("iso_position", &IsometricPositionable::isoPosition, Vector2());
     register_property("position3d", &IsometricPositionable::setPosition3D, &IsometricPositionable::getPosition3D, Vector3());
@@ -31,7 +31,7 @@ void IsometricPositionable::_register_methods() {
 }
 
 void IsometricPositionable::_init() {
-    _onResize();
+    onResize();
 }
 
 void IsometricPositionable::_enter_tree() {
@@ -186,7 +186,7 @@ void IsometricPositionable::setAABB(AABB ab) {
     aabb = ab;
     set_position(IsometricServer::getInstance().getScreenCoordFrom3D(ab.position));
     isoPosition = get_position();
-    _onResize();
+    onResize();
 }
 
 Vector3 IsometricPositionable::getPosition3D() const {
@@ -205,7 +205,7 @@ Vector3 IsometricPositionable::getSize3D() const {
 
 void IsometricPositionable::setSize3D(Vector3 s) {
     aabb.size = s;
-    _onResize();
+    onResize();
 }
 
 int IsometricPositionable::getZOrderSize() const {
@@ -235,17 +235,17 @@ void IsometricPositionable::updateZOrderSize(int change) {
     }
 }
 
-void IsometricPositionable::_onResize() {
+void IsometricPositionable::onResize() {
     if (outlineDrawer) {
         setOutlineDrawer(outlineDrawer->getColor(), outlineDrawer->getLineSize());
     }
 }
 
-void IsometricPositionable::_onGridUpdated(int stair) {
+void IsometricPositionable::onGridUpdated(int stair) {
 
 }
 
-void IsometricPositionable::_onSelect(bool selected) {
+void IsometricPositionable::onSelect(bool selected) {
     if (selected) {
         setOutlineDrawer(Color(255, 0, 0, 1), 10.0f);
     } else if (outlineDrawer) {

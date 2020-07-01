@@ -1,0 +1,340 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/examples/dynamic/DefaultCharacter.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/examples/maps/CollisionDojo.tscn" type="PackedScene" id=2]
+
+[node name="CollisionDojo" instance=ExtResource( 2 )]
+
+[node name="OpenSourceBlock15" parent="." index="14"]
+z_index = 224
+
+[node name="OpenSourceBlock16" parent="." index="15"]
+z_index = 254
+
+[node name="OpenSourceBlock19" parent="." index="18"]
+z_index = 284
+
+[node name="OpenSourceBlock20" parent="." index="19"]
+z_index = 314
+
+[node name="OpenSourceBlock21" parent="." index="20"]
+z_index = 344
+
+[node name="OpenSourceBlock22" parent="." index="21"]
+z_index = 374
+
+[node name="OpenSourceBlock23" parent="." index="22"]
+z_index = 426
+
+[node name="OpenSourceBlock24" parent="." index="23"]
+z_index = 420
+
+[node name="OpenSourceBlock25" parent="." index="24"]
+z_index = 416
+
+[node name="OpenSourceBlock26" parent="." index="25"]
+z_index = 412
+
+[node name="OpenSourceBlock27" parent="." index="26"]
+z_index = 404
+
+[node name="OpenSourceBlock28" parent="." index="27"]
+z_index = 408
+
+[node name="OpenSourceBlock29" parent="." index="28"]
+z_index = 400
+
+[node name="OpenSourceBlock30" parent="." index="29"]
+z_index = 396
+
+[node name="OpenSourceBlock31" parent="." index="30"]
+z_index = 392
+
+[node name="OpenSourceBlock32" parent="." index="31"]
+z_index = 388
+
+[node name="OpenSourceBlock33" parent="." index="32"]
+z_index = 382
+
+[node name="OpenSourceBlock34" parent="." index="33"]
+z_index = 376
+
+[node name="OpenSourceBlock40" parent="." index="39"]
+z_index = 226
+
+[node name="OpenSourceBlock41" parent="." index="40"]
+z_index = 316
+
+[node name="OpenSourceBlock42" parent="." index="41"]
+z_index = 286
+
+[node name="OpenSourceBlock43" parent="." index="42"]
+z_index = 256
+
+[node name="OpenSourceBlock44" parent="." index="43"]
+z_index = 346
+
+[node name="OpenSourceBlock61" parent="." index="61"]
+z_index = 260
+
+[node name="OpenSourceBlock62" parent="." index="62"]
+z_index = 290
+
+[node name="OpenSourceBlock63" parent="." index="63"]
+z_index = 230
+
+[node name="OpenSourceBlock64" parent="." index="64"]
+z_index = 320
+
+[node name="OpenSourceBlock65" parent="." index="65"]
+z_index = 350
+
+[node name="OpenSourceBlock66" parent="." index="66"]
+z_index = 380
+
+[node name="OpenSourceBlockChild41" parent="." index="107"]
+z_index = 220
+
+[node name="OpenSourceBlockChild42" parent="." index="108"]
+z_index = 218
+
+[node name="OpenSourceBlockChild43" parent="." index="109"]
+z_index = 216
+
+[node name="OpenSourceBlockChild44" parent="." index="110"]
+z_index = 214
+
+[node name="OpenSourceBlockChild51" parent="." index="117"]
+z_index = 232
+
+[node name="OpenSourceBlockChild52" parent="." index="118"]
+z_index = 322
+
+[node name="OpenSourceBlockChild53" parent="." index="119"]
+z_index = 292
+
+[node name="OpenSourceBlockChild54" parent="." index="120"]
+z_index = 262
+
+[node name="OpenSourceBlockChild55" parent="." index="121"]
+z_index = 352
+
+[node name="OpenSourceBlockChild56" parent="." index="122"]
+z_index = 354
+
+[node name="OpenSourceBlockChild57" parent="." index="123"]
+z_index = 358
+
+[node name="OpenSourceBlockChild58" parent="." index="124"]
+z_index = 360
+
+[node name="OpenSourceBlockChild59" parent="." index="125"]
+z_index = 362
+
+[node name="OpenSourceBlockChild60" parent="." index="126"]
+z_index = 356
+
+[node name="OpenSourceBlockChild61" parent="." index="127"]
+z_index = 364
+
+[node name="OpenSourceBlockChild62" parent="." index="128"]
+z_index = 366
+
+[node name="OpenSourceBlockChild63" parent="." index="129"]
+z_index = 368
+
+[node name="OpenSourceBlockChild64" parent="." index="130"]
+z_index = 370
+
+[node name="OpenSourceBlockChild65" parent="." index="131"]
+z_index = 340
+
+[node name="OpenSourceBlockChild66" parent="." index="132"]
+z_index = 250
+
+[node name="OpenSourceBlockChild67" parent="." index="133"]
+z_index = 280
+
+[node name="OpenSourceBlockChild68" parent="." index="134"]
+z_index = 248
+
+[node name="OpenSourceBlockChild69" parent="." index="135"]
+z_index = 310
+
+[node name="OpenSourceBlockChild70" parent="." index="136"]
+z_index = 278
+
+[node name="OpenSourceBlockChild71" parent="." index="137"]
+z_index = 276
+
+[node name="OpenSourceBlockChild72" parent="." index="138"]
+z_index = 306
+
+[node name="OpenSourceBlockChild73" parent="." index="139"]
+z_index = 308
+
+[node name="OpenSourceBlockChild74" parent="." index="140"]
+z_index = 338
+
+[node name="OpenSourceBlockChild75" parent="." index="141"]
+z_index = 336
+
+[node name="OpenSourceBlockChild76" parent="." index="142"]
+z_index = 334
+
+[node name="OpenSourceBlockChild77" parent="." index="143"]
+z_index = 302
+
+[node name="OpenSourceBlockChild78" parent="." index="144"]
+z_index = 300
+
+[node name="OpenSourceBlockChild79" parent="." index="145"]
+z_index = 298
+
+[node name="OpenSourceBlockChild80" parent="." index="146"]
+z_index = 296
+
+[node name="OpenSourceBlockChild81" parent="." index="147"]
+z_index = 294
+
+[node name="OpenSourceBlockChild82" parent="." index="148"]
+z_index = 324
+
+[node name="OpenSourceBlockChild83" parent="." index="149"]
+z_index = 326
+
+[node name="OpenSourceBlockChild84" parent="." index="150"]
+z_index = 328
+
+[node name="OpenSourceBlockChild85" parent="." index="151"]
+z_index = 330
+
+[node name="OpenSourceBlockChild86" parent="." index="152"]
+z_index = 332
+
+[node name="OpenSourceBlockChild87" parent="." index="153"]
+z_index = 234
+
+[node name="OpenSourceBlockChild88" parent="." index="154"]
+z_index = 236
+
+[node name="OpenSourceBlockChild89" parent="." index="155"]
+z_index = 238
+
+[node name="OpenSourceBlockChild90" parent="." index="156"]
+z_index = 270
+
+[node name="OpenSourceBlockChild91" parent="." index="157"]
+z_index = 240
+
+[node name="OpenSourceBlockChild92" parent="." index="158"]
+z_index = 242
+
+[node name="OpenSourceBlockChild93" parent="." index="159"]
+z_index = 244
+
+[node name="OpenSourceBlockChild94" parent="." index="160"]
+z_index = 246
+
+[node name="OpenSourceBlockChild95" parent="." index="161"]
+z_index = 272
+
+[node name="OpenSourceBlockChild96" parent="." index="162"]
+z_index = 274
+
+[node name="OpenSourceBlockChild97" parent="." index="163"]
+z_index = 304
+
+[node name="OpenSourceBlockChild98" parent="." index="164"]
+z_index = 264
+
+[node name="OpenSourceBlockChild99" parent="." index="165"]
+z_index = 266
+
+[node name="OpenSourceBlockChild100" parent="." index="166"]
+z_index = 268
+
+[node name="OpenSourceBlock71" parent="." index="170"]
+z_index = 222
+
+[node name="OpenSourceBlock72" parent="." index="171"]
+z_index = 252
+
+[node name="OpenSourceBlock73" parent="." index="172"]
+z_index = 282
+
+[node name="OpenSourceBlock74" parent="." index="173"]
+z_index = 312
+
+[node name="OpenSourceBlock75" parent="." index="174"]
+z_index = 342
+
+[node name="OpenSourceBlock76" parent="." index="175"]
+z_index = 372
+
+[node name="OpenSourceBlock77" parent="." index="176"]
+z_index = 422
+
+[node name="OpenSourceBlock78" parent="." index="177"]
+z_index = 428
+
+[node name="OpenSourceBlock79" parent="." index="178"]
+z_index = 424
+
+[node name="OpenSourceBlock80" parent="." index="179"]
+z_index = 418
+
+[node name="OpenSourceBlock81" parent="." index="180"]
+z_index = 414
+
+[node name="OpenSourceBlock82" parent="." index="181"]
+z_index = 410
+
+[node name="OpenSourceBlock83" parent="." index="182"]
+z_index = 406
+
+[node name="OpenSourceBlock84" parent="." index="183"]
+z_index = 402
+
+[node name="OpenSourceBlock85" parent="." index="184"]
+z_index = 398
+
+[node name="OpenSourceBlock86" parent="." index="185"]
+z_index = 394
+
+[node name="OpenSourceBlock87" parent="." index="186"]
+z_index = 390
+
+[node name="OpenSourceBlock88" parent="." index="187"]
+z_index = 386
+
+[node name="OpenSourceBlock105" parent="." index="204"]
+z_index = 228
+
+[node name="OpenSourceBlock106" parent="." index="205"]
+z_index = 258
+
+[node name="OpenSourceBlock107" parent="." index="206"]
+z_index = 288
+
+[node name="OpenSourceBlock108" parent="." index="207"]
+z_index = 318
+
+[node name="OpenSourceBlock109" parent="." index="208"]
+z_index = 348
+
+[node name="OpenSourceBlock110" parent="." index="209"]
+z_index = 378
+
+[node name="OpenSourceBlock111" parent="." index="210"]
+z_index = 384
+
+[node name="DynamicIsometricElement" parent="." index="215" instance=ExtResource( 1 )]
+position = Vector2( 640, 419.233 )
+z_index = 430
+iso_position = Vector2( 640, 419.233 )
+position3d = Vector3( 7, 2, 1 )
+
+[node name="Camera2D" type="Camera2D" parent="DynamicIsometricElement" index="2"]
+current = true
+zoom = Vector2( 2, 2 )

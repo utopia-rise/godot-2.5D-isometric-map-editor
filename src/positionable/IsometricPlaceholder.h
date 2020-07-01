@@ -4,12 +4,12 @@
 #include <IsometricPositionable.h>
 #include <IsometricMap.h>
 #include <PlaceholderType.h>
-#include "IsometricElement.h"
+#include <StaticIsometricElement.h>
 
 namespace godot {
 
-    class IsometricPlaceholder : public IsometricElement {
-        GODOT_SUBCLASS(IsometricPlaceholder, IsometricElement)
+    class IsometricPlaceholder : public StaticIsometricElement {
+        GODOT_SUBCLASS(IsometricPlaceholder, StaticIsometricElement)
 
     private:
         Ref<PlaceholderType> placeholderType;
@@ -41,8 +41,8 @@ namespace godot {
         void _draw();
         String get_class() const override;
 
-        void _onGridUpdated(int stair) override;
-        void _onResize() override;
+        void onGridUpdated(int stair) override;
+        void onResize() override;
 
         Ref<PlaceholderType> getPlaceholderType() const;
         void setPlaceholderType(Ref<PlaceholderType> pType);

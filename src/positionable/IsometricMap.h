@@ -43,8 +43,8 @@ namespace godot {
 
         IsometricMap *flatten();
 
-        void _onResize() override;
-        void _onGridUpdated(int stair) override;
+        void onResize() override;
+        void onGridUpdated(int stair) override;
     };
 }
 
