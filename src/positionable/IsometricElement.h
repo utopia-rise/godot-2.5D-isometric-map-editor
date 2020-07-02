@@ -8,6 +8,9 @@ namespace godot {
     template <class T>
     class IsometricElement : public IsometricPositionable {
 
+    private:
+        PhysicsBody *registeredBody;
+
     protected:
         bool hasMoved;
         bool hasDefaultBody;
@@ -35,6 +38,9 @@ namespace godot {
          * @param b
          */
         virtual void setHasDefaultBody(bool b);
+
+        PhysicsBody *getRegisteredBody() const;
+        void setRegisteredBody(PhysicsBody *physicsBody);
 
         virtual void updatePositionFromBody(PhysicsBody *physicsBody);
 
@@ -145,6 +151,16 @@ namespace godot {
     template<class T>
     String IsometricElement<T>::get_class() const {
         return "IsometricElement";
+    }
+
+    template<class T>
+    PhysicsBody *IsometricElement<T>::getRegisteredBody() const {
+        return registeredBody;
+    }
+
+    template<class T>
+    void IsometricElement<T>::setRegisteredBody(PhysicsBody *physicsBody) {
+        registeredBody = physicsBody;
     }
 }
 

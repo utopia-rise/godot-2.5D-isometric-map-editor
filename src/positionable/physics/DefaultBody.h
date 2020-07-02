@@ -42,6 +42,7 @@ namespace godot {
     template<class T, class U>
     void DefaultBody<T, U>::setParent(IsometricElement<T> *isometricElement) {
         parent = isometricElement;
+        isometricElement->setRegisteredBody(dynamic_cast<T *>(this));
     }
 
     template<class T, class U>
