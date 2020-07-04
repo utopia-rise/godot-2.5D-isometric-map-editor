@@ -238,3 +238,13 @@ void IsometricMap::setHasMoved(bool hm) {
         }
     }
 }
+
+bool IsometricMap::isColliding() const {
+    const Array &children { get_children() };
+    for (int i = 0; i < children.size(); i++) {
+        if (auto *positionable = cast_to<IsometricPositionable>(children[i])) {
+            if (positionable->isColliding()) return true;
+        }
+    }
+    return false;
+}

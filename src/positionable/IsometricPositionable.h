@@ -73,6 +73,7 @@ namespace godot {
         virtual void onSelect(bool selected);
         virtual bool getHasMoved() const;
         virtual void setHasMoved(bool hm);
+        virtual bool isColliding() const;
     };
 }
 

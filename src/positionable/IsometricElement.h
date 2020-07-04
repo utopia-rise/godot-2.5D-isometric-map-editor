@@ -1,7 +1,12 @@
 #ifndef ISOMETRICMAPEDITOR_ISOMETRICELEMENT_H
 #define ISOMETRICMAPEDITOR_ISOMETRICELEMENT_H
 
+#include <Godot.hpp>
 #include <IsometricPositionable.h>
+#include <gen/PhysicsServer.hpp>
+#include <gen/World.hpp>
+#include <gen/PhysicsDirectSpaceState.hpp>
+#include <gen/PhysicsShapeQueryParameters.hpp>
 
 namespace godot {
 
@@ -52,6 +57,7 @@ namespace godot {
 
         bool getHasMoved() const override;
         void setHasMoved(bool hm) override;
+        bool isColliding() const override;
     };
 
     template<class T>
@@ -161,6 +167,27 @@ namespace godot {
     template<class T>
     void IsometricElement<T>::setRegisteredBody(PhysicsBody *physicsBody) {
         registeredBody = physicsBody;
+    }
+
+    template<class T>
+    bool IsometricElement<T>::isColliding() const {
+        if (registeredBody) {
+            Ref<World> world = registeredBody->get_world();
+            if (world.is_valid()) {
+                PhysicsDirectSpaceState *physicsDirectSpaceState = world.ptr()->get_direct_space_state();
+                const Array &shapeOwners { registeredBody->get_shape_owners() };
+                for (int i = 0; i < shapeOwners.size(); i++) {
+                    uint32_t owner = shapeOwners[i];
+                    for (int j = 0; j < registeredBody->shape_owner_get_shape_count(owner); j++) {
+                        PhysicsShapeQueryParameters *parameters = PhysicsShapeQueryParameters::_new();
+                        parameters->set_transform(registeredBody->shape_owner_get_transform(owner));
+                        parameters->set_shape(registeredBody->shape_owner_get_shape(owner, j));
+                        if (!physicsDirectSpaceState->intersect_shape(parameters, 1).empty()) return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }
 

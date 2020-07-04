@@ -25,6 +25,7 @@ void IsometricPositionable::_register_methods() {
     register_method("_on_select", &IsometricPositionable::onSelect);
     register_method("has_moved", &IsometricPositionable::getHasMoved);
     register_method("set_has_moved", &IsometricPositionable::setHasMoved);
+    register_method("is_colliding", &IsometricPositionable::isColliding);
 
     register_property("iso_position", &IsometricPositionable::isoPosition, Vector2());
     register_property("position3d", &IsometricPositionable::setPosition3D, &IsometricPositionable::getPosition3D, Vector3());
@@ -292,4 +293,8 @@ bool IsometricPositionable::getHasMoved() const {
 
 void IsometricPositionable::setHasMoved(bool hm) {
 
+}
+
+bool IsometricPositionable::isColliding() const {
+    return false;
 }
