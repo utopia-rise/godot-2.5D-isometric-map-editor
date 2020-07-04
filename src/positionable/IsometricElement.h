@@ -182,7 +182,14 @@ namespace godot {
                         PhysicsShapeQueryParameters *parameters = PhysicsShapeQueryParameters::_new();
                         parameters->set_transform(registeredBody->shape_owner_get_transform(owner));
                         parameters->set_shape(registeredBody->shape_owner_get_shape(owner, j));
-                        if (!physicsDirectSpaceState->intersect_shape(parameters, 1).empty()) return true;
+                        const Array &intersectShapes { physicsDirectSpaceState->intersect_shape(parameters) };
+                        for (int k = 0; k < intersectShapes.size(); k++) {
+                            Godot::print(String("{0}").format(Array::make(registeredBody)));
+                            Godot::print(String("{0}").format(Array::make(intersectShapes[k])));
+                            if (registeredBody->get_rid() != intersectShapes[k].operator Dictionary().operator[]("rid").operator RID()) {
+                                return true;
+                            }
+                        }
                     }
                 }
             }
