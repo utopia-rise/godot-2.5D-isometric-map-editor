@@ -180,16 +180,14 @@ namespace godot {
                     uint32_t owner = shapeOwners[i];
                     for (int j = 0; j < registeredBody->shape_owner_get_shape_count(owner); j++) {
                         PhysicsShapeQueryParameters *parameters = PhysicsShapeQueryParameters::_new();
-                        parameters->set_transform(registeredBody->shape_owner_get_transform(owner));
+                        const Transform &transform { registeredBody->get_transform() };
+                        parameters->set_transform({
+                            transform.basis,
+                            transform.origin + registeredBody->shape_owner_get_transform(owner).origin
+                        });
                         parameters->set_shape(registeredBody->shape_owner_get_shape(owner, j));
-                        const Array &intersectShapes { physicsDirectSpaceState->intersect_shape(parameters) };
-                        for (int k = 0; k < intersectShapes.size(); k++) {
-                            Godot::print(String("{0}").format(Array::make(registeredBody)));
-                            Godot::print(String("{0}").format(Array::make(intersectShapes[k])));
-                            if (registeredBody->get_rid() != intersectShapes[k].operator Dictionary().operator[]("rid").operator RID()) {
-                                return true;
-                            }
-                        }
+                        parameters->set_exclude(Array::make(registeredBody->get_rid()));
+                        if (!physicsDirectSpaceState->intersect_shape(parameters).empty()) return true;
                     }
                 }
             }
