@@ -7,4 +7,3 @@ resource_name = "IsometricTile"
 class_name = "IsometricTile"
 library = ExtResource( 1 )
 script_class_name = "IsometricTile"
-

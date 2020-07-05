@@ -7,6 +7,7 @@
 #include <gen/World.hpp>
 #include <gen/PhysicsDirectSpaceState.hpp>
 #include <gen/PhysicsShapeQueryParameters.hpp>
+#include <gen/Shape.hpp>
 
 namespace godot {
 
@@ -185,9 +186,13 @@ namespace godot {
                             transform.basis,
                             transform.origin + registeredBody->shape_owner_get_transform(owner).origin
                         });
-                        parameters->set_shape(registeredBody->shape_owner_get_shape(owner, j));
+                        Shape shape { *(registeredBody->shape_owner_get_shape(owner, j).ptr()) };
+                        shape.set_margin(-0.1);
+                        Ref<Shape> shapeRef = Ref<Shape>(&shape);
+                        parameters->set_shape(shapeRef);
                         parameters->set_exclude(Array::make(registeredBody->get_rid()));
-                        if (!physicsDirectSpaceState->intersect_shape(parameters).empty()) return true;
+                        const Array &array { physicsDirectSpaceState->intersect_shape(parameters) };
+                        if (!array.empty()) return true;
                     }
                 }
             }

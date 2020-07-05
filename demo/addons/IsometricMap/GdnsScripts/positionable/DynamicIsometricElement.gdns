@@ -7,4 +7,3 @@ resource_name = "DynamicIsometricElement"
 class_name = "DynamicIsometricElement"
 library = ExtResource( 1 )
 script_class_name = "DynamicIsometricElement"
-
