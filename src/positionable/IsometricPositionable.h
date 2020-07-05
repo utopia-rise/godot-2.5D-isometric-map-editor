@@ -5,6 +5,7 @@
 #include <core/Godot.hpp>
 #include <type_traits>
 #include <OutlineDrawer.h>
+#include <gen/PhysicsShapeQueryParameters.hpp>
 
 namespace godot {
 
@@ -73,7 +74,7 @@ namespace godot {
         virtual void onSelect(bool selected);
         virtual bool getHasMoved() const;
         virtual void setHasMoved(bool hm);
-        virtual bool isColliding() const;
+        virtual bool isColliding(PhysicsShapeQueryParameters *physicsQuery, bool isEdition) const;
     };
 }
 

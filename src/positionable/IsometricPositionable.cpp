@@ -295,6 +295,6 @@ void IsometricPositionable::setHasMoved(bool hm) {
 
 }
 
-bool IsometricPositionable::isColliding() const {
+bool IsometricPositionable::isColliding(PhysicsShapeQueryParameters *physicsQuery, bool isEdition) const {
     return false;
 }

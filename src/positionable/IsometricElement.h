@@ -6,7 +6,6 @@
 #include <gen/PhysicsServer.hpp>
 #include <gen/World.hpp>
 #include <gen/PhysicsDirectSpaceState.hpp>
-#include <gen/PhysicsShapeQueryParameters.hpp>
 #include <gen/Shape.hpp>
 
 namespace godot {
@@ -58,7 +57,7 @@ namespace godot {
 
         bool getHasMoved() const override;
         void setHasMoved(bool hm) override;
-        bool isColliding() const override;
+        bool isColliding(PhysicsShapeQueryParameters *physicsQuery, bool isEdition) const override;
     };
 
     template<class T>
@@ -171,28 +170,37 @@ namespace godot {
     }
 
     template<class T>
-    bool IsometricElement<T>::isColliding() const {
+    bool IsometricElement<T>::isColliding(PhysicsShapeQueryParameters *physicsQuery, bool isEdition) const {
         if (registeredBody) {
             Ref<World> world = registeredBody->get_world();
             if (world.is_valid()) {
                 PhysicsDirectSpaceState *physicsDirectSpaceState = world.ptr()->get_direct_space_state();
-                const Array &shapeOwners { registeredBody->get_shape_owners() };
-                for (int i = 0; i < shapeOwners.size(); i++) {
-                    uint32_t owner = shapeOwners[i];
-                    for (int j = 0; j < registeredBody->shape_owner_get_shape_count(owner); j++) {
-                        PhysicsShapeQueryParameters *parameters = PhysicsShapeQueryParameters::_new();
-                        const Transform &transform { registeredBody->get_transform() };
-                        parameters->set_transform({
-                            transform.basis,
-                            transform.origin + registeredBody->shape_owner_get_transform(owner).origin
-                        });
-                        Shape shape { *(registeredBody->shape_owner_get_shape(owner, j).ptr()) };
-                        shape.set_margin(-0.1);
-                        Ref<Shape> shapeRef = Ref<Shape>(&shape);
-                        parameters->set_shape(shapeRef);
-                        parameters->set_exclude(Array::make(registeredBody->get_rid()));
-                        const Array &array { physicsDirectSpaceState->intersect_shape(parameters) };
-                        if (!array.empty()) return true;
+                if (physicsQuery && !physicsDirectSpaceState->intersect_shape(physicsQuery, 1).empty()) {
+                    return true;
+                } else {
+                    const Array &shapeOwners { registeredBody->get_shape_owners() };
+                    for (int i = 0; i < shapeOwners.size(); i++) {
+                        uint32_t owner = shapeOwners[i];
+                        for (int j = 0; j < registeredBody->shape_owner_get_shape_count(owner); j++) {
+                            PhysicsShapeQueryParameters *parameters = PhysicsShapeQueryParameters::_new();
+                            const Transform &transform { registeredBody->get_transform() };
+                            parameters->set_transform({
+                                transform.basis,
+                                transform.origin + registeredBody->shape_owner_get_transform(owner).origin
+                            });
+
+                            if (isEdition) {
+                                Shape shape { *(registeredBody->shape_owner_get_shape(owner, j).ptr()) };
+                                shape.set_margin(-0.1);
+                                Ref<Shape> shapeRef = Ref<Shape>(&shape);
+                                parameters->set_shape(shapeRef);
+                            } else {
+                                parameters->set_shape(registeredBody->shape_owner_get_shape(owner, j));
+                            }
+
+                            parameters->set_exclude(Array::make(registeredBody->get_rid()));
+                            if (!physicsDirectSpaceState->intersect_shape(parameters, 1).empty()) return true;
+                        }
                     }
                 }
             }

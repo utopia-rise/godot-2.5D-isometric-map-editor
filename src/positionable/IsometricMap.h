@@ -47,7 +47,7 @@ namespace godot {
         void onGridUpdated(int stair) override;
         void setAABB(AABB ab) override;
         void setHasMoved(bool hm) override;
-        bool isColliding() const override;
+        bool isColliding(PhysicsShapeQueryParameters *physicsQuery, bool isEdition) const override;
     };
 }
 
