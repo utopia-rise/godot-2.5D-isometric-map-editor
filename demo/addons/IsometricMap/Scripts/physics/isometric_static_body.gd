@@ -6,6 +6,7 @@ var parent
 
 func _enter_tree():
 	self.parent = get_parent()
+	self.parent.registered_body = self
 
 func _physics_process(delta):
 	if parent != null && parent.has_moved():

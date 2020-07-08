@@ -23,6 +23,9 @@ namespace godot {
         bool getHasDefaultBody() const override;
         void setHasDefaultBody(bool b) override;
 
+        PhysicsBody *getRegisteredBody() const override;
+        void setRegisteredBody(PhysicsBody *physicsBody) override;
+
         void updatePositionFromBody(PhysicsBody *physicsBody) override;
     };
 

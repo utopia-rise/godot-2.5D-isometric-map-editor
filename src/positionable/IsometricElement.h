@@ -7,6 +7,7 @@
 #include <gen/World.hpp>
 #include <gen/PhysicsDirectSpaceState.hpp>
 #include <gen/Shape.hpp>
+#include <gen/ConvexPolygonShape.hpp>
 
 namespace godot {
 
@@ -44,8 +45,8 @@ namespace godot {
          */
         virtual void setHasDefaultBody(bool b);
 
-        PhysicsBody *getRegisteredBody() const;
-        void setRegisteredBody(PhysicsBody *physicsBody);
+        virtual PhysicsBody *getRegisteredBody() const;
+        virtual void setRegisteredBody(PhysicsBody *physicsBody);
 
         virtual void updatePositionFromBody(PhysicsBody *physicsBody);
 
@@ -54,10 +55,10 @@ namespace godot {
         void setAABB(AABB ab) override;
         void setPosition3D(Vector3 pos) override;
         void onResize() override;
-
         bool getHasMoved() const override;
         void setHasMoved(bool hm) override;
         bool isColliding(PhysicsShapeQueryParameters *physicsQuery, bool isEdition) const override;
+        bool isCollidingAABB(bool isEdition) const override;
     };
 
     template<class T>
@@ -204,6 +205,41 @@ namespace godot {
                     }
                 }
             }
+        }
+        return false;
+    }
+
+    template<class T>
+    bool IsometricElement<T>::isCollidingAABB(bool isEdition) const {
+        if (registeredBody) {
+            const Vector3 &size {getSize3D()};
+            const Vector3 &position {getPosition3D()};
+            const Vector3 &convertedSize{size.x, size.z, size.y};
+            PoolVector3Array poolVector3Array;
+            Vector3 originPoint;
+            poolVector3Array.push_back(originPoint);
+            poolVector3Array.push_back({originPoint.x, originPoint.y, convertedSize.z});
+            poolVector3Array.push_back({convertedSize.x, originPoint.y, originPoint.z});
+            poolVector3Array.push_back({convertedSize.x,originPoint.y, convertedSize.z});
+            poolVector3Array.push_back({originPoint.x, convertedSize.y, originPoint.z});
+            poolVector3Array.push_back({originPoint.x, convertedSize.y, convertedSize.z});
+            poolVector3Array.push_back({convertedSize.x, convertedSize.y, originPoint.z});
+            poolVector3Array.push_back(convertedSize);
+            ConvexPolygonShape *shape = ConvexPolygonShape::_new();
+            shape->set_points(poolVector3Array);
+            if (isEdition) {
+                shape->set_margin(-0.1);
+            }
+            Ref<Shape> shapeRef = Ref<Shape>(shape);
+
+            PhysicsShapeQueryParameters *parameters = PhysicsShapeQueryParameters::_new();
+            parameters->set_shape(shapeRef);
+            parameters->set_transform({
+                {1, 0, 0, 0, 1, 0, 0, 0, 1},
+                {position.x, position.z, position.y}
+            });
+            parameters->set_exclude(Array::make(registeredBody->get_rid()));
+            return !registeredBody->get_world().ptr()->get_direct_space_state()->intersect_shape(parameters, 1).empty();
         }
         return false;
     }

@@ -248,3 +248,15 @@ bool IsometricMap::isColliding(PhysicsShapeQueryParameters *physicsQuery, bool i
     }
     return false;
 }
+
+bool IsometricMap::isCollidingAABB(bool isEdition) const {
+    const Array &children {get_children()};
+    for (int i = 0; i < children.size(); i++) {
+        if (auto *positionable = cast_to<IsometricPositionable>(children[i])) {
+            if (positionable->isCollidingAABB(isEdition)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}

@@ -114,11 +114,6 @@ _global_script_classes=[ {
 "language": "NativeScript",
 "path": "res://addons/IsometricMap/GdnsScripts/positionable/PlaceholderType.gdns"
 }, {
-"base": "IsometricKinematicBody",
-"class": "RollingBallBody",
-"language": "GDScript",
-"path": "res://Scripts/physics/rolling_ball_body.gd"
-}, {
 "base": "Node2D",
 "class": "StairSelector",
 "language": "GDScript",
@@ -146,7 +141,6 @@ _global_script_class_icons={
 "MapEditionHandler": "",
 "NumericLineEdit": "",
 "PlaceholderType": "",
-"RollingBallBody": "",
 "StairSelector": ""
 }
 
@@ -162,6 +156,10 @@ IsoServer="*res://addons/IsometricMap/IsometricServer.tscn"
 [editor_plugins]
 
 enabled=PoolStringArray( "IsometricMap", "godot-plugin-refresher", "gut" )
+
+[gdnative]
+
+singletons=[  ]
 
 [input]
 

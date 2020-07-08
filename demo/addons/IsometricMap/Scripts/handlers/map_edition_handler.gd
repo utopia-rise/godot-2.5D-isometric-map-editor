@@ -79,9 +79,12 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 						if target_position != positionable_pos:
 							var width_offset: int = target_position.x - positionable_pos.x + 1
 							var depth_offset: int = target_position.y - positionable_pos.y + 1
+							var former_aabb: AABB = selected_positionable.get_aabb()
 							var future_aabb: AABB = AABB(positionable_pos, Vector3(width_offset, depth_offset, selected_positionable.size3d.z))
-							if !map.is_overlapping_aabb(future_aabb) and width_offset >= 0 and 1 + target_position.x <= map.size3d.x and depth_offset >= 0 and 1 + target_position.y <= map.size3d.y and !(width_offset == depth_offset and width_offset == 0):
+							if width_offset >= 0 and 1 + target_position.x <= map.size3d.x and depth_offset >= 0 and 1 + target_position.y <= map.size3d.y and !(width_offset == depth_offset and width_offset == 0):
 								selected_positionable.set_aabb(future_aabb)
+								if selected_positionable.is_colliding_aabb(true):
+									selected_positionable.set_aabb(former_aabb)
 						return true
 					else:
 						if loaded_positionable.get_class() == "IsometricTile":
@@ -107,14 +110,16 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 				if !loaded_positionable.get_class() == "IsometricPlaceholder":
 					var target_position: Vector3 = IsoServer.get_3d_coord_from_screen(map.get_local_mouse_position(), stair_selector.selected_stair).round()
 					var positionable_size = loaded_positionable.size3d
+					var former_aabb: AABB = loaded_positionable.get_aabb()
 					var future_aabb: AABB = AABB(target_position, positionable_size)
 					var is_position_positive := target_position.x >= 0 and target_position.y >= 0 and target_position.z >= 0
 					var is_in_map = target_position.x + positionable_size.x <= map.size3d.x and target_position.y + positionable_size.y <= map.size3d.y and target_position.z + positionable_size.z <= map.size3d.z
-					if !map.is_overlapping_aabb(future_aabb) and is_position_positive and is_in_map:
-						loaded_positionable.set_aabb(future_aabb)
+					loaded_positionable.set_aabb(future_aabb)
+					if is_position_positive and is_in_map and !loaded_positionable.is_colliding_aabb(true):
 						loaded_positionable.visible = true
 						return true
 					else:
+						loaded_positionable.set_aabb(former_aabb)
 						loaded_positionable.visible = false
 						return false
 				else:
@@ -281,7 +286,7 @@ func move_z_volume(positionable, up: bool) -> void:
 	print(str(positionable))
 	if positionable != null and positionable.get_class() == "IsometricPlaceholder":
 		map.remove_iso_positionable(positionable)
-		var future_aabb: = AABB(positionable.position3d, positionable.size3d)
+		var future_aabb: AABB = AABB(positionable.position3d, positionable.size3d)
 		var offset: int = 0
 		if up and positionable.position3d.z + positionable.size3d.z < map.size3d.z:
 			future_aabb.size.z += 1
@@ -424,7 +429,7 @@ func create_new_placeholder() -> void:
 
 func check_and_select_existing() -> bool:
 	for z in range(map.size3d.z, 0, -1):
-		var ortho_pos: Vector3 = IsoServer.get_3d_coord_from_screen(map.get_local_mouse_position(), z-1).round()
+		var ortho_pos: Vector3 = IsoServer.get_3d_coord_from_screen(map.get_local_mouse_position(), z - 1).round()
 		var posi = map.get_positionable_at(ortho_pos, false)
 		if posi != null:
 			if posi.position3d.z + posi.size3d.z > stair_selector.selected_stair:

@@ -6,6 +6,7 @@ var parent: DynamicIsometricElement
 
 func _enter_tree() -> void:
 	self.parent = get_parent()
+	self.parent.registered_body = self
 
 func _physics_process(delta: float) -> void:
 	if parent != null:

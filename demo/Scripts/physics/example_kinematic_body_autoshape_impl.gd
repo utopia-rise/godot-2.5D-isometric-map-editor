@@ -12,6 +12,7 @@ export(int) var speed: int
 func _init():
 	add_child(collision_shape)
 	collision_shape.set_owner(self)
+	calculate_collision_shape()
 
 func _recalibrate_from_parent() -> void:
 	._recalibrate_from_parent()

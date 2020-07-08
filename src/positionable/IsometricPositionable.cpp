@@ -1,5 +1,6 @@
 #include <IsometricPositionable.h>
 #include <IsometricServer.h>
+#include <gen/ConvexPolygonShape.hpp>
 #include "IsometricMap.h"
 
 
@@ -26,6 +27,7 @@ void IsometricPositionable::_register_methods() {
     register_method("has_moved", &IsometricPositionable::getHasMoved);
     register_method("set_has_moved", &IsometricPositionable::setHasMoved);
     register_method("is_colliding", &IsometricPositionable::isColliding);
+    register_method("is_colliding_aabb", &IsometricPositionable::isCollidingAABB);
 
     register_property("iso_position", &IsometricPositionable::isoPosition, Vector2());
     register_property("position3d", &IsometricPositionable::setPosition3D, &IsometricPositionable::getPosition3D, Vector3());
@@ -296,5 +298,9 @@ void IsometricPositionable::setHasMoved(bool hm) {
 }
 
 bool IsometricPositionable::isColliding(PhysicsShapeQueryParameters *physicsQuery, bool isEdition) const {
+    return false;
+}
+
+bool IsometricPositionable::isCollidingAABB(bool isEdition) const {
     return false;
 }

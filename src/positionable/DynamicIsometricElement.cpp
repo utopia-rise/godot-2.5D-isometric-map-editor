@@ -6,6 +6,8 @@ using namespace godot;
 void DynamicIsometricElement::_register_methods() {
     register_property("has_default_body", &DynamicIsometricElement::setHasDefaultBody,
             &DynamicIsometricElement::getHasDefaultBody, true);
+    register_property("registered_body", &DynamicIsometricElement::setRegisteredBody, &DynamicIsometricElement::getRegisteredBody,
+                      static_cast<PhysicsBody *>(nullptr));
 
     register_method("_init", &DynamicIsometricElement::_init);
     register_method("_enter_tree", &DynamicIsometricElement::_enter_tree);
@@ -31,6 +33,14 @@ bool DynamicIsometricElement::getHasDefaultBody() const {
 
 void DynamicIsometricElement::setHasDefaultBody(bool b) {
     IsometricElement<DefaultKinematicBody>::setHasDefaultBody(b);
+}
+
+PhysicsBody *DynamicIsometricElement::getRegisteredBody() const {
+    return IsometricElement<DefaultKinematicBody>::getRegisteredBody();
+}
+
+void DynamicIsometricElement::setRegisteredBody(PhysicsBody *physicsBody) {
+    IsometricElement<DefaultKinematicBody>::setRegisteredBody(physicsBody);
 }
 
 void DynamicIsometricElement::updatePositionFromBody(PhysicsBody *physicsBody) {

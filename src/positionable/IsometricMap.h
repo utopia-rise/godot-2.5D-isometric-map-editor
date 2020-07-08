@@ -48,6 +48,7 @@ namespace godot {
         void setAABB(AABB ab) override;
         void setHasMoved(bool hm) override;
         bool isColliding(PhysicsShapeQueryParameters *physicsQuery, bool isEdition) const override;
+        bool isCollidingAABB(bool isEdition) const override;
     };
 }
 

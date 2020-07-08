@@ -12,11 +12,11 @@ void StaticIsometricElement::_register_methods() {
                       GODOT_PROPERTY_HINT_ENUM, "NONE,LEFT,RIGHT,FORWARD,BACKWARD");
     register_property("has_default_body", &StaticIsometricElement::setHasDefaultBody, &StaticIsometricElement::getHasDefaultBody,
                       true);
+    register_property("registered_body", &StaticIsometricElement::setRegisteredBody, &StaticIsometricElement::getRegisteredBody,
+                      static_cast<PhysicsBody *>(nullptr));
 
     register_method("_init", &StaticIsometricElement::_init);
     register_method("_enter_tree", &StaticIsometricElement::_enter_tree);
-    register_method("has_moved", &StaticIsometricElement::getHasMoved);
-    register_method("set_has_moved", &StaticIsometricElement::setHasMoved);
 }
 
 void StaticIsometricElement::_init() {
@@ -73,6 +73,14 @@ bool StaticIsometricElement::getHasDefaultBody() const {
 
 void StaticIsometricElement::setHasDefaultBody(bool b) {
     IsometricElement<DefaultStaticBody>::setHasDefaultBody(b);
+}
+
+PhysicsBody *StaticIsometricElement::getRegisteredBody() const {
+    return IsometricElement<DefaultStaticBody>::getRegisteredBody();
+}
+
+void StaticIsometricElement::setRegisteredBody(PhysicsBody *physicsBody) {
+    IsometricElement<DefaultStaticBody>::setRegisteredBody(physicsBody);
 }
 
 void StaticIsometricElement::updatePositionFromBody(PhysicsBody *physicsBody) {

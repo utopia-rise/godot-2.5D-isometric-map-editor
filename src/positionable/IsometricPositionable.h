@@ -75,6 +75,7 @@ namespace godot {
         virtual bool getHasMoved() const;
         virtual void setHasMoved(bool hm);
         virtual bool isColliding(PhysicsShapeQueryParameters *physicsQuery, bool isEdition) const;
+        virtual bool isCollidingAABB(bool isEdition) const;
     };
 }
 
