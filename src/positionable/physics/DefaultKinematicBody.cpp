@@ -4,6 +4,7 @@
 #include <gen/Engine.hpp>
 #include <gen/RayShape.hpp>
 #include <helpers/MathHelper.h>
+#include <positionable/IsometricMap.h>
 
 using namespace godot;
 
@@ -27,7 +28,7 @@ void DefaultKinematicBody::_init() {
 
 void DefaultKinematicBody::_enter_tree() {
     if (parent) {
-        const Vector3 &parentPosition { parent->getPosition3D() };
+        const Vector3 &parentPosition { parent->getPosition3D() + parent->getPositionOffset() };
         const Vector3 &parentSize {parent->getSize3D()};
 
         set_global_transform({
@@ -46,7 +47,7 @@ void DefaultKinematicBody::_enter_tree() {
 void DefaultKinematicBody::_physics_process(float delta) {
     if (parent) {
         if (parent->getHasMoved()) {
-            const Vector3 &parentPosition { parent->getPosition3D() };
+            const Vector3 &parentPosition { parent->getPosition3D() + parent->getPositionOffset() };
             const Vector3 &parentSize {parent->getSize3D()};
 
             set_global_transform({

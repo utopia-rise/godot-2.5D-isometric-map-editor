@@ -1,5 +1,6 @@
 #include <IsometricPositionable.h>
 #include <IsometricServer.h>
+#include "IsometricMap.h"
 
 
 using namespace godot;
@@ -22,6 +23,8 @@ void IsometricPositionable::_register_methods() {
     register_method("_on_resize", &IsometricPositionable::onResize);
     register_method("_on_grid_updated", &IsometricPositionable::onGridUpdated);
     register_method("_on_select", &IsometricPositionable::onSelect);
+    register_method("has_moved", &IsometricPositionable::getHasMoved);
+    register_method("set_has_moved", &IsometricPositionable::setHasMoved);
 
     register_property("iso_position", &IsometricPositionable::isoPosition, Vector2());
     register_property("position3d", &IsometricPositionable::setPosition3D, &IsometricPositionable::getPosition3D, Vector3());
@@ -269,4 +272,24 @@ int IsometricPositionable::getDebugZ() const {
 
 void IsometricPositionable::setDebugZ(int dZ) {
     this->debugZ = dZ;
+}
+
+Vector3 IsometricPositionable::getPositionOffset() const {
+    Vector3 offset;
+    Node *pNode = get_parent();
+    if (pNode) {
+        auto *map = cast_to<IsometricMap>(pNode);
+        if (map) {
+            offset += map->aabb.position + map->getPositionOffset();
+        }
+    }
+    return offset;
+}
+
+bool IsometricPositionable::getHasMoved() const {
+    return false;
+}
+
+void IsometricPositionable::setHasMoved(bool hm) {
+
 }

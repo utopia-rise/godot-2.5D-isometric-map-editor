@@ -75,14 +75,6 @@ void StaticIsometricElement::setHasDefaultBody(bool b) {
     IsometricElement<DefaultStaticBody>::setHasDefaultBody(b);
 }
 
-bool StaticIsometricElement::getHasMoved() const {
-    return IsometricElement<DefaultStaticBody>::getHasMoved();
-}
-
-void StaticIsometricElement::setHasMoved(bool hm) {
-    IsometricElement<DefaultStaticBody>::setHasMoved(hm);
-}
-
 void StaticIsometricElement::updatePositionFromBody(PhysicsBody *physicsBody) {
 
 }

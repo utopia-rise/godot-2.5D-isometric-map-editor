@@ -223,3 +223,18 @@ IsometricMap *IsometricMap::flatten() {
     }
     return isometricMap;
 }
+
+void IsometricMap::setAABB(AABB ab) {
+    IsometricPositionable::setAABB(ab);
+    setHasMoved(true);
+}
+
+void IsometricMap::setHasMoved(bool hm) {
+    const Array &children = get_children();
+    for (int i = 0; i < children.size(); i++) {
+        auto *positionable = cast_to<IsometricPositionable>(children[i]);
+        if (positionable) {
+            positionable->setHasMoved(true);
+        }
+    }
+}
