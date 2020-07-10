@@ -51,6 +51,7 @@ namespace godot {
         virtual String get_class() const;
         Transform2D getHexagoneCoordinates() const;
         void setOutlineDrawer(Color color, real_t lineSize);
+        Vector3 getPositionOffset() const;
 
         AABB getAABB();
         virtual void setAABB(AABB ab);
@@ -70,6 +71,8 @@ namespace godot {
         virtual void onResize();
         virtual void onGridUpdated(int stair);
         virtual void onSelect(bool selected);
+        virtual bool getHasMoved() const;
+        virtual void setHasMoved(bool hm);
     };
 }
 

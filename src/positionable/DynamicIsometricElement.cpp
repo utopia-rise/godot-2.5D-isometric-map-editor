@@ -10,8 +10,6 @@ void DynamicIsometricElement::_register_methods() {
     register_method("_init", &DynamicIsometricElement::_init);
     register_method("_enter_tree", &DynamicIsometricElement::_enter_tree);
     register_method("get_class", &DynamicIsometricElement::get_class);
-    register_method("has_moved", &DynamicIsometricElement::getHasMoved);
-    register_method("set_has_moved", &DynamicIsometricElement::setHasMoved);
     register_method("update_position_from_body", &DynamicIsometricElement::updatePositionFromBody);
 }
 
@@ -33,14 +31,6 @@ bool DynamicIsometricElement::getHasDefaultBody() const {
 
 void DynamicIsometricElement::setHasDefaultBody(bool b) {
     IsometricElement<DefaultKinematicBody>::setHasDefaultBody(b);
-}
-
-bool DynamicIsometricElement::getHasMoved() const {
-    return IsometricElement<DefaultKinematicBody>::getHasMoved();
-}
-
-void DynamicIsometricElement::setHasMoved(bool hm) {
-    IsometricElement<DefaultKinematicBody>::setHasMoved(hm);
 }
 
 void DynamicIsometricElement::updatePositionFromBody(PhysicsBody *physicsBody) {

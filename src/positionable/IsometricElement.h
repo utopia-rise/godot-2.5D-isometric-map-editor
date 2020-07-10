@@ -36,9 +36,6 @@ namespace godot {
          */
         virtual void setHasDefaultBody(bool b);
 
-        virtual bool getHasMoved() const;
-        virtual void setHasMoved(bool hm);
-
         virtual void updatePositionFromBody(PhysicsBody *physicsBody);
 
         virtual int getSlopeType() const;
@@ -46,6 +43,9 @@ namespace godot {
         void setAABB(AABB ab) override;
         void setPosition3D(Vector3 pos) override;
         void onResize() override;
+
+        bool getHasMoved() const override;
+        void setHasMoved(bool hm) override;
     };
 
     template<class T>
@@ -82,16 +82,6 @@ namespace godot {
         if (is_inside_tree()) {
             updateDefaultBody();
         }
-    }
-
-    template<class T>
-    bool IsometricElement<T>::getHasMoved() const {
-        return hasMoved;
-    }
-
-    template<class T>
-    void IsometricElement<T>::setHasMoved(bool hm) {
-        hasMoved = hm;
     }
 
     template<class T>
@@ -140,6 +130,16 @@ namespace godot {
     void IsometricElement<T>::onResize() {
         IsometricPositionable::onResize();
         hasMoved = true;
+    }
+
+    template<class T>
+    bool IsometricElement<T>::getHasMoved() const {
+        return hasMoved;
+    }
+
+    template<class T>
+    void IsometricElement<T>::setHasMoved(bool hm) {
+        hasMoved = hm;
     }
 
     template<class T>
