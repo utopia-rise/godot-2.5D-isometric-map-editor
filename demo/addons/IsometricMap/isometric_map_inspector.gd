@@ -27,7 +27,7 @@ class MapSizeEditor extends EditorProperty:
 		var new_value = get_edited_object()[ get_edited_property() ]
 		updating=true
 		for i in terrain_types.keys():
-			var value = terrain_types[i] as PlaceholderType
+			var value = terrain_types[i]
 			if value == new_value:
 				#vbox.select(i)
 				break
@@ -41,13 +41,13 @@ class MapSizeEditor extends EditorProperty:
 		widget.get_node("zle").connect("text_entered", self, "change_map_height")
 	
 	func _ready():
-		var iso_map: IsometricMap = get_edited_object() as IsometricMap
+		var iso_map = get_edited_object()
 		widget.get_node("xle").text = str(iso_map.size3d.x)
 		widget.get_node("yle").text = str(iso_map.size3d.y)
 		widget.get_node("zle").text = str(iso_map.size3d.z)
 	
 	func change_map_width(value: String) -> void:
-		var iso_map: IsometricMap = get_edited_object() as IsometricMap
+		var iso_map = get_edited_object()
 		var map_size: = Vector3(int(value), iso_map.size3d.y, iso_map.size3d.z)
 		undo_redo.create_action("change_map_width")
 		remove_out_of_range_placeholders(map_size)
@@ -56,7 +56,7 @@ class MapSizeEditor extends EditorProperty:
 		undo_redo.commit_action()
 	
 	func change_map_depth(value: String) -> void:
-		var iso_map: IsometricMap = get_edited_object() as IsometricMap
+		var iso_map = get_edited_object()
 		var map_size: = Vector3(iso_map.size3d.x, int(value), iso_map.size3d.z)
 		undo_redo.create_action("change_map_depth")
 		remove_out_of_range_placeholders(map_size)
@@ -65,7 +65,7 @@ class MapSizeEditor extends EditorProperty:
 		undo_redo.commit_action()
 	
 	func change_map_height(value: String) -> void:
-		var iso_map: IsometricMap = get_edited_object() as IsometricMap
+		var iso_map = get_edited_object()
 		var map_size: = Vector3(iso_map.size3d.x, iso_map.size3d.y, int(value))
 		undo_redo.create_action("change_map_height")
 		remove_out_of_range_placeholders(map_size)
@@ -74,7 +74,7 @@ class MapSizeEditor extends EditorProperty:
 		undo_redo.commit_action()
 	
 	func remove_out_of_range_placeholders(map_size: Vector3) -> void:
-		var iso_map: IsometricMap = get_edited_object() as IsometricMap
+		var iso_map = get_edited_object()
 		for pl in iso_map.get_children():
 			if pl.get_class() == "IsometricPlaceholder":
 				if pl.position3d.x + pl.size3d.x > map_size.x or pl.position3d.y + pl.size3d.y > map_size.y or pl.position3d.z + pl.size3d.z > map_size.z:
