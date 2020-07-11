@@ -1,5 +1,8 @@
 #include <IsometricMap.h>
 #include <IsometricServer.h>
+#include "IsometricElement.h"
+#include "StaticIsometricElement.h"
+#include "DynamicIsometricElement.h"
 
 
 using namespace godot;
@@ -38,6 +41,10 @@ void IsometricMap::_ready() {
         if (positionable) {
             grid3D.setData(positionable->getPosition3D(), positionable);
             editionGrid3D.insertBox(positionable->getAABB(), positionable);
+            childrenPositionables.append(positionable);
+            if (cast_to<StaticIsometricElement>(positionable) || cast_to<DynamicIsometricElement>(positionable)) {
+                childrenElements.append(positionable);
+            }
         }
     }
 }
@@ -150,6 +157,16 @@ IsometricMap *IsometricMap::initializeFrom() {
     return copy;
 }
 
+void IsometricMap::getElementsRIDs(Array *fill) const {
+    for (int j = 0; j < childrenElements.size(); j++) {
+        if (auto *staticElement = cast_to<StaticIsometricElement>(childrenElements[j])) {
+            fill->append(staticElement->getRegisteredBody()->get_rid());
+        } else if (auto *dynamicElement = cast_to<DynamicIsometricElement>(childrenElements[j])) {
+            fill->append(dynamicElement->getRegisteredBody()->get_rid());
+        }
+    }
+}
+
 void IsometricMap::addIsoPositionable(IsometricPositionable *isometricPositionable) {
     const Vector3 &mapSize { getAABB().size };
     const AABB &aabb { isometricPositionable->getAABB() };
@@ -159,6 +176,12 @@ void IsometricMap::addIsoPositionable(IsometricPositionable *isometricPositionab
     isometricPositionable->setDebugZ(0);
     grid3D.setData(aabb.position, isometricPositionable);
     editionGrid3D.insertBox(aabb, isometricPositionable);
+
+    childrenPositionables.append(isometricPositionable);
+    if (cast_to<StaticIsometricElement>(isometricPositionable) ||
+            cast_to<DynamicIsometricElement>(isometricPositionable)) {
+        childrenElements.append(isometricPositionable);
+    }
     add_child(isometricPositionable);
     isometricPositionable->add_to_group(ISO_GROUP, false);
 }
@@ -171,6 +194,12 @@ void IsometricMap::removeIsoPositionable(IsometricPositionable *isometricPositio
     remove_child(isometricPositionable);
     grid3D.setData(aabb.position, nullptr);
     editionGrid3D.insertBox(aabb, isometricPositionable, true);
+
+    childrenPositionables.erase(isometricPositionable);
+    if (cast_to<StaticIsometricElement>(isometricPositionable) ||
+            cast_to<DynamicIsometricElement>(isometricPositionable)) {
+        childrenElements.erase(isometricPositionable);
+    }
     if (isometricPositionable->is_in_group(ISO_GROUP)) {
         isometricPositionable->remove_from_group(ISO_GROUP);
     }
@@ -240,20 +269,31 @@ void IsometricMap::setHasMoved(bool hm) {
 }
 
 bool IsometricMap::isColliding(PhysicsShapeQueryParameters *physicsQuery, bool isEdition) const {
-    const Array &children { get_children() };
-    for (int i = 0; i < children.size(); i++) {
-        if (auto *positionable = cast_to<IsometricPositionable>(children[i])) {
-            if (positionable->isColliding(physicsQuery, isEdition)) return true;
+    Array rids;
+    getElementsRIDs(&rids);
+    return isCollidingIgnoring(rids, physicsQuery, isEdition);
+}
+
+bool
+IsometricMap::isCollidingIgnoring(const Array &rids, PhysicsShapeQueryParameters *physicsQuery, bool isEdition) const {
+    for (int i = 0; i < childrenPositionables.size(); i++) {
+        if (auto *positionable = cast_to<IsometricPositionable>(childrenPositionables[i])) {
+            if (positionable->isCollidingIgnoring(rids, physicsQuery, isEdition)) return true;
         }
     }
     return false;
 }
 
 bool IsometricMap::isCollidingAABB(bool isEdition) const {
-    const Array &children {get_children()};
-    for (int i = 0; i < children.size(); i++) {
-        if (auto *positionable = cast_to<IsometricPositionable>(children[i])) {
-            if (positionable->isCollidingAABB(isEdition)) {
+    Array rids;
+    getElementsRIDs(&rids);
+    return isCollidingAABBIgnoring(rids, isEdition);
+}
+
+bool IsometricMap::isCollidingAABBIgnoring(const Array &rids, bool isEdition) const {
+    for (int i = 0; i < childrenPositionables.size(); i++) {
+        if (auto *positionable = cast_to<IsometricPositionable>(childrenPositionables[i])) {
+            if (positionable->isCollidingAABBIgnoring(rids, isEdition)) {
                 return true;
             }
         }

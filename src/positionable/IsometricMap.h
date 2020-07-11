@@ -12,6 +12,8 @@ namespace godot {
         bool drawTiles;
         Grid3D grid3D;
         Grid3D editionGrid3D;
+        Array childrenPositionables;
+        Array childrenElements;
 
         int currentSortingOrder;
 
@@ -20,6 +22,7 @@ namespace godot {
         Array getPositionableBehind(IsometricPositionable *isoNode);
         Array getFlattenPositionables(const Vector3 &offset = Vector3());
         IsometricMap *initializeFrom();
+        void getElementsRIDs(Array *fill) const;
 
     public:
 
@@ -48,7 +51,9 @@ namespace godot {
         void setAABB(AABB ab) override;
         void setHasMoved(bool hm) override;
         bool isColliding(PhysicsShapeQueryParameters *physicsQuery, bool isEdition) const override;
+        bool isCollidingIgnoring(const Array &rids, PhysicsShapeQueryParameters *physicsQuery, bool isEdition) const override;
         bool isCollidingAABB(bool isEdition) const override;
+        bool isCollidingAABBIgnoring(const Array &rids, bool isEdition) const override;
     };
 }
 

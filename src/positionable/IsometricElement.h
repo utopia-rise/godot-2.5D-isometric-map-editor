@@ -8,6 +8,7 @@
 #include <gen/PhysicsDirectSpaceState.hpp>
 #include <gen/Shape.hpp>
 #include <gen/ConvexPolygonShape.hpp>
+#include <gen/PhysicsBody.hpp>
 
 namespace godot {
 
@@ -30,10 +31,9 @@ namespace godot {
     public:
         IsometricElement();
         ~IsometricElement() = default;
-
         void _enter_tree();
-        String get_class() const override;
 
+        String get_class() const override;
         /**
          * @return true if should have default body.
          */
@@ -46,23 +46,29 @@ namespace godot {
         virtual void setHasDefaultBody(bool b);
 
         virtual PhysicsBody *getRegisteredBody() const;
-        virtual void setRegisteredBody(PhysicsBody *physicsBody);
 
+        virtual void setRegisteredBody(PhysicsBody *physicsBody);
         virtual void updatePositionFromBody(PhysicsBody *physicsBody);
 
         virtual int getSlopeType() const;
 
         void setAABB(AABB ab) override;
+
         void setPosition3D(Vector3 pos) override;
         void onResize() override;
         bool getHasMoved() const override;
         void setHasMoved(bool hm) override;
         bool isColliding(PhysicsShapeQueryParameters *physicsQuery, bool isEdition) const override;
+        bool isCollidingIgnoring(const Array &rids, PhysicsShapeQueryParameters *physicsQuery, bool isEdition) const
+        override;
         bool isCollidingAABB(bool isEdition) const override;
+        bool isCollidingAABBIgnoring(const Array &rids, bool isEdition) const
+        override;
     };
 
     template<class T>
-    IsometricElement<T>::IsometricElement(): hasMoved(false), hasDefaultBody(true), defaultBody(nullptr) {
+    IsometricElement<T>::IsometricElement(): hasMoved(false), hasDefaultBody(true), defaultBody(nullptr),
+    registeredBody(nullptr) {
 
     }
 
@@ -172,6 +178,12 @@ namespace godot {
 
     template<class T>
     bool IsometricElement<T>::isColliding(PhysicsShapeQueryParameters *physicsQuery, bool isEdition) const {
+        return isCollidingIgnoring(Array::make(registeredBody->get_rid()), physicsQuery, isEdition);
+    }
+
+    template<class T>
+    bool IsometricElement<T>::isCollidingIgnoring(const Array &rids, PhysicsShapeQueryParameters *physicsQuery,
+                                                  bool isEdition) const {
         if (registeredBody) {
             Ref<World> world = registeredBody->get_world();
             if (world.is_valid()) {
@@ -199,7 +211,7 @@ namespace godot {
                                 parameters->set_shape(registeredBody->shape_owner_get_shape(owner, j));
                             }
 
-                            parameters->set_exclude(Array::make(registeredBody->get_rid()));
+                            parameters->set_exclude(rids);
                             if (!physicsDirectSpaceState->intersect_shape(parameters, 1).empty()) return true;
                         }
                     }
@@ -211,9 +223,14 @@ namespace godot {
 
     template<class T>
     bool IsometricElement<T>::isCollidingAABB(bool isEdition) const {
+        return isCollidingAABBIgnoring(Array::make(registeredBody->get_rid()), isEdition);
+    }
+
+    template<class T>
+    bool IsometricElement<T>::isCollidingAABBIgnoring(const Array &rids, bool isEdition) const {
         if (registeredBody) {
             const Vector3 &size {getSize3D()};
-            const Vector3 &position {getPosition3D()};
+            const Vector3 &position {getPosition3D() + getPositionOffset()};
             const Vector3 &convertedSize{size.x, size.z, size.y};
             PoolVector3Array poolVector3Array;
             Vector3 originPoint;
@@ -235,11 +252,11 @@ namespace godot {
             PhysicsShapeQueryParameters *parameters = PhysicsShapeQueryParameters::_new();
             parameters->set_shape(shapeRef);
             parameters->set_transform({
-                {1, 0, 0, 0, 1, 0, 0, 0, 1},
-                {position.x, position.z, position.y}
-            });
-            parameters->set_exclude(Array::make(registeredBody->get_rid()));
-            return !registeredBody->get_world().ptr()->get_direct_space_state()->intersect_shape(parameters, 1).empty();
+                                              {1, 0, 0, 0, 1, 0, 0, 0, 1},
+                                              {position.x, position.z, position.y}
+                                      });
+            parameters->set_exclude(rids);
+            return !registeredBody->get_world().ptr()->get_direct_space_state()->intersect_shape(parameters).empty();
         }
         return false;
     }

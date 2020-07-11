@@ -107,7 +107,7 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 								load_iso_for_edition(false)
 								return true
 			else:
-				if !loaded_positionable.get_class() == "IsometricPlaceholder":
+				if loaded_positionable.get_class() != "IsometricPlaceholder":
 					var target_position: Vector3 = IsoServer.get_3d_coord_from_screen(map.get_local_mouse_position(), stair_selector.selected_stair).round()
 					var positionable_size = loaded_positionable.size3d
 					var former_aabb: AABB = loaded_positionable.get_aabb()
@@ -465,7 +465,7 @@ func scene_from_tile_tree(is_map: bool) -> void:
 
 func load_iso_for_edition(is_map: bool) -> void:
 	scene_from_tile_tree(is_map)
-	if not loaded_positionable.get_class() == "IsometricPlaceholder":
+	if loaded_positionable and not loaded_positionable.get_class() == "IsometricPlaceholder":
 		loaded_positionable.visible = false
 		loaded_positionable.modulate.a = 0.5
 		map.add_child(loaded_positionable)

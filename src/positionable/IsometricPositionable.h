@@ -40,21 +40,22 @@ namespace godot {
                              real_t depth,
                              real_t ratio) const;
     public:
+
         Vector2 isoPosition;
         IsometricPositionable();
         ~IsometricPositionable() = default;
-
         static void _register_methods();
 
         void  _init();
+
         void _enter_tree();
         void _exit_tree();
         virtual String get_class() const;
         Transform2D getHexagoneCoordinates() const;
         void setOutlineDrawer(Color color, real_t lineSize);
         Vector3 getPositionOffset() const;
-
         AABB getAABB();
+
         virtual void setAABB(AABB ab);
         Vector3 getPosition3D() const;
         virtual void setPosition3D(Vector3 pos);
@@ -68,14 +69,16 @@ namespace godot {
         void setTemporary(bool temp);
         int getDebugZ() const;
         void setDebugZ(int dZ);
-
         virtual void onResize();
+
         virtual void onGridUpdated(int stair);
         virtual void onSelect(bool selected);
         virtual bool getHasMoved() const;
         virtual void setHasMoved(bool hm);
         virtual bool isColliding(PhysicsShapeQueryParameters *physicsQuery, bool isEdition) const;
+        virtual bool isCollidingIgnoring(const Array &rids, PhysicsShapeQueryParameters *physicsQuery,bool isEdition) const;
         virtual bool isCollidingAABB(bool isEdition) const;
+        virtual bool isCollidingAABBIgnoring(const Array &rids, bool isEdition) const;
     };
 }
 

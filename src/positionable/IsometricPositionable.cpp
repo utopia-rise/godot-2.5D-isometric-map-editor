@@ -184,6 +184,15 @@ IsometricPositionable::calculateSlopeOffset(Vector2 *slopeOffset, real_t tileWid
     return SlopeType::NONE;
 }
 
+bool IsometricPositionable::isCollidingIgnoring(const Array &rids, PhysicsShapeQueryParameters *physicsQuery,
+                                                bool isEdition) const {
+    return false;
+}
+
+bool IsometricPositionable::isCollidingAABBIgnoring(const Array &rids, bool isEdition) const {
+    return false;
+}
+
 AABB IsometricPositionable::getAABB() {
     return aabb;
 }
