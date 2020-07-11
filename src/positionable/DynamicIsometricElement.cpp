@@ -6,13 +6,12 @@ using namespace godot;
 void DynamicIsometricElement::_register_methods() {
     register_property("has_default_body", &DynamicIsometricElement::setHasDefaultBody,
             &DynamicIsometricElement::getHasDefaultBody, true);
-    register_property("registered_body", &DynamicIsometricElement::setRegisteredBody, &DynamicIsometricElement::getRegisteredBody,
-                      static_cast<PhysicsBody *>(nullptr));
 
     register_method("_init", &DynamicIsometricElement::_init);
     register_method("_enter_tree", &DynamicIsometricElement::_enter_tree);
     register_method("get_class", &DynamicIsometricElement::get_class);
     register_method("update_position_from_body", &DynamicIsometricElement::updatePositionFromBody);
+    register_method("set_registered_body", &DynamicIsometricElement::setRegisteredBody);
 }
 
 void DynamicIsometricElement::_init() {

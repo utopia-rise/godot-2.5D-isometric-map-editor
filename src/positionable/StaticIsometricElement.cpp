@@ -12,11 +12,10 @@ void StaticIsometricElement::_register_methods() {
                       GODOT_PROPERTY_HINT_ENUM, "NONE,LEFT,RIGHT,FORWARD,BACKWARD");
     register_property("has_default_body", &StaticIsometricElement::setHasDefaultBody, &StaticIsometricElement::getHasDefaultBody,
                       true);
-    register_property("registered_body", &StaticIsometricElement::setRegisteredBody, &StaticIsometricElement::getRegisteredBody,
-                      static_cast<PhysicsBody *>(nullptr));
 
     register_method("_init", &StaticIsometricElement::_init);
     register_method("_enter_tree", &StaticIsometricElement::_enter_tree);
+    register_method("set_registered_body", &StaticIsometricElement::setRegisteredBody);
 }
 
 void StaticIsometricElement::_init() {
