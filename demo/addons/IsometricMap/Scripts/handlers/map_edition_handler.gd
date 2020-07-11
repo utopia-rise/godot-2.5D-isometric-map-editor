@@ -10,6 +10,7 @@ var map: IsometricMap = null
 var selected_positionable = null
 var selected_tile_item: TreeItem
 var loaded_positionable = null
+var tiling_positions = []
 
 var undo_redo: UndoRedo
 var editor_interface: EditorInterface
@@ -72,6 +73,9 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 		event as InputEventMouseMotion
 		if loaded_positionable != null and is_instance_valid(loaded_positionable):
 			if drag_action == DragAction.TILING:
+				if tiling_positions.size() == 50:
+					for i in range(25):
+						tiling_positions.pop_front()
 				if selected_positionable != null :
 					var target_position: Vector3 = IsoServer.get_3d_coord_from_screen(map.get_local_mouse_position(), stair_selector.selected_stair).round()
 					if selected_positionable.get_class() == "IsometricPlaceholder":
@@ -89,23 +93,20 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 					else:
 						if loaded_positionable.get_class() == "IsometricTile":
 							var positionable_size = loaded_positionable.size3d
+							var former_aabb = loaded_positionable.get_aabb()
 							var future_aabb: AABB = AABB(target_position, positionable_size)
 							var is_position_positive := target_position.x >= 0 and target_position.y >= 0 and target_position.z >= 0
 							var is_in_map = target_position.x + positionable_size.x <= map.size3d.x and target_position.y + positionable_size.y <= map.size3d.y and target_position.z + positionable_size.z <= map.size3d.z
-							if !map.is_overlapping_aabb(future_aabb) and is_position_positive and is_in_map:
+							loaded_positionable.set_aabb(future_aabb)
+							if !tiling_positions.has(target_position) and !loaded_positionable.is_colliding_aabb(true) and is_position_positive and is_in_map:
 								select_positionable(loaded_positionable)
-								selected_positionable.set_aabb(AABB(IsoServer.get_3d_coord_from_screen(map.get_local_mouse_position(), stair_selector.selected_stair).round(), selected_positionable.size3d))
-								selected_positionable.visible = true
-								selected_positionable.modulate.a = 1
-								map.remove_child(selected_positionable)
-								undo_redo.create_action("add_tile")
-								undo_redo.add_do_method(map, "add_iso_positionable", selected_positionable)
-								undo_redo.add_do_method(selected_positionable, "set_owner", editor_interface.get_edited_scene_root())
-								undo_redo.add_do_method(selected_positionable, "_on_grid_updated", stair_selector.selected_stair)
-								undo_redo.add_undo_method(map, "remove_iso_positionable", selected_positionable)
-								undo_redo.commit_action()
-								load_iso_for_edition(false)
+								add_real_positionable(false)
+								tiling_positions.append(target_position)
 								return true
+							else:
+								loaded_positionable.set_aabb(former_aabb)
+								loaded_positionable.visible = false
+								return false
 			else:
 				if loaded_positionable.get_class() != "IsometricPlaceholder":
 					var target_position: Vector3 = IsoServer.get_3d_coord_from_screen(map.get_local_mouse_position(), stair_selector.selected_stair).round()
@@ -170,12 +171,9 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 							undo_redo.add_do_method(selected_positionable, "_on_grid_updated", stair_selector.selected_stair)
 							undo_redo.add_undo_method(map, "remove_iso_positionable", selected_positionable)
 							undo_redo.commit_action()
-							drag_action = DragAction.NONE
 							scene_from_tile_tree(false)
-							return true
-						else:
-							drag_action = DragAction.NONE
-							return true
+						drag_action = DragAction.NONE
+						return true
 				else:
 					check_and_select_existing()
 		elif event.button_index == BUTTON_RIGHT:
@@ -229,8 +227,10 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 									undo_redo.add_do_method(map, "remove_iso_positionable", child)
 									undo_redo.add_undo_method(map, "add_iso_positionable", child)
 							undo_redo.commit_action()
+							tiling_positions.clear()
 						else:
 							if selected_positionable != null:
+								tiling_positions.erase(selected_positionable.position3d)
 								remove_iso_positionable(selected_positionable)
 					else:
 						map.remove_iso_positionable(selected_positionable)

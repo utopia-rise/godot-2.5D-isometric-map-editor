@@ -157,12 +157,18 @@ IsometricMap *IsometricMap::initializeFrom() {
     return copy;
 }
 
-void IsometricMap::getElementsRIDs(Array *fill) const {
+void IsometricMap::fillWithElementsRIDs(Array *fill) const {
     for (int j = 0; j < childrenElements.size(); j++) {
         if (auto *staticElement = cast_to<StaticIsometricElement>(childrenElements[j])) {
-            fill->append(staticElement->getRegisteredBody()->get_rid());
+            PhysicsBody *body = staticElement->getRegisteredBody();
+            if (body) { 
+                fill->append(body->get_rid()); 
+            }
         } else if (auto *dynamicElement = cast_to<DynamicIsometricElement>(childrenElements[j])) {
-            fill->append(dynamicElement->getRegisteredBody()->get_rid());
+            PhysicsBody *body = dynamicElement->getRegisteredBody();
+            if (body) {
+                fill->append(body->get_rid());
+            }
         }
     }
 }
@@ -270,7 +276,7 @@ void IsometricMap::setHasMoved(bool hm) {
 
 bool IsometricMap::isColliding(PhysicsShapeQueryParameters *physicsQuery, bool isEdition) const {
     Array rids;
-    getElementsRIDs(&rids);
+    fillWithElementsRIDs(&rids);
     return isCollidingIgnoring(rids, physicsQuery, isEdition);
 }
 
@@ -286,7 +292,7 @@ IsometricMap::isCollidingIgnoring(const Array &rids, PhysicsShapeQueryParameters
 
 bool IsometricMap::isCollidingAABB(bool isEdition) const {
     Array rids;
-    getElementsRIDs(&rids);
+    fillWithElementsRIDs(&rids);
     return isCollidingAABBIgnoring(rids, isEdition);
 }
 

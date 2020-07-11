@@ -22,7 +22,7 @@ namespace godot {
         Array getPositionableBehind(IsometricPositionable *isoNode);
         Array getFlattenPositionables(const Vector3 &offset = Vector3());
         IsometricMap *initializeFrom();
-        void getElementsRIDs(Array *fill) const;
+        void fillWithElementsRIDs(Array *fill) const;
 
     public:
 

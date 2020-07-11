@@ -178,7 +178,11 @@ namespace godot {
 
     template<class T>
     bool IsometricElement<T>::isColliding(PhysicsShapeQueryParameters *physicsQuery, bool isEdition) const {
-        return isCollidingIgnoring(Array::make(registeredBody->get_rid()), physicsQuery, isEdition);
+        if (registeredBody) {
+            return isCollidingIgnoring(Array::make(registeredBody->get_rid()), physicsQuery, isEdition);
+        } else {
+            return false;
+        }
     }
 
     template<class T>
@@ -223,7 +227,11 @@ namespace godot {
 
     template<class T>
     bool IsometricElement<T>::isCollidingAABB(bool isEdition) const {
-        return isCollidingAABBIgnoring(Array::make(registeredBody->get_rid()), isEdition);
+        if (registeredBody) {
+            return isCollidingAABBIgnoring(Array::make(registeredBody->get_rid()), isEdition);
+        } else {
+            return false;
+        }
     }
 
     template<class T>
@@ -252,9 +260,9 @@ namespace godot {
             PhysicsShapeQueryParameters *parameters = PhysicsShapeQueryParameters::_new();
             parameters->set_shape(shapeRef);
             parameters->set_transform({
-                                              {1, 0, 0, 0, 1, 0, 0, 0, 1},
-                                              {position.x, position.z, position.y}
-                                      });
+                {1, 0, 0, 0, 1, 0, 0, 0, 1},
+                {position.x, position.z, position.y}
+            });
             parameters->set_exclude(rids);
             return !registeredBody->get_world().ptr()->get_direct_space_state()->intersect_shape(parameters).empty();
         }
