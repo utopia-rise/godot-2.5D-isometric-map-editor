@@ -274,22 +274,6 @@ void IsometricMap::setHasMoved(bool hm) {
     }
 }
 
-bool IsometricMap::isColliding(PhysicsShapeQueryParameters *physicsQuery, bool isEdition) const {
-    Array rids;
-    fillWithElementsRIDs(&rids);
-    return isCollidingIgnoring(rids, physicsQuery, isEdition);
-}
-
-bool
-IsometricMap::isCollidingIgnoring(const Array &rids, PhysicsShapeQueryParameters *physicsQuery, bool isEdition) const {
-    for (int i = 0; i < childrenPositionables.size(); i++) {
-        if (auto *positionable = cast_to<IsometricPositionable>(childrenPositionables[i])) {
-            if (positionable->isCollidingIgnoring(rids, physicsQuery, isEdition)) return true;
-        }
-    }
-    return false;
-}
-
 bool IsometricMap::isCollidingAABB(bool isEdition) const {
     Array rids;
     fillWithElementsRIDs(&rids);

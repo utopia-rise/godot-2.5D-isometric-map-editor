@@ -58,9 +58,6 @@ namespace godot {
         void onResize() override;
         bool getHasMoved() const override;
         void setHasMoved(bool hm) override;
-        bool isColliding(PhysicsShapeQueryParameters *physicsQuery, bool isEdition) const override;
-        bool isCollidingIgnoring(const Array &rids, PhysicsShapeQueryParameters *physicsQuery, bool isEdition) const
-        override;
         bool isCollidingAABB(bool isEdition) const override;
         bool isCollidingAABBIgnoring(const Array &rids, bool isEdition) const
         override;
@@ -174,55 +171,6 @@ namespace godot {
     template<class T>
     void IsometricElement<T>::setRegisteredBody(PhysicsBody *physicsBody) {
         registeredBody = physicsBody;
-    }
-
-    template<class T>
-    bool IsometricElement<T>::isColliding(PhysicsShapeQueryParameters *physicsQuery, bool isEdition) const {
-        if (registeredBody) {
-            return isCollidingIgnoring(Array::make(registeredBody->get_rid()), physicsQuery, isEdition);
-        } else {
-            return false;
-        }
-    }
-
-    template<class T>
-    bool IsometricElement<T>::isCollidingIgnoring(const Array &rids, PhysicsShapeQueryParameters *physicsQuery,
-                                                  bool isEdition) const {
-        if (registeredBody) {
-            Ref<World> world = registeredBody->get_world();
-            if (world.is_valid()) {
-                PhysicsDirectSpaceState *physicsDirectSpaceState = world.ptr()->get_direct_space_state();
-                if (physicsQuery && !physicsDirectSpaceState->intersect_shape(physicsQuery, 1).empty()) {
-                    return true;
-                } else {
-                    const Array &shapeOwners { registeredBody->get_shape_owners() };
-                    for (int i = 0; i < shapeOwners.size(); i++) {
-                        uint32_t owner = shapeOwners[i];
-                        for (int j = 0; j < registeredBody->shape_owner_get_shape_count(owner); j++) {
-                            PhysicsShapeQueryParameters *parameters = PhysicsShapeQueryParameters::_new();
-                            const Transform &transform { registeredBody->get_transform() };
-                            parameters->set_transform({
-                                transform.basis,
-                                transform.origin + registeredBody->shape_owner_get_transform(owner).origin
-                            });
-
-                            if (isEdition) {
-                                Shape shape { *(registeredBody->shape_owner_get_shape(owner, j).ptr()) };
-                                shape.set_margin(-0.1);
-                                Ref<Shape> shapeRef = Ref<Shape>(&shape);
-                                parameters->set_shape(shapeRef);
-                            } else {
-                                parameters->set_shape(registeredBody->shape_owner_get_shape(owner, j));
-                            }
-
-                            parameters->set_exclude(rids);
-                            if (!physicsDirectSpaceState->intersect_shape(parameters, 1).empty()) return true;
-                        }
-                    }
-                }
-            }
-        }
-        return false;
     }
 
     template<class T>

@@ -21,6 +21,8 @@ namespace godot {
         bool temporary;
 
         int debugZ;
+        bool checkColliding;
+        bool isCollidingEdition;
 
         void updateZOrderSize(int change);
 
@@ -50,6 +52,7 @@ namespace godot {
 
         void _enter_tree();
         void _exit_tree();
+        void _physics_process(float delta);
         virtual String get_class() const;
         Transform2D getHexagoneCoordinates() const;
         void setOutlineDrawer(Color color, real_t lineSize);
@@ -70,13 +73,13 @@ namespace godot {
         int getDebugZ() const;
         void setDebugZ(int dZ);
         virtual void onResize();
+        void setCheckColliding(bool check);
+        bool isColliding(bool isEdition) const;
 
         virtual void onGridUpdated(int stair);
         virtual void onSelect(bool selected);
         virtual bool getHasMoved() const;
         virtual void setHasMoved(bool hm);
-        virtual bool isColliding(PhysicsShapeQueryParameters *physicsQuery, bool isEdition) const;
-        virtual bool isCollidingIgnoring(const Array &rids, PhysicsShapeQueryParameters *physicsQuery,bool isEdition) const;
         virtual bool isCollidingAABB(bool isEdition) const;
         virtual bool isCollidingAABBIgnoring(const Array &rids, bool isEdition) const;
     };

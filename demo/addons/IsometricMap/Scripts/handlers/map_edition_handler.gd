@@ -87,7 +87,9 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 							var future_aabb: AABB = AABB(positionable_pos, Vector3(width_offset, depth_offset, selected_positionable.size3d.z))
 							if width_offset >= 0 and 1 + target_position.x <= map.size3d.x and depth_offset >= 0 and 1 + target_position.y <= map.size3d.y and !(width_offset == depth_offset and width_offset == 0):
 								selected_positionable.set_aabb(future_aabb)
-								if selected_positionable.is_colliding_aabb(true):
+								selected_positionable.set_check_colliding(true)
+								yield(selected_positionable, "physics_ended")
+								if selected_positionable.is_colliding(true):
 									selected_positionable.set_aabb(former_aabb)
 						return true
 					else:
@@ -98,7 +100,9 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 							var is_position_positive := target_position.x >= 0 and target_position.y >= 0 and target_position.z >= 0
 							var is_in_map = target_position.x + positionable_size.x <= map.size3d.x and target_position.y + positionable_size.y <= map.size3d.y and target_position.z + positionable_size.z <= map.size3d.z
 							loaded_positionable.set_aabb(future_aabb)
-							if !tiling_positions.has(target_position) and !loaded_positionable.is_colliding_aabb(true) and is_position_positive and is_in_map:
+							loaded_positionable.set_check_colliding(true)
+							yield(loaded_positionable, "physics_ended")
+							if !tiling_positions.has(target_position) and !loaded_positionable.is_colliding(true) and is_position_positive and is_in_map:
 								select_positionable(loaded_positionable)
 								add_real_positionable(false)
 								tiling_positions.append(target_position)
@@ -116,7 +120,9 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 					var is_position_positive := target_position.x >= 0 and target_position.y >= 0 and target_position.z >= 0
 					var is_in_map = target_position.x + positionable_size.x <= map.size3d.x and target_position.y + positionable_size.y <= map.size3d.y and target_position.z + positionable_size.z <= map.size3d.z
 					loaded_positionable.set_aabb(future_aabb)
-					if is_position_positive and is_in_map and !loaded_positionable.is_colliding_aabb(true):
+					loaded_positionable.set_check_colliding(true)
+					yield(loaded_positionable, "physics_ended")
+					if is_position_positive and is_in_map and !loaded_positionable.is_colliding(true):
 						loaded_positionable.visible = true
 						return true
 					else:

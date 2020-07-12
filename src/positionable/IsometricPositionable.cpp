@@ -1,13 +1,14 @@
 #include <IsometricPositionable.h>
 #include <IsometricServer.h>
 #include <gen/ConvexPolygonShape.hpp>
+#include <gen/Engine.hpp>
 #include "IsometricMap.h"
 
 
 using namespace godot;
 
 IsometricPositionable::IsometricPositionable() : debugPoints(), aabb({0, 0, 0}, {1, 1, 1}),
-zOrderSize(0), rendered(false), temporary(true), debugZ(0), outlineDrawer(nullptr) {
+                                                 zOrderSize(0), rendered(false), temporary(true), debugZ(0), isCollidingEdition(false), outlineDrawer(nullptr) {
 
 }
 
@@ -16,6 +17,7 @@ void IsometricPositionable::_register_methods() {
     register_method("_init", &IsometricPositionable::_init);
     register_method("_enter_tree", &IsometricPositionable::_enter_tree);
     register_method("_exit_tree", &IsometricPositionable::_exit_tree);
+    register_method("_physics_process", &IsometricPositionable::_physics_process);
     register_method("get_class", &IsometricPositionable::get_class);
     register_method("get_hexagone_coordinates", &IsometricPositionable::getHexagoneCoordinates);
     register_method("set_outline_drawer", &IsometricPositionable::setOutlineDrawer);
@@ -26,14 +28,16 @@ void IsometricPositionable::_register_methods() {
     register_method("_on_select", &IsometricPositionable::onSelect);
     register_method("has_moved", &IsometricPositionable::getHasMoved);
     register_method("set_has_moved", &IsometricPositionable::setHasMoved);
+    register_method("set_check_colliding", &IsometricPositionable::setCheckColliding);
     register_method("is_colliding", &IsometricPositionable::isColliding);
-    register_method("is_colliding_aabb", &IsometricPositionable::isCollidingAABB);
 
     register_property("iso_position", &IsometricPositionable::isoPosition, Vector2());
     register_property("position3d", &IsometricPositionable::setPosition3D, &IsometricPositionable::getPosition3D, Vector3());
     register_property("size3d", &IsometricPositionable::setSize3D, &IsometricPositionable::getSize3D, Vector3(1, 1, 1));
     register_property("is_temporary", &IsometricPositionable::setTemporary, &IsometricPositionable::isTemporary, true);
     register_property("debug_z", &IsometricPositionable::setDebugZ, &IsometricPositionable::getDebugZ, 0);
+
+    register_signal<IsometricPositionable>("physics_ended");
 }
 
 void IsometricPositionable::_init() {
@@ -47,6 +51,11 @@ void IsometricPositionable::_enter_tree() {
 
 void IsometricPositionable::_exit_tree() {
     updateZOrderSize(-zOrderSize);
+}
+
+void IsometricPositionable::_physics_process(float delta) {
+    isCollidingEdition = checkColliding && isCollidingAABB(true);
+    emit_signal("physics_ended");
 }
 
 String IsometricPositionable::get_class() const {
@@ -184,11 +193,6 @@ IsometricPositionable::calculateSlopeOffset(Vector2 *slopeOffset, real_t tileWid
     return SlopeType::NONE;
 }
 
-bool IsometricPositionable::isCollidingIgnoring(const Array &rids, PhysicsShapeQueryParameters *physicsQuery,
-                                                bool isEdition) const {
-    return false;
-}
-
 bool IsometricPositionable::isCollidingAABBIgnoring(const Array &rids, bool isEdition) const {
     return false;
 }
@@ -306,8 +310,12 @@ void IsometricPositionable::setHasMoved(bool hm) {
 
 }
 
-bool IsometricPositionable::isColliding(PhysicsShapeQueryParameters *physicsQuery, bool isEdition) const {
-    return false;
+void IsometricPositionable::setCheckColliding(bool check) {
+    checkColliding = check;
+}
+
+bool IsometricPositionable::isColliding(bool isEdition) const {
+    return isCollidingEdition;
 }
 
 bool IsometricPositionable::isCollidingAABB(bool isEdition) const {

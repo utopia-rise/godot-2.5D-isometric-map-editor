@@ -50,8 +50,6 @@ namespace godot {
         void onGridUpdated(int stair) override;
         void setAABB(AABB ab) override;
         void setHasMoved(bool hm) override;
-        bool isColliding(PhysicsShapeQueryParameters *physicsQuery, bool isEdition) const override;
-        bool isCollidingIgnoring(const Array &rids, PhysicsShapeQueryParameters *physicsQuery, bool isEdition) const override;
         bool isCollidingAABB(bool isEdition) const override;
         bool isCollidingAABBIgnoring(const Array &rids, bool isEdition) const override;
     };
