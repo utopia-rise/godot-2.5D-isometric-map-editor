@@ -239,7 +239,7 @@ namespace godot {
         if (registeredBody) {
             const Vector3 &size {getSize3D()};
             const Vector3 &position {getPosition3D() + getPositionOffset()};
-            const Vector3 &convertedSize{size.x, size.z, size.y};
+            const Vector3 &convertedSize {size.x, size.z, size.y};
             PoolVector3Array poolVector3Array;
             Vector3 originPoint;
             poolVector3Array.push_back(originPoint);
@@ -250,21 +250,21 @@ namespace godot {
             poolVector3Array.push_back({originPoint.x, convertedSize.y, convertedSize.z});
             poolVector3Array.push_back({convertedSize.x, convertedSize.y, originPoint.z});
             poolVector3Array.push_back(convertedSize);
-            ConvexPolygonShape *shape = ConvexPolygonShape::_new();
+            Ref<ConvexPolygonShape> shape = ConvexPolygonShape::_new();
             shape->set_points(poolVector3Array);
             if (isEdition) {
                 shape->set_margin(-0.1);
             }
-            Ref<Shape> shapeRef = Ref<Shape>(shape);
 
-            PhysicsShapeQueryParameters *parameters = PhysicsShapeQueryParameters::_new();
-            parameters->set_shape(shapeRef);
+            Ref<PhysicsShapeQueryParameters> parameters = PhysicsShapeQueryParameters::_new();
+            parameters->set_shape(shape);
             parameters->set_transform({
                 {1, 0, 0, 0, 1, 0, 0, 0, 1},
                 {position.x, position.z, position.y}
             });
             parameters->set_exclude(rids);
-            return !registeredBody->get_world().ptr()->get_direct_space_state()->intersect_shape(parameters).empty();
+            return !registeredBody->get_world()->get_direct_space_state()->intersect_shape(parameters, 1)
+            .empty();
         }
         return false;
     }
