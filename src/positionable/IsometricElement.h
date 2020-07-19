@@ -201,7 +201,7 @@ namespace godot {
             Ref<ConvexPolygonShape> shape = ConvexPolygonShape::_new();
             shape->set_points(poolVector3Array);
             if (isEdition) {
-                shape->set_margin(-0.1);
+                shape->set_margin(-0.1f);
             }
 
             Ref<PhysicsShapeQueryParameters> parameters = PhysicsShapeQueryParameters::_new();

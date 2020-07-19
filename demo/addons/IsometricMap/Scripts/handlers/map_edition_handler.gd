@@ -10,7 +10,6 @@ var map: IsometricMap = null
 var selected_positionable = null
 var selected_tile_item: TreeItem
 var loaded_positionable = null
-var tiling_positions = []
 
 var undo_redo: UndoRedo
 var editor_interface: EditorInterface
@@ -73,9 +72,6 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 		event as InputEventMouseMotion
 		if loaded_positionable != null and is_instance_valid(loaded_positionable):
 			if drag_action == DragAction.TILING:
-				if tiling_positions.size() == 50:
-					for i in range(25):
-						tiling_positions.pop_front()
 				if selected_positionable != null :
 					var target_position: Vector3 = IsoServer.get_3d_coord_from_screen(map.get_local_mouse_position(), stair_selector.selected_stair).round()
 					if selected_positionable.get_class() == "IsometricPlaceholder":
@@ -88,6 +84,7 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 							if width_offset >= 0 and 1 + target_position.x <= map.size3d.x and depth_offset >= 0 and 1 + target_position.y <= map.size3d.y and !(width_offset == depth_offset and width_offset == 0):
 								selected_positionable.set_aabb(future_aabb)
 								selected_positionable.set_check_colliding(true)
+								yield(selected_positionable, "physics_ended")
 								yield(selected_positionable, "physics_ended")
 								if selected_positionable.is_colliding(true):
 									selected_positionable.set_aabb(former_aabb)
@@ -102,10 +99,10 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 							loaded_positionable.set_aabb(future_aabb)
 							loaded_positionable.set_check_colliding(true)
 							yield(loaded_positionable, "physics_ended")
-							if !tiling_positions.has(target_position) and !loaded_positionable.is_colliding(true) and is_position_positive and is_in_map:
+							yield(loaded_positionable, "physics_ended")
+							if !loaded_positionable.is_colliding(true) and is_position_positive and is_in_map:
 								select_positionable(loaded_positionable)
 								add_real_positionable(false)
-								tiling_positions.append(target_position)
 								return true
 							else:
 								loaded_positionable.set_aabb(former_aabb)
@@ -122,6 +119,8 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 					loaded_positionable.set_aabb(future_aabb)
 					loaded_positionable.set_check_colliding(true)
 					yield(loaded_positionable, "physics_ended")
+					yield(loaded_positionable, "physics_ended")
+					
 					if is_position_positive and is_in_map and !loaded_positionable.is_colliding(true):
 						loaded_positionable.visible = true
 						return true
@@ -233,10 +232,8 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 									undo_redo.add_do_method(map, "remove_iso_positionable", child)
 									undo_redo.add_undo_method(map, "add_iso_positionable", child)
 							undo_redo.commit_action()
-							tiling_positions.clear()
 						else:
 							if selected_positionable != null:
-								tiling_positions.erase(selected_positionable.position3d)
 								remove_iso_positionable(selected_positionable)
 					else:
 						map.remove_iso_positionable(selected_positionable)
