@@ -139,22 +139,23 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 					var is_in_plane := 0 <= ortho_pos.x and 1 + ortho_pos.x <= map.size3d.x and 0 <= ortho_pos.y and 1 + ortho_pos.y <= map.size3d.y
 					if loaded_positionable != null and is_in_plane and 0 <= ortho_pos.z and ortho_pos.z + loaded_positionable.size3d.z <= map.size3d.z:
 						select_positionable(loaded_positionable)
+						selected_positionable.set_aabb(AABB(IsoServer.get_3d_coord_from_screen(map.get_local_mouse_position(), stair_selector.selected_stair).round(), selected_positionable.size3d))
 						if selected_positionable.get_class() == "IsometricMap":
-								add_real_positionable(true)
-								return true
+							add_real_positionable(true)
+							return true
 						elif selected_positionable.get_class() == "IsometricTile":
-								add_real_positionable(false)
+							add_real_positionable(false)
+							drag_action = DragAction.TILING
+							return true
+						elif selected_positionable.get_class() == "IsometricPlaceholder":
+							selected_positionable.position3d = ortho_pos
+							if !map.is_overlapping(selected_positionable):
+								selected_positionable.debug_z = 0
+								map.add_child(selected_positionable)
+								selected_positionable.set_owner(map)
+								print("set position : " + str(selected_positionable.get_position()))
 								drag_action = DragAction.TILING
 								return true
-						elif selected_positionable.get_class() == "IsometricPlaceholder":
-								selected_positionable.position3d = ortho_pos
-								if !map.is_overlapping(selected_positionable):
-									selected_positionable.debug_z = 0
-									map.add_child(selected_positionable)
-									selected_positionable.set_owner(map)
-									print("set position : " + str(selected_positionable.get_position()))
-									drag_action = DragAction.TILING
-									return true
 						else :
 							return selected_positionable != null
 					else:
@@ -317,7 +318,6 @@ func reverse_switch_slope_type(placeholder):
 # ----------
 
 func add_real_positionable(is_map: bool):
-	selected_positionable.set_aabb(AABB(IsoServer.get_3d_coord_from_screen(map.get_local_mouse_position(), stair_selector.selected_stair).round(), selected_positionable.size3d))
 	selected_positionable.visible = true
 	selected_positionable.modulate.a = 1
 	map.remove_child(selected_positionable)
