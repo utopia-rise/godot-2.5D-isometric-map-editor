@@ -37,7 +37,7 @@ void IsometricPositionable::_register_methods() {
     register_property("is_temporary", &IsometricPositionable::setTemporary, &IsometricPositionable::isTemporary, true);
     register_property("debug_z", &IsometricPositionable::setDebugZ, &IsometricPositionable::getDebugZ, 0);
 
-    register_signal<IsometricPositionable>("physics_ended");
+    register_signal<IsometricPositionable>("physics_ended", Dictionary());
 }
 
 void IsometricPositionable::_init() {
