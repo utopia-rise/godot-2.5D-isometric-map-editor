@@ -15,6 +15,8 @@ var undo_redo: UndoRedo
 var editor_interface: EditorInterface
 var isometric_asset_selector: IsometricAssetSelector
 
+var is_waiting_for_physics = false
+
 enum DragAction {
 	NONE,
 	TILING
@@ -68,7 +70,7 @@ func edit_placeholder(placeholder: IsometricPlaceholder):
 	drag_action = DragAction.NONE
 
 func _forward_canvas_gui_input(event: InputEvent) -> bool:
-	if event is InputEventMouseMotion:
+	if event is InputEventMouseMotion and !is_waiting_for_physics:
 		event as InputEventMouseMotion
 		if loaded_positionable != null and is_instance_valid(loaded_positionable):
 			if drag_action == DragAction.TILING:
@@ -84,8 +86,10 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 							if width_offset >= 0 and 1 + target_position.x <= map.size3d.x and depth_offset >= 0 and 1 + target_position.y <= map.size3d.y and !(width_offset == depth_offset and width_offset == 0):
 								selected_positionable.set_aabb(future_aabb)
 								selected_positionable.set_check_colliding(true)
+								is_waiting_for_physics = true
 								yield(selected_positionable, "physics_ended")
 								yield(selected_positionable, "physics_ended")
+								is_waiting_for_physics = false
 								if selected_positionable.is_colliding(true):
 									selected_positionable.set_aabb(former_aabb)
 						return true
@@ -98,8 +102,10 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 							var is_in_map = target_position.x + positionable_size.x <= map.size3d.x and target_position.y + positionable_size.y <= map.size3d.y and target_position.z + positionable_size.z <= map.size3d.z
 							loaded_positionable.set_aabb(future_aabb)
 							loaded_positionable.set_check_colliding(true)
+							is_waiting_for_physics = true
 							yield(loaded_positionable, "physics_ended")
 							yield(loaded_positionable, "physics_ended")
+							is_waiting_for_physics = false
 							if !loaded_positionable.is_colliding(true) and is_position_positive and is_in_map:
 								select_positionable(loaded_positionable)
 								add_real_positionable(false)
@@ -118,8 +124,10 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 					var is_in_map = target_position.x + positionable_size.x <= map.size3d.x and target_position.y + positionable_size.y <= map.size3d.y and target_position.z + positionable_size.z <= map.size3d.z
 					loaded_positionable.set_aabb(future_aabb)
 					loaded_positionable.set_check_colliding(true)
+					is_waiting_for_physics = true
 					yield(loaded_positionable, "physics_ended")
 					yield(loaded_positionable, "physics_ended")
+					is_waiting_for_physics = false
 					
 					if is_position_positive and is_in_map and !loaded_positionable.is_colliding(true):
 						loaded_positionable.visible = true
