@@ -90,7 +90,7 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 								yield(selected_positionable, "physics_ended")
 								yield(selected_positionable, "physics_ended")
 								is_waiting_for_physics = false
-								if selected_positionable.is_colliding(true):
+								if selected_positionable.is_colliding():
 									selected_positionable.set_aabb(former_aabb)
 						return true
 					else:
@@ -106,7 +106,7 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 							yield(loaded_positionable, "physics_ended")
 							yield(loaded_positionable, "physics_ended")
 							is_waiting_for_physics = false
-							if !loaded_positionable.is_colliding(true) and is_position_positive and is_in_map:
+							if !loaded_positionable.is_colliding() and is_position_positive and is_in_map:
 								select_positionable(loaded_positionable)
 								add_real_positionable(false)
 								return true
@@ -129,7 +129,7 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 					yield(loaded_positionable, "physics_ended")
 					is_waiting_for_physics = false
 					
-					if is_position_positive and is_in_map and !loaded_positionable.is_colliding(true):
+					if is_position_positive and is_in_map and !loaded_positionable.is_colliding():
 						loaded_positionable.visible = true
 						return true
 					else:

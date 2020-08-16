@@ -74,7 +74,7 @@ namespace godot {
         void setDebugZ(int dZ);
         virtual void onResize();
         void setCheckColliding(bool check);
-        bool isColliding(bool isEdition) const;
+        bool isColliding() const;
 
         virtual void onGridUpdated(int stair);
         virtual void onSelect(bool selected);

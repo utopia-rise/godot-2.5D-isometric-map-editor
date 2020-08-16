@@ -314,7 +314,7 @@ void IsometricPositionable::setCheckColliding(bool check) {
     checkColliding = check;
 }
 
-bool IsometricPositionable::isColliding(bool isEdition) const {
+bool IsometricPositionable::isColliding() const {
     return isCollidingEdition;
 }
 
