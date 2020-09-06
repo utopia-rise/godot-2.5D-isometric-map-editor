@@ -297,16 +297,21 @@ func deselect_positionable(positionable):
 func move_z_volume(positionable, up: bool) -> void:
 	print(str(positionable))
 	if positionable != null and positionable.get_class() == "IsometricPlaceholder":
-		map.remove_iso_positionable(positionable)
+		var former_aabb: AABB = positionable.get_aabb()
 		var future_aabb: AABB = AABB(positionable.position3d, positionable.size3d)
 		var offset: int = 0
 		if up and positionable.position3d.z + positionable.size3d.z < map.size3d.z:
 			future_aabb.size.z += 1
 		elif !up and positionable.size3d.z > 0:
 			future_aabb.size.z -= 1
-		if !map.is_overlapping_aabb(future_aabb):
-			positionable.set_aabb(future_aabb)
-		map.add_iso_positionable(positionable)
+		selected_positionable.set_aabb(future_aabb)
+		selected_positionable.set_check_colliding(true)
+		is_waiting_for_physics = true
+		yield(selected_positionable, "physics_ended")
+		yield(selected_positionable, "physics_ended")
+		is_waiting_for_physics = false
+		if selected_positionable.is_colliding(true):
+			selected_positionable.set_aabb(former_aabb)
 		positionable.set_owner(editor_interface.get_edited_scene_root())
 		positionable._on_grid_updated(stair_selector.selected_stair)
 
