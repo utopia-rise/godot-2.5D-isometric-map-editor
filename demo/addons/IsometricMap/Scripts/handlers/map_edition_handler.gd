@@ -127,7 +127,7 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 	elif event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT:
 			if event.is_pressed():
-				var is_selecting_existing := check_and_select_existing()
+				var is_selecting_existing := check_and_select_existing(stair_selector.selected_stair)
 				if !is_selecting_existing:
 					var ortho_pos: Vector3 = IsoServer.get_3d_coord_from_screen(map.get_local_mouse_position(), stair_selector.selected_stair).round()
 					var is_in_plane := 0 <= ortho_pos.x and 1 + ortho_pos.x <= map.size3d.x and 0 <= ortho_pos.y and 1 + ortho_pos.y <= map.size3d.y
@@ -177,7 +177,7 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 							drag_action = DragAction.NONE
 							return true
 				else:
-					check_and_select_existing()
+					check_and_select_existing(stair_selector.selected_stair)
 		elif event.button_index == BUTTON_RIGHT:
 			return false
 	elif event is InputEventKey:
@@ -427,8 +427,8 @@ func create_new_placeholder() -> void:
 	var root_node: Node = editor_interface.get_edited_scene_root()
 	load_positionable(IsometricPlaceholder.new())
 
-func check_and_select_existing() -> bool:
-	for z in range(map.size3d.z, 0, -1):
+func check_and_select_existing(min_stair: int) -> bool:
+	for z in range(map.size3d.z, min_stair, -1):
 		var ortho_pos: Vector3 = IsoServer.get_3d_coord_from_screen(map.get_local_mouse_position(), z-1).round()
 		var posi = map.get_positionable_at(ortho_pos, false)
 		if posi != null:
