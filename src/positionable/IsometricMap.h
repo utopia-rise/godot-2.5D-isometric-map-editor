@@ -38,6 +38,7 @@ namespace godot {
         IsometricPositionable *getPositionableAt(Vector3 pos, bool onlyLeftUpperCorner = true);
         bool isOverlapping(IsometricPositionable *positionable);
         bool isOverlappingAABB(AABB aabb);
+        bool areMapElementsOverlapping(Vector3 position, IsometricMap *map);
         bool has(IsometricPositionable *isometricPositionable);
         Array getPositionableChildren() const;
 

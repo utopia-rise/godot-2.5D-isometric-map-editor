@@ -104,13 +104,18 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 								load_iso_for_edition(false)
 								return true
 			else:
-				if !loaded_positionable.get_class() == "IsometricPlaceholder":
+				if loaded_positionable.get_class() != "IsometricPlaceholder":
 					var target_position: Vector3 = IsoServer.get_3d_coord_from_screen(map.get_local_mouse_position(), stair_selector.selected_stair).round()
 					var positionable_size = loaded_positionable.size3d
 					var future_aabb: AABB = AABB(target_position, positionable_size)
 					var is_position_positive := target_position.x >= 0 and target_position.y >= 0 and target_position.z >= 0
 					var is_in_map = target_position.x + positionable_size.x <= map.size3d.x and target_position.y + positionable_size.y <= map.size3d.y and target_position.z + positionable_size.z <= map.size3d.z
-					if !map.is_overlapping_aabb(future_aabb) and is_position_positive and is_in_map:
+					var is_overlapping: bool = false
+					if loaded_positionable.get_class() == "IsometricMap":
+						is_overlapping = map.are_map_elements_overlapping(target_position, loaded_positionable)
+					else:
+						is_overlapping = map.is_overlapping_aabb(future_aabb)
+					if !is_overlapping and is_position_positive and is_in_map:
 						loaded_positionable.set_aabb(future_aabb)
 						loaded_positionable.visible = true
 						return true
