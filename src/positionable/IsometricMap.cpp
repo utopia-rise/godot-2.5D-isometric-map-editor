@@ -163,25 +163,33 @@ void IsometricMap::addIsoPositionable(IsometricPositionable *isometricPositionab
         isOverlapping = editionGrid3D.isOverlapping(aabb);
     }
     if (pos.x >= mapSize.x || pos.y >= mapSize.y || pos.z >= mapSize.z || isOverlapping) return;
-    Godot::print("Starting to add element to map");
     isometricPositionable->setTemporary(false);
     isometricPositionable->setDebugZ(0);
 
     grid3D.setData(aabb.position, isometricPositionable);
 
     if (childMap) {
-        const Array &childMapChildren {childMap->getFlattenPositionables(pos)};
-        for (int i = 0; i < childMapChildren.size(); i++) {
-            if (auto *posi {cast_to<IsometricPositionable>(childMapChildren[i])}) {
-                editionGrid3D.insertBox(posi->getAABB(), childMap);
-            }
-        }
+        insertMapAsFlatten(childMap, pos);
     } else {
         editionGrid3D.insertBox(aabb, isometricPositionable);
     }
 
     add_child(isometricPositionable);
     isometricPositionable->add_to_group(ISO_GROUP, false);
+}
+
+void IsometricMap::insertMapAsFlatten(IsometricMap* map, const Vector3 &offset) {
+    const Array &children { map->get_children() };
+    for (int i = 0; i < children.size(); i++) {
+        if (auto *positionable = cast_to<IsometricPositionable>(children[i])) {
+            if (auto *m = cast_to<IsometricMap>(positionable)) {
+                insertMapAsFlatten(m, offset + m->getPosition3D());
+            } else {
+                const AABB &aabb {positionable->getPosition3D() + offset, positionable->getSize3D()};
+                editionGrid3D.insertBox(aabb, map);
+            }
+        }
+    }
 }
 
 void IsometricMap::removeIsoPositionable(IsometricPositionable *isometricPositionable) {

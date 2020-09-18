@@ -19,6 +19,7 @@ namespace godot {
         void renderIsoNode(IsometricPositionable *isoNode);
         Array getPositionableBehind(IsometricPositionable *isoNode);
         Array getFlattenPositionables(const Vector3 &offset = Vector3());
+        void insertMapAsFlatten(IsometricMap* map, const Vector3& offset);
         IsometricMap *initializeFrom();
 
     public:
