@@ -19,6 +19,7 @@ void IsometricMap::_register_methods() {
     register_method("get_positionable_at", &IsometricMap::getPositionableAt);
     register_method("is_overlapping", &IsometricMap::isOverlapping);
     register_method("is_overlapping_aabb", &IsometricMap::isOverlappingAABB);
+    register_method("are_map_elements_overlapping", &IsometricMap::areMapElementsOverlapping);
     register_method("has", &IsometricMap::has);
     register_method("get_positionable_children", &IsometricMap::getPositionableChildren);
     register_method("flatten", &IsometricMap::flatten);
@@ -154,13 +155,41 @@ void IsometricMap::addIsoPositionable(IsometricPositionable *isometricPositionab
     const Vector3 &mapSize { getAABB().size };
     const AABB &aabb { isometricPositionable->getAABB() };
     const Vector3 &pos { aabb.position };
-    if (pos.x >= mapSize.x || pos.y >= mapSize.y || pos.z >= mapSize.z || editionGrid3D.isOverlapping(aabb)) return;
+    bool isOverlapping;
+    auto *childMap {cast_to<IsometricMap>(isometricPositionable)};
+    if (childMap) {
+        isOverlapping = areMapElementsOverlapping(pos, childMap);
+    } else {
+        isOverlapping = editionGrid3D.isOverlapping(aabb);
+    }
+    if (pos.x >= mapSize.x || pos.y >= mapSize.y || pos.z >= mapSize.z || isOverlapping) return;
     isometricPositionable->setTemporary(false);
     isometricPositionable->setDebugZ(0);
+
     grid3D.setData(aabb.position, isometricPositionable);
-    editionGrid3D.insertBox(aabb, isometricPositionable);
+
+    if (childMap) {
+        insertMapAsFlatten(childMap, pos);
+    } else {
+        editionGrid3D.insertBox(aabb, isometricPositionable);
+    }
+
     add_child(isometricPositionable);
     isometricPositionable->add_to_group(ISO_GROUP, false);
+}
+
+void IsometricMap::insertMapAsFlatten(IsometricMap* map, const Vector3 &offset) {
+    const Array &children { map->get_children() };
+    for (int i = 0; i < children.size(); i++) {
+        if (auto *positionable = cast_to<IsometricPositionable>(children[i])) {
+            if (auto *m = cast_to<IsometricMap>(positionable)) {
+                insertMapAsFlatten(m, offset + m->getPosition3D());
+            } else {
+                const AABB &aabb {positionable->getPosition3D() + offset, positionable->getSize3D()};
+                editionGrid3D.insertBox(aabb, map);
+            }
+        }
+    }
 }
 
 void IsometricMap::removeIsoPositionable(IsometricPositionable *isometricPositionable) {
@@ -169,8 +198,20 @@ void IsometricMap::removeIsoPositionable(IsometricPositionable *isometricPositio
     const Vector3 &pos { aabb.position };
     if (pos.x >= mapSize.x || pos.y >= mapSize.y || pos.z >= mapSize.z) return;
     remove_child(isometricPositionable);
+
     grid3D.setData(aabb.position, nullptr);
-    editionGrid3D.insertBox(aabb, isometricPositionable, true);
+
+    auto *childMap {cast_to<IsometricMap>(isometricPositionable)};
+    if (childMap) {
+        const Array &childMapChildren {childMap->getFlattenPositionables(pos)};
+        for (int i = 0; i < childMapChildren.size(); i++) {
+            if (auto *posi {cast_to<IsometricPositionable>(childMapChildren[i])}) {
+                editionGrid3D.insertBox(posi->getAABB(), childMap, true);
+            }
+        }
+    } else {
+        editionGrid3D.insertBox(aabb, isometricPositionable, true);
+    }
     if (isometricPositionable->is_in_group(ISO_GROUP)) {
         isometricPositionable->remove_from_group(ISO_GROUP);
     }
@@ -187,6 +228,24 @@ bool IsometricMap::isOverlapping(IsometricPositionable *positionable) {
 
 bool IsometricMap::isOverlappingAABB(AABB aabb) {
     return editionGrid3D.isOverlapping(aabb);
+}
+
+bool IsometricMap::areMapElementsOverlapping(Vector3 position, IsometricMap* map) {
+    const Array& array { map->get_children() };
+    for (int i = 0; i < array.size(); i++) {
+        if (auto *positionable {cast_to<IsometricPositionable>(array[i])}) {
+            if (auto *childMap {cast_to<IsometricMap>(positionable)}) {
+                if (areMapElementsOverlapping(position + childMap->getPosition3D(), childMap)) {
+                    return true;
+                }
+            } else {
+                if (isOverlappingAABB({position + positionable->getPosition3D(), positionable->getSize3D()})) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }
 
 bool IsometricMap::has(IsometricPositionable *isometricPositionable) {

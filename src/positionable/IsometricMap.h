@@ -19,6 +19,7 @@ namespace godot {
         void renderIsoNode(IsometricPositionable *isoNode);
         Array getPositionableBehind(IsometricPositionable *isoNode);
         Array getFlattenPositionables(const Vector3 &offset = Vector3());
+        void insertMapAsFlatten(IsometricMap* map, const Vector3& offset);
         IsometricMap *initializeFrom();
 
     public:
@@ -38,6 +39,7 @@ namespace godot {
         IsometricPositionable *getPositionableAt(Vector3 pos, bool onlyLeftUpperCorner = true);
         bool isOverlapping(IsometricPositionable *positionable);
         bool isOverlappingAABB(AABB aabb);
+        bool areMapElementsOverlapping(Vector3 position, IsometricMap *map);
         bool has(IsometricPositionable *isometricPositionable);
         Array getPositionableChildren() const;
 

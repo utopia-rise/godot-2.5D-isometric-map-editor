@@ -104,13 +104,18 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 								load_iso_for_edition(false)
 								return true
 			else:
-				if !loaded_positionable.get_class() == "IsometricPlaceholder":
+				if loaded_positionable.get_class() != "IsometricPlaceholder":
 					var target_position: Vector3 = IsoServer.get_3d_coord_from_screen(map.get_local_mouse_position(), stair_selector.selected_stair).round()
 					var positionable_size = loaded_positionable.size3d
 					var future_aabb: AABB = AABB(target_position, positionable_size)
 					var is_position_positive := target_position.x >= 0 and target_position.y >= 0 and target_position.z >= 0
 					var is_in_map = target_position.x + positionable_size.x <= map.size3d.x and target_position.y + positionable_size.y <= map.size3d.y and target_position.z + positionable_size.z <= map.size3d.z
-					if !map.is_overlapping_aabb(future_aabb) and is_position_positive and is_in_map:
+					var is_overlapping: bool = false
+					if loaded_positionable.get_class() == "IsometricMap":
+						is_overlapping = map.are_map_elements_overlapping(target_position, loaded_positionable)
+					else:
+						is_overlapping = map.is_overlapping_aabb(future_aabb)
+					if !is_overlapping and is_position_positive and is_in_map:
 						loaded_positionable.set_aabb(future_aabb)
 						loaded_positionable.visible = true
 						return true
@@ -122,7 +127,7 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 	elif event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT:
 			if event.is_pressed():
-				var is_selecting_existing := check_and_select_existing()
+				var is_selecting_existing := check_and_select_existing(stair_selector.selected_stair)
 				if !is_selecting_existing:
 					var ortho_pos: Vector3 = IsoServer.get_3d_coord_from_screen(map.get_local_mouse_position(), stair_selector.selected_stair).round()
 					var is_in_plane := 0 <= ortho_pos.x and 1 + ortho_pos.x <= map.size3d.x and 0 <= ortho_pos.y and 1 + ortho_pos.y <= map.size3d.y
@@ -172,7 +177,7 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 							drag_action = DragAction.NONE
 							return true
 				else:
-					check_and_select_existing()
+					check_and_select_existing(stair_selector.selected_stair)
 		elif event.button_index == BUTTON_RIGHT:
 			return false
 	elif event is InputEventKey:
@@ -422,8 +427,8 @@ func create_new_placeholder() -> void:
 	var root_node: Node = editor_interface.get_edited_scene_root()
 	load_positionable(IsometricPlaceholder.new())
 
-func check_and_select_existing() -> bool:
-	for z in range(map.size3d.z, 0, -1):
+func check_and_select_existing(min_stair: int) -> bool:
+	for z in range(map.size3d.z, min_stair, -1):
 		var ortho_pos: Vector3 = IsoServer.get_3d_coord_from_screen(map.get_local_mouse_position(), z-1).round()
 		var posi = map.get_positionable_at(ortho_pos, false)
 		if posi != null:
