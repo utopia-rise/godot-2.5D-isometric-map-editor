@@ -20,7 +20,7 @@ void DefaultStaticBody::_enter_tree() {
 
 void DefaultStaticBody::_physics_process(float delta) {
     if (parent && parent->getHasMoved()) {
-        const Vector3 &parentPosition {parent->getPosition3D() + parent->getPositionOffset()};
+        const Vector3 &parentPosition {parent->getGlobalPosition3D()};
         set_global_transform({
             {1, 0, 0, 0, 1, 0, 0, 0, 1},
             {parentPosition.x, parentPosition.z, parentPosition.y}

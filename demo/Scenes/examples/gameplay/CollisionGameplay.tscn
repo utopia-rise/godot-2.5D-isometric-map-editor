@@ -333,7 +333,7 @@ z_index = 384
 position = Vector2( 640, 419.233 )
 z_index = 430
 iso_position = Vector2( 640, 419.233 )
-position3d = Vector3( 7, 2, 1 )
+local_3D_position = Vector3( 7, 2, 1 )
 
 [node name="Camera2D" type="Camera2D" parent="DynamicIsometricElement" index="2"]
 current = true

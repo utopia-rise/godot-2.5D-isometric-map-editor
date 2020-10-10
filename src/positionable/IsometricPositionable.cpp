@@ -26,13 +26,15 @@ void IsometricPositionable::_register_methods() {
     register_method("_on_select", &IsometricPositionable::onSelect);
     register_method("has_moved", &IsometricPositionable::getHasMoved);
     register_method("set_has_moved", &IsometricPositionable::setHasMoved);
+    register_method("set_global_3D_position", &IsometricPositionable::setGlobalPosition3D);
+    register_method("get_global_3D_position", &IsometricPositionable::getGlobalPosition3D);
 
     register_property("iso_position", &IsometricPositionable::isoPosition, Vector2());
-    register_property("position3d", &IsometricPositionable::setPosition3D, &IsometricPositionable::getPosition3D,
-                      Vector3());
     register_property("size3d", &IsometricPositionable::setSize3D, &IsometricPositionable::getSize3D, Vector3(1, 1, 1));
     register_property("is_temporary", &IsometricPositionable::setTemporary, &IsometricPositionable::isTemporary, true);
     register_property("debug_z", &IsometricPositionable::setDebugZ, &IsometricPositionable::getDebugZ, 0);
+    register_property("local_3D_position", &IsometricPositionable::setLocal3DPosition,
+                      &IsometricPositionable::getLocal3DPosition, Vector3());
 }
 
 void IsometricPositionable::_init() {
@@ -56,6 +58,7 @@ void IsometricPositionable::_enter_tree() {
     }
     world = new IsometricWorld();
     worldOwner = true;
+    aabb.position = Vector3();
 }
 
 void IsometricPositionable::_exit_tree() {
@@ -214,13 +217,26 @@ void IsometricPositionable::setAABB(AABB ab) {
     onResize();
 }
 
-Vector3 IsometricPositionable::getPosition3D() const {
+Vector3 IsometricPositionable::getLocal3DPosition() const {
+    return localPosition;
+}
+
+void IsometricPositionable::setLocal3DPosition(Vector3 p_local) {
+    Vector3 offset = p_local - localPosition;
+    localPosition = p_local;
+    aabb.position += offset;
+    set_position(IsometricServer::getInstance().getScreenCoordFrom3D(p_local));
+}
+
+Vector3 IsometricPositionable::getGlobalPosition3D() const {
     return aabb.position;
 }
 
-void IsometricPositionable::setPosition3D(Vector3 pos) {
+void IsometricPositionable::setGlobalPosition3D(Vector3 pos) {
+    Vector3 offset = pos - aabb.position;
     aabb.position = pos;
-    set_position(IsometricServer::getInstance().getScreenCoordFrom3D(pos));
+    localPosition += offset;
+    set_position(IsometricServer::getInstance().getScreenCoordFrom3D(getLocal3DPosition()));
     isoPosition = get_position();
 }
 
@@ -296,18 +312,6 @@ void IsometricPositionable::setDebugZ(int dZ) {
     this->debugZ = dZ;
 }
 
-Vector3 IsometricPositionable::getPositionOffset() const {
-    Vector3 offset;
-    Node *pNode = get_parent();
-    if (pNode) {
-        auto *map = cast_to<IsometricMap>(pNode);
-        if (map) {
-            offset += map->aabb.position + map->getPositionOffset();
-        }
-    }
-    return offset;
-}
-
 bool IsometricPositionable::getHasMoved() const {
     return false;
 }
@@ -315,3 +319,5 @@ bool IsometricPositionable::getHasMoved() const {
 void IsometricPositionable::setHasMoved(bool hm) {
 
 }
+
+

@@ -11,7 +11,7 @@
 position = Vector2( 640, 675.233 )
 z_index = 430
 iso_position = Vector2( 640, 675.233 )
-position3d = Vector3( 9, 4, 1 )
+local_3D_position = Vector3( 9, 4, 1 )
 
 [node name="Camera2D" type="Camera2D" parent="CollisionDojo/AutoshapeCharacterImpl"]
 current = true

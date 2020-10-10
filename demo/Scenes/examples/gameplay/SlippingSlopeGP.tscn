@@ -11,7 +11,7 @@
 position = Vector2( -256, -371.069 )
 z_index = 122
 iso_position = Vector2( -256, -371.069 )
-position3d = Vector3( 1, 3, 4 )
+local_3D_position = Vector3( 1, 3, 4 )
 
 [node name="Camera2D" type="Camera2D" parent="SlippingSlopeDojo/RollingBall"]
 current = true

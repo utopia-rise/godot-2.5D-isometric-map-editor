@@ -16,7 +16,7 @@ namespace godot {
 
     private:
         AABB aabb;
-        Vector3 normal;
+        Vector3 localPosition;
         int zOrderSize;
         bool rendered;
 
@@ -57,12 +57,13 @@ namespace godot {
         virtual String get_class() const;
         Transform2D getHexagoneCoordinates() const;
         void setOutlineDrawer(Color color, real_t lineSize);
-        Vector3 getPositionOffset() const;
+        Vector3 getLocal3DPosition() const;
+        void setLocal3DPosition(Vector3 p_local);
+        Vector3 getGlobalPosition3D() const;
+        virtual void setGlobalPosition3D(Vector3 pos);
 
         AABB getAABB();
         virtual void setAABB(AABB ab);
-        Vector3 getPosition3D() const;
-        virtual void setPosition3D(Vector3 pos);
         Vector3 getSize3D() const;
         void setSize3D(Vector3 s);
         int getZOrderSize() const;

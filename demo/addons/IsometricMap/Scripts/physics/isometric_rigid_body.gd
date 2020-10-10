@@ -16,5 +16,5 @@ func _physics_process(delta: float) -> void:
 			parent.update_position_from_body(self)
 
 func _recalibrate_from_parent() -> void:
-	var position = parent.position3d
+	var position = parent.get_global_3D_position()
 	self.global_transform = Transform(Basis(Vector3(1, 0, 0), Vector3(0, 1, 0), Vector3(0, 0, 1)), Vector3(position.x, position.z, position.y))

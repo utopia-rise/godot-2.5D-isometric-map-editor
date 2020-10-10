@@ -37,7 +37,7 @@ void IsometricMap::_ready() {
     for (int i = 0; i < children.size(); i++) {
         auto *positionable = cast_to<IsometricPositionable>(children[i]);
         if (positionable) {
-            grid3D.setData(positionable->getPosition3D(), positionable);
+            grid3D.setData(positionable->getLocal3DPosition(), positionable);
             editionGrid3D.insertBox(positionable->getAABB(), positionable);
         }
     }
@@ -63,7 +63,7 @@ void IsometricMap::onGridUpdated(int stair) {
     for (int i = 0; i < children.size(); i++) {
         auto *isometricPositionable = cast_to<IsometricPositionable>(children[i]);
         if (isometricPositionable) {
-            isometricPositionable->onGridUpdated(stair - static_cast<int>(getPosition3D().z));
+            isometricPositionable->onGridUpdated(stair - static_cast<int>(getLocal3DPosition().z));
         }
     }
 }
@@ -130,7 +130,7 @@ Array IsometricMap::getFlattenPositionables(const Vector3 &offset) {
         auto *positionable = cast_to<IsometricPositionable>(children[i]);
         if (positionable) {
             if (auto *map = cast_to<IsometricMap>(positionable)) {
-                const Array &innerPositionables = map->getFlattenPositionables(offset + map->getPosition3D());
+                const Array &innerPositionables = map->getFlattenPositionables(offset + map->getLocal3DPosition());
                 for (int j = 0; j < innerPositionables.size(); j++) {
                     auto *innerPositionable = cast_to<IsometricPositionable>(innerPositionables[j]);
                     if (innerPositionable) {
@@ -139,7 +139,6 @@ Array IsometricMap::getFlattenPositionables(const Vector3 &offset) {
                 }
             } else {
                 auto *duplicatePositionable = cast_to<IsometricPositionable>(positionable->duplicate());
-                duplicatePositionable->setPosition3D(offset + positionable->getPosition3D());
                 positionables.append(duplicatePositionable);
             }
         }
@@ -185,9 +184,9 @@ void IsometricMap::insertMapAsFlatten(IsometricMap* map, const Vector3 &offset) 
     for (int i = 0; i < children.size(); i++) {
         if (auto *positionable = cast_to<IsometricPositionable>(children[i])) {
             if (auto *m = cast_to<IsometricMap>(positionable)) {
-                insertMapAsFlatten(m, offset + m->getPosition3D());
+                insertMapAsFlatten(m, offset + m->getLocal3DPosition());
             } else {
-                const AABB &aabb {positionable->getPosition3D() + offset, positionable->getSize3D()};
+                const AABB &aabb {positionable->getLocal3DPosition() + offset, positionable->getSize3D()};
                 editionGrid3D.insertBox(aabb, map);
             }
         }
@@ -237,11 +236,11 @@ bool IsometricMap::areMapElementsOverlapping(Vector3 position, IsometricMap* map
     for (int i = 0; i < array.size(); i++) {
         if (auto *positionable {cast_to<IsometricPositionable>(array[i])}) {
             if (auto *childMap {cast_to<IsometricMap>(positionable)}) {
-                if (areMapElementsOverlapping(position + childMap->getPosition3D(), childMap)) {
+                if (areMapElementsOverlapping(position + childMap->getLocal3DPosition(), childMap)) {
                     return true;
                 }
             } else {
-                if (isOverlappingAABB({position + positionable->getPosition3D(), positionable->getSize3D()})) {
+                if (isOverlappingAABB({position + positionable->getLocal3DPosition(), positionable->getSize3D()})) {
                     return true;
                 }
             }
