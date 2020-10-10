@@ -69,19 +69,21 @@ void IsometricMap::onGridUpdated(int stair) {
 }
 
 void IsometricMap::generateTopologicalRenderGraph() {
-    currentSortingOrder = 0;
-    const Array &children { get_children() };
-    for (int i = 0; i < children.size(); i++) {
-        auto *positionable = cast_to<IsometricPositionable>(children[i]);
-        if (positionable) {
-            positionable->setRendered(false);
+    if( world && worldOwner) {
+        currentSortingOrder = 0;
+        const Array &positionables = world->getPositionables();
+        for (int i = 0; i < positionables.size(); i++) {
+            auto *positionable = cast_to<IsometricPositionable>(positionables[i]);
+            if (positionable) {
+                positionable->setRendered(false);
+            }
         }
-    }
-    for (int i = 0; i < children.size(); i++) {
-        auto *positionable = cast_to<IsometricPositionable>(children[i]);
-        if (positionable) {
-            if (!positionable->isRendered()) {
-                renderIsoNode(positionable);
+        for (int i = 0; i < positionables.size(); i++) {
+            auto *positionable = cast_to<IsometricPositionable>(positionables[i]);
+            if (positionable) {
+                if (!positionable->isRendered()) {
+                    renderIsoNode(positionable);
+                }
             }
         }
     }

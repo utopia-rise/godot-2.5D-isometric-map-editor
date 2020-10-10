@@ -6,7 +6,8 @@
 using namespace godot;
 
 IsometricPositionable::IsometricPositionable() : debugPoints(), aabb({0, 0, 0}, {1, 1, 1}),
-zOrderSize(0), rendered(false), temporary(true), debugZ(0), outlineDrawer(nullptr) {
+                                                 zOrderSize(0), rendered(false), temporary(true), debugZ(0),
+                                                 outlineDrawer(nullptr), world(nullptr), worldOwner(false) {
 
 }
 
@@ -27,7 +28,8 @@ void IsometricPositionable::_register_methods() {
     register_method("set_has_moved", &IsometricPositionable::setHasMoved);
 
     register_property("iso_position", &IsometricPositionable::isoPosition, Vector2());
-    register_property("position3d", &IsometricPositionable::setPosition3D, &IsometricPositionable::getPosition3D, Vector3());
+    register_property("position3d", &IsometricPositionable::setPosition3D, &IsometricPositionable::getPosition3D,
+                      Vector3());
     register_property("size3d", &IsometricPositionable::setSize3D, &IsometricPositionable::getSize3D, Vector3(1, 1, 1));
     register_property("is_temporary", &IsometricPositionable::setTemporary, &IsometricPositionable::isTemporary, true);
     register_property("debug_z", &IsometricPositionable::setDebugZ, &IsometricPositionable::getDebugZ, 0);
@@ -40,23 +42,43 @@ void IsometricPositionable::_init() {
 void IsometricPositionable::_enter_tree() {
     setZOrderSize(1);
     updateZOrderSize(zOrderSize);
+
+    const Node *parent{get_parent()};
+    if (parent) {
+        if (auto positionable{cast_to<IsometricPositionable>(parent)}) {
+            if (positionable->world) {
+                world = positionable->world;
+                worldOwner = false;
+                world->getPositionables().append(this);
+                return;
+            }
+        }
+    }
+    world = new IsometricWorld();
+    worldOwner = true;
 }
 
 void IsometricPositionable::_exit_tree() {
     updateZOrderSize(-zOrderSize);
+
+    if (world) {
+        world->getPositionables().erase(this);
+    }
 }
+
 
 String IsometricPositionable::get_class() const {
     return "IsometricPositionable";
 }
 
 Transform2D IsometricPositionable::getHexagoneCoordinates() const {
-    const Vector3 &orthoPosition { aabb.position };
-    const Vector3 &size { aabb.size };
-    const Vector3 &upperPoint { Vector3(orthoPosition.x, orthoPosition.y, orthoPosition.z + IsometricServer::getInstance().zRatio * size.z) };
-    const Vector3 &lowerPoint { Vector3(orthoPosition.x + size.x, orthoPosition.y + size.y, orthoPosition.z) };
-    const Vector3 &leftPoint { Vector3(orthoPosition.x, orthoPosition.y + size.y, orthoPosition.z) };
-    const Vector3 &rightPoint { Vector3(orthoPosition.x + size.x, orthoPosition.y, orthoPosition.z) };
+    const Vector3 &orthoPosition{aabb.position};
+    const Vector3 &size{aabb.size};
+    const Vector3 &upperPoint{Vector3(orthoPosition.x, orthoPosition.y,
+                                      orthoPosition.z + IsometricServer::getInstance().zRatio * size.z)};
+    const Vector3 &lowerPoint{Vector3(orthoPosition.x + size.x, orthoPosition.y + size.y, orthoPosition.z)};
+    const Vector3 &leftPoint{Vector3(orthoPosition.x, orthoPosition.y + size.y, orthoPosition.z)};
+    const Vector3 &rightPoint{Vector3(orthoPosition.x + size.x, orthoPosition.y, orthoPosition.z)};
     real_t minX = upperPoint.x - upperPoint.z;
     real_t maxX = lowerPoint.x - lowerPoint.z;
     real_t minY = upperPoint.y - upperPoint.z;
@@ -79,24 +101,24 @@ void IsometricPositionable::setOutlineDrawer(Color color, real_t lineSize) {
 }
 
 void IsometricPositionable::preparePoints() {
-    const Vector3 &size { getSize3D() };
-    real_t w { size.x };
-    real_t d { size.y };
-    real_t h { size.z };
+    const Vector3 &size{getSize3D()};
+    real_t w{size.x};
+    real_t d{size.y};
+    real_t h{size.z};
 
-    int leftSlope { 0 };
-    int rightSlope { 0 };
-    int forwardSlope { 0 };
-    int backwardSlope { 0 };
+    int leftSlope{0};
+    int rightSlope{0};
+    int forwardSlope{0};
+    int backwardSlope{0};
 
-    int tileWidth { IsometricServer::getInstance().tileWidth };
-    int tileHeight { IsometricServer::getInstance().tileHeight };
+    int tileWidth{IsometricServer::getInstance().tileWidth};
+    int tileHeight{IsometricServer::getInstance().tileHeight};
 
     Vector2 offset(0, static_cast<real_t>(-tileHeight) * 0.5f);
 
-    float ratio { 0 };
+    float ratio{0};
 
-    int debZ {getDebugZ() };
+    int debZ{getDebugZ()};
 
     if (h > 0) {
         ratio = static_cast<real_t>(debZ) / h;
@@ -106,7 +128,7 @@ void IsometricPositionable::preparePoints() {
     auto tileHeightFloat = static_cast<real_t>(tileHeight);
     Vector2 gridSlopeOffset;
 
-    const SlopeType &slopeType { calculateSlopeOffset(&gridSlopeOffset, tileWidthFloat, tileHeightFloat, w, d, ratio) };
+    const SlopeType &slopeType{calculateSlopeOffset(&gridSlopeOffset, tileWidthFloat, tileHeightFloat, w, d, ratio)};
     switch (slopeType) {
         case SlopeType::NONE:
             break;
@@ -132,7 +154,7 @@ void IsometricPositionable::preparePoints() {
     points.push_back(Vector2(tileWidthFloat * 0.5f * (w - d), tileHeightFloat * 0.5f * (d + w)));
     points.push_back(Vector2(-tileWidthFloat * 0.5f * d, tileHeightFloat * 0.5f * d));
 
-    Vector2 heightOffset(0, - IsometricServer::getInstance().eZ * h);
+    Vector2 heightOffset(0, -IsometricServer::getInstance().eZ * h);
 
     //Upper points
     points.push_back(points[0] + (1 - (rightSlope + backwardSlope)) * heightOffset);
@@ -165,7 +187,7 @@ void IsometricPositionable::preparePoints() {
     downPoints.push_back(offset + points[3]);
 
     if (debZ > -1) {
-        Vector2 gridOffset(0, - IsometricServer::getInstance().eZ * static_cast<real_t>(debZ));
+        Vector2 gridOffset(0, -IsometricServer::getInstance().eZ * static_cast<real_t>(debZ));
         debugPoints.resize(0);
         debugPoints.push_back(offset + points[0] + gridOffset + (rightSlope + backwardSlope) * gridSlopeOffset);
         debugPoints.push_back(offset + points[1] + gridOffset + (leftSlope + backwardSlope) * gridSlopeOffset);
@@ -216,7 +238,7 @@ int IsometricPositionable::getZOrderSize() const {
 }
 
 void IsometricPositionable::setZOrderSize(int size) {
-    int delta { size - zOrderSize };
+    int delta{size - zOrderSize};
     if (delta != 0) {
         updateZOrderSize(delta);
     }

@@ -5,6 +5,7 @@
 #include <core/Godot.hpp>
 #include <type_traits>
 #include <OutlineDrawer.h>
+#include <IsometricWorld.h>
 
 namespace godot {
 
@@ -15,10 +16,11 @@ namespace godot {
 
     private:
         AABB aabb;
+        Vector3 normal;
         int zOrderSize;
         bool rendered;
-        bool temporary;
 
+        bool temporary;
         int debugZ;
 
         void updateZOrderSize(int change);
@@ -33,11 +35,15 @@ namespace godot {
 
         PoolVector2Array debugPoints;
 
+        IsometricWorld* world;
+        bool worldOwner;
+
         void preparePoints();
         virtual SlopeType
         calculateSlopeOffset(Vector2 *slopeOffset, real_t tileWidthFloat, real_t tileHeightFloat, real_t width,
                              real_t depth,
                              real_t ratio) const;
+
     public:
         Vector2 isoPosition;
         IsometricPositionable();
