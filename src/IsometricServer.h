@@ -28,6 +28,7 @@ namespace godot {
         int angle;
         float eZ;
         float zRatio;
+        float topologicalMargin;
 
         static IsometricServer &getInstance();
 
@@ -40,10 +41,13 @@ namespace godot {
         float getEZ() const;
         double getZRatio() const;
 
+        float getTopologicalMargin() const;
+        void setTopologicalMargin(float margin);
+
         Vector2 getScreenCoordFrom3D(const Vector3 &pos) const;
         Vector3 get3DCoordFromScreen(const Vector2 &pos, real_t orthZ) const;
-        static bool doHexagoneOverlap(const Transform2D &hex1, const Transform2D &hex2);
-        static bool isBoxInFront(const AABB &box, const AABB &other);
+        bool doHexagoneOverlap(const Transform2D &hex1, const Transform2D &hex2);
+        bool isBoxInFront(const AABB &box, const AABB &other);
     };
 }
 

@@ -112,8 +112,8 @@ Array IsometricMap::getPositionableBehind(IsometricPositionable *isoNode) {
     for (int i = 0; i < children.size(); i++) {
         auto *positionable = cast_to<IsometricPositionable>(children[i]);
         if (positionable && positionable != isoNode) {
-            if (IsometricServer::doHexagoneOverlap(isoNode->getHexagoneCoordinates(), positionable->getHexagoneCoordinates())
-            && IsometricServer::isBoxInFront(isoNode->getAABB(), positionable->getAABB())) {
+            if (IsometricServer::getInstance().doHexagoneOverlap(isoNode->getHexagoneCoordinates(), positionable->getHexagoneCoordinates())
+            && IsometricServer::getInstance().isBoxInFront(isoNode->getAABB(), positionable->getAABB())) {
                 isoNodes.append(positionable);
             }
         }
