@@ -66,6 +66,9 @@ void IsometricPositionable::_exit_tree() {
 
     if (world) {
         world->getPositionables().erase(this);
+        if (worldOwner) {
+            delete world;
+        }
     }
 }
 
