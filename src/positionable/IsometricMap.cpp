@@ -139,6 +139,7 @@ Array IsometricMap::getFlattenPositionables(const Vector3 &offset) {
                 }
             } else {
                 auto *duplicatePositionable = cast_to<IsometricPositionable>(positionable->duplicate());
+                duplicatePositionable->setLocal3DPosition(duplicatePositionable->getLocal3DPosition() + offset);
                 positionables.append(duplicatePositionable);
             }
         }

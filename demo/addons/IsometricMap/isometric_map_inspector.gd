@@ -77,6 +77,6 @@ class MapSizeEditor extends EditorProperty:
 		var iso_map = get_edited_object()
 		for pl in iso_map.get_children():
 			if pl.get_class() == "IsometricPlaceholder":
-				if pl.position3d.x + pl.size3d.x > map_size.x or pl.position3d.y + pl.size3d.y > map_size.y or pl.position3d.z + pl.size3d.z > map_size.z:
-					undo_redo.add_do_method(iso_map, "remove_iso_positionable", pl, pl.position3d)
-					undo_redo.add_undo_method(iso_map, "add_iso_placeholder", pl, pl.position3d)
+				if pl.local_3D_position.x + pl.size3d.x > map_size.x or pl.local_3D_position.y + pl.size3d.y > map_size.y or pl.local_3D_position.z + pl.size3d.z > map_size.z:
+					undo_redo.add_do_method(iso_map, "remove_iso_positionable", pl, pl.local_3D_position)
+					undo_redo.add_undo_method(iso_map, "add_iso_placeholder", pl, pl.local_3D_position)

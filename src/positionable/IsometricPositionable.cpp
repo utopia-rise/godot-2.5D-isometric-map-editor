@@ -52,13 +52,13 @@ void IsometricPositionable::_enter_tree() {
                 world = positionable->world;
                 worldOwner = false;
                 world->getPositionables().append(this);
+                aabb.position += positionable->aabb.position;
                 return;
             }
         }
     }
     world = new IsometricWorld();
     worldOwner = true;
-    aabb.position = Vector3();
 }
 
 void IsometricPositionable::_exit_tree() {
@@ -211,7 +211,9 @@ AABB IsometricPositionable::getAABB() {
 }
 
 void IsometricPositionable::setAABB(AABB ab) {
+    Vector3 offset {ab.position - aabb.position};
     aabb = ab;
+    localPosition += offset;
     set_position(IsometricServer::getInstance().getScreenCoordFrom3D(ab.position));
     isoPosition = get_position();
     onResize();
@@ -226,6 +228,7 @@ void IsometricPositionable::setLocal3DPosition(Vector3 p_local) {
     localPosition = p_local;
     aabb.position += offset;
     set_position(IsometricServer::getInstance().getScreenCoordFrom3D(p_local));
+    isoPosition = get_position();
 }
 
 Vector3 IsometricPositionable::getGlobalPosition3D() const {

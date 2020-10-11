@@ -75,7 +75,7 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 				if selected_positionable != null :
 					var target_position: Vector3 = IsoServer.get_3d_coord_from_screen(map.get_local_mouse_position(), stair_selector.selected_stair).round()
 					if selected_positionable.get_class() == "IsometricPlaceholder":
-						var positionable_pos: Vector3 = selected_positionable.position3d
+						var positionable_pos: Vector3 = selected_positionable.local_3D_position
 						if target_position != positionable_pos:
 							var width_offset: int = target_position.x - positionable_pos.x + 1
 							var depth_offset: int = target_position.y - positionable_pos.y + 1
@@ -141,7 +141,7 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 								drag_action = DragAction.TILING
 								return true
 						elif selected_positionable.get_class() == "IsometricPlaceholder":
-								selected_positionable.position3d = ortho_pos
+								selected_positionable.local_3D_position = ortho_pos
 								if !map.is_overlapping(selected_positionable):
 									selected_positionable.debug_z = 0
 									map.add_child(selected_positionable)
@@ -162,7 +162,7 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 							print("finished creating placeholder")
 							var root_node: Node = editor_interface.get_edited_scene_root()
 							var positionable_pos: Vector3 = IsoServer.get_3d_coord_from_screen(selected_positionable.iso_position, stair_selector.selected_stair).round()
-							selected_positionable.position3d = positionable_pos
+							selected_positionable.local_3D_position = positionable_pos
 							map.remove_child(selected_positionable)
 							undo_redo.create_action("create_placeholder")
 							undo_redo.add_do_method(map, "add_iso_positionable", selected_positionable)
@@ -268,7 +268,7 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 	# ---------- UndoRedo Funcs
 func remove_iso_positionable(iso_positionable) -> void:
 	var root_node: Node = editor_interface.get_edited_scene_root()
-	var positionable_pos: Vector3 = iso_positionable.position3d
+	var positionable_pos: Vector3 = iso_positionable.local_3D_position
 	undo_redo.create_action("remove_iso_positionable")
 	undo_redo.add_do_method(map, "remove_iso_positionable", iso_positionable)
 	if iso_positionable.get_class() == "IsometricPlaceholder":
@@ -286,9 +286,9 @@ func move_z_volume(positionable, up: bool) -> void:
 	print(str(positionable))
 	if positionable != null and positionable.get_class() == "IsometricPlaceholder":
 		map.remove_iso_positionable(positionable)
-		var future_aabb: = AABB(positionable.position3d, positionable.size3d)
+		var future_aabb: = AABB(positionable.local_3D_position, positionable.size3d)
 		var offset: int = 0
-		if up and positionable.position3d.z + positionable.size3d.z < map.size3d.z:
+		if up and positionable.local_3D_position.z + positionable.size3d.z < map.size3d.z:
 			future_aabb.size.z += 1
 		elif !up and positionable.size3d.z > 0:
 			future_aabb.size.z -= 1
@@ -432,7 +432,7 @@ func check_and_select_existing(min_stair: int) -> bool:
 		var ortho_pos: Vector3 = IsoServer.get_3d_coord_from_screen(map.get_local_mouse_position(), z-1).round()
 		var posi = map.get_positionable_at(ortho_pos, false)
 		if posi != null:
-			if posi.position3d.z + posi.size3d.z > stair_selector.selected_stair:
+			if posi.local_3D_position.z + posi.size3d.z > stair_selector.selected_stair:
 				select_positionable(posi)
 				editor_interface.inspect_object(posi)
 				return true
@@ -486,10 +486,10 @@ func isIsopositionable(object):
 
 class SortByAxis:
 	static func sort_by_x_descending(a, b) -> bool:
-		return a.position3d.x > b.position3d.x
+		return a.get_global_3D_position().x > b.get_global_3D_position().x
 	
 	static func sort_by_y_descending(a, b) -> bool:
-		return a.position3d.y > b.position3d.y
+		return a.get_global_3D_position().y > b.get_global_3D_position().y
 	
 	static func sort_by_z_descending(a, b) -> bool:
-		return a.position3d.z > b.position3d.z
+		return a.get_global_3D_position().z > b.get_global_3D_position().z
