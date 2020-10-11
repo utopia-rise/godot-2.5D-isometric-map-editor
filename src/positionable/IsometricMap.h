@@ -31,6 +31,7 @@ namespace godot {
 
         void _init();
         void _ready();
+        void _enter_tree() override;
         void _process(float delta);
         String get_class() const override;
 

@@ -11,6 +11,7 @@ IsometricMap::IsometricMap() : drawTiles(true), currentSortingOrder(0) {
 void IsometricMap::_register_methods() {
     register_method("_init", &IsometricMap::_init);
     register_method("_ready", &IsometricMap::_ready);
+//    register_method("_enter_tree", &IsometricMap::_enter_tree);
     register_method("_process", &IsometricMap::_process);
     register_method("get_class", &IsometricMap::get_class);
 
@@ -41,6 +42,10 @@ void IsometricMap::_ready() {
             editionGrid3D.insertBox(positionable->getAABB(), positionable);
         }
     }
+}
+
+void IsometricMap::_enter_tree() {
+    IsometricPositionable::_enter_tree();
 }
 
 void IsometricMap::_process(float delta) {

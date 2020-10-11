@@ -45,6 +45,12 @@ void IsometricPositionable::_enter_tree() {
     setZOrderSize(1);
     updateZOrderSize(zOrderSize);
 
+    if (world && worldOwner) {
+        delete world;
+        world = nullptr;
+        worldOwner = false;
+    }
+
     const Node *parent{get_parent()};
     if (parent) {
         if (auto positionable{cast_to<IsometricPositionable>(parent)}) {
@@ -68,6 +74,8 @@ void IsometricPositionable::_exit_tree() {
         world->getPositionables().erase(this);
         if (worldOwner) {
             delete world;
+            world = nullptr;
+            worldOwner = false;
         }
     }
 }

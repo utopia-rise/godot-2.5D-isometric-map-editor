@@ -417,9 +417,7 @@ func load_positionable(positionable) -> void:
 
 func unload_positionable() -> void:
 	if loaded_positionable != null and is_instance_valid(loaded_positionable):
-		if loaded_positionable.get_class() == "IsometricMap":
-			if !map.has(loaded_positionable):
-				map.remove_child(loaded_positionable)
+		map.remove_child(loaded_positionable)
 		loaded_positionable.queue_free()
 		loaded_positionable = null
 

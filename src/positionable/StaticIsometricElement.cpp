@@ -14,7 +14,7 @@ void StaticIsometricElement::_register_methods() {
                       true);
 
     register_method("_init", &StaticIsometricElement::_init);
-    register_method("_enter_tree", &StaticIsometricElement::_enter_tree);
+//    register_method("_enter_tree", &StaticIsometricElement::_enter_tree);
     register_method("has_moved", &StaticIsometricElement::getHasMoved);
     register_method("set_has_moved", &StaticIsometricElement::setHasMoved);
 }

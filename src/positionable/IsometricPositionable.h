@@ -52,7 +52,7 @@ namespace godot {
         static void _register_methods();
 
         void  _init();
-        void _enter_tree();
+        virtual void _enter_tree();
         void _exit_tree();
         virtual String get_class() const;
         Transform2D getHexagoneCoordinates() const;
