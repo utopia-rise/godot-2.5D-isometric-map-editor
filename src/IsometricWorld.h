@@ -7,19 +7,32 @@
 
 
 #include <containers/Grid3D.h>
+#include <positionable/IsometricPositionable.h>
+
+
 
 namespace godot{
+
+    class IsometricPositionable;
 
     class IsometricWorld {
 
     private:
-        Array positionables;
+        Array staticElements;
+        Array dynamicElements;
+        int currentSortingOrder;
 
+        void renderIsoNode(IsometricPositionable *isoNode);
+        Array getPositionableBehind(IsometricPositionable *isoNode);
     public:
         IsometricWorld() = default;
         ~IsometricWorld() = default;
 
-        Array& getPositionables();
+
+        int registerIsometricElement(IsometricPositionable &positionable);
+        bool unregisterIsometricElement(IsometricPositionable &positionable);
+
+        void generateTopologicalRenderGraph();
     };
 
 }

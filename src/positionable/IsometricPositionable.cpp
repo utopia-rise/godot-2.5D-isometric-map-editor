@@ -57,7 +57,7 @@ void IsometricPositionable::_enter_tree() {
             if (positionable->world) {
                 world = positionable->world;
                 worldOwner = false;
-                world->getPositionables().append(this);
+                world->registerIsometricElement(this);
                 aabb.position += positionable->aabb.position;
                 return;
             }
@@ -71,7 +71,7 @@ void IsometricPositionable::_exit_tree() {
     updateZOrderSize(-zOrderSize);
 
     if (world) {
-        world->getPositionables().erase(this);
+        world->unregisterIsometricElement(this);
         if (worldOwner) {
             delete world;
             world = nullptr;
