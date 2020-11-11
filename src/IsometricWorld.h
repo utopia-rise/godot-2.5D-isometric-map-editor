@@ -8,8 +8,7 @@
 
 #include <containers/Grid3D.h>
 #include <positionable/IsometricPositionable.h>
-
-
+#include <Object.hpp>
 
 namespace godot{
 
@@ -20,17 +19,16 @@ namespace godot{
     private:
         Array staticElements;
         Array dynamicElements;
-        int currentSortingOrder;
 
-        void renderIsoNode(IsometricPositionable *isoNode);
-        Array getPositionableBehind(IsometricPositionable *isoNode);
+        void renderIsometricElement(IsometricPositionable *positionable);
+
     public:
-        IsometricWorld() = default;
-        ~IsometricWorld() = default;
+        IsometricWorld();
+        ~IsometricWorld();
 
 
-        int registerIsometricElement(IsometricPositionable &positionable);
-        bool unregisterIsometricElement(IsometricPositionable &positionable);
+        void registerIsometricElement(IsometricPositionable* positionable);
+        void unregisterIsometricElement(IsometricPositionable* positionable);
 
         void generateTopologicalRenderGraph();
     };

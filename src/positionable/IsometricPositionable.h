@@ -5,14 +5,17 @@
 #include <core/Godot.hpp>
 #include <type_traits>
 #include <OutlineDrawer.h>
-#include <IsometricWorld.h>
 
 namespace godot {
 
     enum class SlopeType {NONE = 0, LEFT = 1, RIGHT = 2, FORWARD = 3, BACKWARD = 4};
 
+
+
     class IsometricPositionable : public Node2D {
     GODOT_CLASS(IsometricPositionable, Node2D)
+
+    friend class IsometricWorld;
 
     private:
         AABB aabb;
@@ -46,6 +49,9 @@ namespace godot {
 
     public:
         Vector2 isoPosition;
+        Array behindStatics;
+        Array behindDynamics;
+
         IsometricPositionable();
         ~IsometricPositionable() = default;
 

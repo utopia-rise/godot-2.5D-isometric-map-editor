@@ -1,10 +1,10 @@
 #include <IsometricMap.h>
 #include <IsometricServer.h>
-
+#include <IsometricWorld.h>
 
 using namespace godot;
 
-IsometricMap::IsometricMap() : drawTiles(true), currentSortingOrder(0) {
+IsometricMap::IsometricMap() : drawTiles(true) {
 
 }
 
