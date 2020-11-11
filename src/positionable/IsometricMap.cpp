@@ -51,7 +51,7 @@ void IsometricMap::_enter_tree() {
 void IsometricMap::_process(float delta) {
     //if(Engine::get_singleton()->is_editor_hint()) to check if in editor, to deactivate code if needed
     if( world && worldOwner) {
-        world->generateTopologicalRenderGraph();
+       world->generateTopologicalRenderGraph();
     }
 }
 

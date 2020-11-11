@@ -10,11 +10,9 @@
 using namespace godot;
 
 IsometricWorld::IsometricWorld() {
-    Godot::print("NEW ISOMETRIC WORLD");
 }
 
 IsometricWorld::~IsometricWorld() {
-    Godot::print("BYE BYE ISOMETRIC WORLD");
 }
 
 void IsometricWorld::registerIsometricElement(IsometricPositionable* positionable) {
@@ -35,11 +33,9 @@ void IsometricWorld::registerIsometricElement(IsometricPositionable* positionabl
             }
         }
         staticElements.append(staticElement);
-        Godot::print("static element added %s", staticElement->get_name());
     }
     else if(auto dynamicElement = dynamic_cast<DynamicIsometricElement*>(positionable)){
         dynamicElements.append(dynamicElement);
-        Godot::print("dynamic element added %s", dynamicElement->get_name());
     }
 }
 
@@ -51,12 +47,9 @@ void IsometricWorld::unregisterIsometricElement(IsometricPositionable* positiona
             element->behindStatics.erase(staticElement);
 
         }
-        Godot::print("static element removed %s", staticElement->get_name());
-
     }
     else if(auto dynamicElement = dynamic_cast<DynamicIsometricElement*>(positionable)){
         dynamicElements.erase(dynamicElement);
-        Godot::print("dynamic element removed %s", dynamicElement->get_name());
     }
     positionable->behindStatics.clear();
     positionable->behindDynamics.clear();
@@ -140,9 +133,22 @@ void IsometricWorld::renderIsometricElement(IsometricPositionable *positionable)
             if (!behind->isRendered()) {
                 renderIsometricElement(behind);
             }
-            int zOrderSize = positionable->getZOrderSize();
+            int zOrderSize = behind->getZOrderSize();
             int zOrder = behind->get_z_index();
-            maxZ = zOrderSize >= maxZ ? zOrderSize + zOrder + 1 : maxZ;
+            int newZOrder = zOrderSize + zOrder + 1;
+            maxZ = newZOrder >= maxZ ? newZOrder : maxZ;
+        }
+    }
+    for (int i = 0; i < positionable->behindDynamics.size(); i++) {
+        auto *behind = Object::cast_to<IsometricPositionable>(positionable->behindDynamics[i]);
+        if (behind) {
+            if (!behind->isRendered()) {
+                renderIsometricElement(behind);
+            }
+            int zOrderSize = behind->getZOrderSize();
+            int zOrder = behind->get_z_index();
+            int newZOrder = zOrderSize + zOrder + 1;
+            maxZ = newZOrder >= maxZ ? newZOrder : maxZ;
         }
     }
     positionable->set_z_index(maxZ);
