@@ -9,15 +9,10 @@
 
 using namespace godot;
 
-IsometricWorld::IsometricWorld() {
-}
-
-IsometricWorld::~IsometricWorld() {
-}
 
 void IsometricWorld::registerIsometricElement(IsometricPositionable* positionable) {
 
-    if(auto staticElement = dynamic_cast<StaticIsometricElement*>(positionable)){
+    if(auto* staticElement = dynamic_cast<StaticIsometricElement*>(positionable)){
         for (int i = 0; i < staticElements.size(); i++) {
             auto* element =  Object::cast_to<IsometricPositionable>(staticElements[i]);
             if(element){
@@ -34,13 +29,13 @@ void IsometricWorld::registerIsometricElement(IsometricPositionable* positionabl
         }
         staticElements.append(staticElement);
     }
-    else if(auto dynamicElement = dynamic_cast<DynamicIsometricElement*>(positionable)){
+    else if(auto* dynamicElement = dynamic_cast<DynamicIsometricElement*>(positionable)){
         dynamicElements.append(dynamicElement);
     }
 }
 
 void IsometricWorld::unregisterIsometricElement(IsometricPositionable* positionable) {
-    if(auto staticElement = dynamic_cast<StaticIsometricElement*>(positionable)){
+    if(auto* staticElement = dynamic_cast<StaticIsometricElement*>(positionable)){
         staticElements.erase(staticElement);
         for (int i = 0; i < staticElements.size(); i++) {
             auto *element = Object::cast_to<IsometricPositionable>(staticElements[i]);
@@ -48,7 +43,7 @@ void IsometricWorld::unregisterIsometricElement(IsometricPositionable* positiona
 
         }
     }
-    else if(auto dynamicElement = dynamic_cast<DynamicIsometricElement*>(positionable)){
+    else if(auto* dynamicElement = dynamic_cast<DynamicIsometricElement*>(positionable)){
         dynamicElements.erase(dynamicElement);
     }
     positionable->behindStatics.clear();
@@ -62,6 +57,7 @@ void IsometricWorld::generateTopologicalRenderGraph() {
         auto *positionable = Object::cast_to<IsometricPositionable>(staticElements[i]);
         if (positionable) {
             positionable->behindDynamics.clear();
+            positionable->set_z_index(0);
             positionable->setRendered(false);
         }
     }
@@ -69,6 +65,7 @@ void IsometricWorld::generateTopologicalRenderGraph() {
         auto *positionable = Object::cast_to<IsometricPositionable>(dynamicElements[i]);
         if (positionable) {
             positionable->behindDynamics.clear();
+            positionable->set_z_index(0);
             positionable->setRendered(false);
         }
     }
@@ -121,7 +118,6 @@ void IsometricWorld::generateTopologicalRenderGraph() {
             renderIsometricElement(positionable);
         }
     }
-
 }
 
 void IsometricWorld::renderIsometricElement(IsometricPositionable *positionable) {

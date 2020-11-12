@@ -23,9 +23,8 @@ namespace godot{
         void renderIsometricElement(IsometricPositionable *positionable);
 
     public:
-        IsometricWorld();
-        ~IsometricWorld();
-
+        IsometricWorld() = default;
+        ~IsometricWorld() = default;
 
         void registerIsometricElement(IsometricPositionable* positionable);
         void unregisterIsometricElement(IsometricPositionable* positionable);

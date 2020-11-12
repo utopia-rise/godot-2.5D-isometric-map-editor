@@ -53,11 +53,11 @@ void IsometricPositionable::_enter_tree() {
     const Node *parent{get_parent()};
     if (parent) {
         if (auto positionable{cast_to<IsometricPositionable>(parent)}) {
-            if (positionable->world) {
+            if (positionable->world && !this->isTemporary()) {
                 world = positionable->world;
                 worldOwner = false;
+                aabb.position = localPosition + positionable->aabb.position;
                 world->registerIsometricElement(this);
-                aabb.position += positionable->aabb.position;
                 return;
             }
         }
