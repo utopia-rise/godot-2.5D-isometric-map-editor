@@ -23,6 +23,7 @@ LOCAL_LDLIBS := -llog
 LOCAL_SRC_FILES := \
 src/gdlibrary.cpp \
 src/IsometricServer.cpp \
+src/IsometricWorld.cpp \
 src/_IsometricServer.cpp \
 src/positionable/IsometricPositionable.cpp \
 src/positionable/IsometricMap.cpp \
