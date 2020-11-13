@@ -30,6 +30,7 @@ void IsometricPositionable::_register_methods() {
 
     register_property("iso_position", &IsometricPositionable::isoPosition, Vector2());
     register_property("size3d", &IsometricPositionable::setSize3D, &IsometricPositionable::getSize3D, Vector3(1, 1, 1));
+    register_property("z_index_size", &IsometricPositionable::setZOrderSize, &IsometricPositionable::getZOrderSize, 1);
     register_property("is_temporary", &IsometricPositionable::setTemporary, &IsometricPositionable::isTemporary, true);
     register_property("debug_z", &IsometricPositionable::setDebugZ, &IsometricPositionable::getDebugZ, 0);
     register_property("local_3D_position", &IsometricPositionable::setLocal3DPosition,
@@ -42,7 +43,6 @@ void IsometricPositionable::_init() {
 
 void IsometricPositionable::_enter_tree() {
     setZOrderSize(1);
-    updateZOrderSize(zOrderSize);
 
     if (world && worldOwner) {
         delete world;
@@ -67,8 +67,6 @@ void IsometricPositionable::_enter_tree() {
 }
 
 void IsometricPositionable::_exit_tree() {
-    updateZOrderSize(-zOrderSize);
-
     if (world) {
         world->unregisterIsometricElement(this);
         if (worldOwner) {
@@ -267,10 +265,6 @@ int IsometricPositionable::getZOrderSize() const {
 }
 
 void IsometricPositionable::setZOrderSize(int size) {
-    int delta{size - zOrderSize};
-    if (delta != 0) {
-        updateZOrderSize(delta);
-    }
     zOrderSize = size;
 }
 
@@ -282,12 +276,6 @@ void IsometricPositionable::setRendered(bool isRendered) {
     this->rendered = isRendered;
 }
 
-void IsometricPositionable::updateZOrderSize(int change) {
-    auto *parent = Object::cast_to<IsometricPositionable>(this->get_parent());
-    if (parent) {
-        parent->zOrderSize += change;
-    }
-}
 
 void IsometricPositionable::onResize() {
     if (outlineDrawer) {

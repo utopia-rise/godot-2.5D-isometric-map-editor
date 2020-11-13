@@ -25,8 +25,6 @@ namespace godot {
         bool temporary;
         int debugZ;
 
-        void updateZOrderSize(int change);
-
     protected:
         OutlineDrawer *outlineDrawer;
 
