@@ -58,7 +58,6 @@ void IsometricPositionable::_enter_tree() {
                 world = positionable->world;
                 worldOwner = false;
                 aabb.position = localPosition + positionable->aabb.position;
-
                 world->registerIsometricElement(this);
                 return;
             }
@@ -66,14 +65,6 @@ void IsometricPositionable::_enter_tree() {
     }
     world = new IsometricWorld();
     worldOwner = true;
-    Godot::print(String("Parent name: ") + parent->get_name());
-    if (auto positionable{cast_to<IsometricPositionable>(parent)}) {
-
-    }
-    else{
-
-    }
-    Godot::print(get_name() + String(": Look at me, I'm the captain now!"));
 }
 
 void IsometricPositionable::_exit_tree() {

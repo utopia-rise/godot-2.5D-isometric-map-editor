@@ -59,14 +59,14 @@ func test_should_not_add_overlapping_iso_positionable():
 
 func test_assert_topological_graph():
 	test_map.size3d = Vector3(10, 10, 10)
-	var first_pos = IsometricPositionable.new()
+	var first_pos = IsometricTile.new()
 	first_pos.size3d = Vector3(5, 5, 5)
 	first_pos.local_3D_position = Vector3(0, 0, 0)
-	var second_pos = IsometricPositionable.new()
+	var second_pos = IsometricTile.new()
 	second_pos.local_3D_position = Vector3(0, 5, 0)
-	var third_pos = IsometricPositionable.new()
+	var third_pos = IsometricTile.new()
 	third_pos.local_3D_position = Vector3(1, 5, 0)
-	var forth_pos = IsometricPositionable.new()
+	var forth_pos = IsometricTile.new()
 	forth_pos.local_3D_position = Vector3(1, 5, 1)
 	test_map._enter_tree()
 	test_map.add_iso_positionable(first_pos)
