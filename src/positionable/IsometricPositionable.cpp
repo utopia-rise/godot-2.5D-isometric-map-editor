@@ -46,17 +46,19 @@ void IsometricPositionable::_enter_tree() {
 
     if (world && worldOwner) {
         delete world;
-        world = nullptr;
         worldOwner = false;
     }
+    world = nullptr;
 
     const Node *parent{get_parent()};
     if (parent) {
         if (auto positionable{cast_to<IsometricPositionable>(parent)}) {
+            Godot::print(get_name());
             if (positionable->world && !this->isTemporary()) {
                 world = positionable->world;
                 worldOwner = false;
                 aabb.position = localPosition + positionable->aabb.position;
+
                 world->registerIsometricElement(this);
                 return;
             }
@@ -64,6 +66,14 @@ void IsometricPositionable::_enter_tree() {
     }
     world = new IsometricWorld();
     worldOwner = true;
+    Godot::print(String("Parent name: ") + parent->get_name());
+    if (auto positionable{cast_to<IsometricPositionable>(parent)}) {
+
+    }
+    else{
+
+    }
+    Godot::print(get_name() + String(": Look at me, I'm the captain now!"));
 }
 
 void IsometricPositionable::_exit_tree() {
@@ -71,9 +81,9 @@ void IsometricPositionable::_exit_tree() {
         world->unregisterIsometricElement(this);
         if (worldOwner) {
             delete world;
-            world = nullptr;
             worldOwner = false;
         }
+        world = nullptr;
     }
 }
 

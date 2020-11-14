@@ -32,6 +32,9 @@ void IsometricWorld::registerIsometricElement(IsometricPositionable* positionabl
     else if(auto* dynamicElement = dynamic_cast<DynamicIsometricElement*>(positionable)){
         dynamicElements.append(dynamicElement);
     }
+    else{
+        Godot::print(positionable->get_name() + String(" is a invalid element for the IsometricWorld."));
+    }
 }
 
 void IsometricWorld::unregisterIsometricElement(IsometricPositionable* positionable) {
