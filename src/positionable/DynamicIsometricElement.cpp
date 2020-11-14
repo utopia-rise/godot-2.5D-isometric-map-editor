@@ -8,7 +8,7 @@ void DynamicIsometricElement::_register_methods() {
             &DynamicIsometricElement::getHasDefaultBody, true);
 
     register_method("_init", &DynamicIsometricElement::_init);
-//    register_method("_enter_tree", &DynamicIsometricElement::_enter_tree);
+    register_method("_enter_tree", &DynamicIsometricElement::_enter_tree);
     register_method("get_class", &DynamicIsometricElement::get_class);
     register_method("update_position_from_body", &DynamicIsometricElement::updatePositionFromBody);
 }
