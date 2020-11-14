@@ -79,9 +79,9 @@ func test_assert_topological_graph():
 	forth_pos._enter_tree()
 	test_map._process()
 	assert_eq(first_pos.z_index, 0, "z_index should be 0.")
-	assert_eq(second_pos.z_index, 2, "z_index should be 2.")
-	assert_eq(third_pos.z_index, 4, "z_index should be 4.")
-	assert_eq(forth_pos.z_index, 6, "z_index should be 6.")
+	assert_eq(second_pos.z_index, 1, "z_index should be 1.")
+	assert_eq(third_pos.z_index, 2, "z_index should be 2.")
+	assert_eq(forth_pos.z_index, 3, "z_index should be 3.")
 
 func test_assert_flatten_isometricmap():
 	test_map.size3d = Vector3(10, 10, 10)

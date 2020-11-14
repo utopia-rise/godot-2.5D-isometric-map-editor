@@ -131,7 +131,7 @@ void IsometricWorld::renderIsometricElement(IsometricPositionable *positionable)
             }
             int zOrderSize = behind->getZOrderSize();
             int zOrder = behind->get_z_index();
-            int newZOrder = zOrderSize + zOrder + 1;
+            int newZOrder = zOrderSize + zOrder;
             maxZ = newZOrder >= maxZ ? newZOrder : maxZ;
         }
     }
@@ -143,7 +143,7 @@ void IsometricWorld::renderIsometricElement(IsometricPositionable *positionable)
             }
             int zOrderSize = behind->getZOrderSize();
             int zOrder = behind->get_z_index();
-            int newZOrder = zOrderSize + zOrder + 1;
+            int newZOrder = zOrderSize + zOrder;
             maxZ = newZOrder >= maxZ ? newZOrder : maxZ;
         }
     }
