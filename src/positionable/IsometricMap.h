@@ -13,11 +13,6 @@ namespace godot {
         Grid3D grid3D;
         Grid3D editionGrid3D;
 
-        int currentSortingOrder;
-
-        void generateTopologicalRenderGraph();
-        void renderIsoNode(IsometricPositionable *isoNode);
-        Array getPositionableBehind(IsometricPositionable *isoNode);
         Array getFlattenPositionables(const Vector3 &offset = Vector3());
         void insertMapAsFlatten(IsometricMap* map, const Vector3& offset);
         IsometricMap *initializeFrom();
@@ -31,6 +26,7 @@ namespace godot {
 
         void _init();
         void _ready();
+        void _enter_tree() override;
         void _process(float delta);
         String get_class() const override;
 

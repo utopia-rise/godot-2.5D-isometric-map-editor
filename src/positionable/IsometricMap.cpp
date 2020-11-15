@@ -1,16 +1,17 @@
 #include <IsometricMap.h>
 #include <IsometricServer.h>
-
+#include <IsometricWorld.h>
 
 using namespace godot;
 
-IsometricMap::IsometricMap() : drawTiles(true), currentSortingOrder(0) {
+IsometricMap::IsometricMap() : drawTiles(true) {
 
 }
 
 void IsometricMap::_register_methods() {
     register_method("_init", &IsometricMap::_init);
     register_method("_ready", &IsometricMap::_ready);
+//    register_method("_enter_tree", &IsometricMap::_enter_tree);
     register_method("_process", &IsometricMap::_process);
     register_method("get_class", &IsometricMap::get_class);
 
@@ -37,15 +38,21 @@ void IsometricMap::_ready() {
     for (int i = 0; i < children.size(); i++) {
         auto *positionable = cast_to<IsometricPositionable>(children[i]);
         if (positionable) {
-            grid3D.setData(positionable->getPosition3D(), positionable);
+            grid3D.setData(positionable->getLocal3DPosition(), positionable);
             editionGrid3D.insertBox(positionable->getAABB(), positionable);
         }
     }
 }
 
+void IsometricMap::_enter_tree() {
+    IsometricPositionable::_enter_tree();
+}
+
 void IsometricMap::_process(float delta) {
     //if(Engine::get_singleton()->is_editor_hint()) to check if in editor, to deactivate code if needed
-    generateTopologicalRenderGraph();
+    if( world && worldOwner) {
+       world->generateTopologicalRenderGraph();
+    }
 }
 
 String IsometricMap::get_class() const {
@@ -63,62 +70,9 @@ void IsometricMap::onGridUpdated(int stair) {
     for (int i = 0; i < children.size(); i++) {
         auto *isometricPositionable = cast_to<IsometricPositionable>(children[i]);
         if (isometricPositionable) {
-            isometricPositionable->onGridUpdated(stair - static_cast<int>(getPosition3D().z));
+            isometricPositionable->onGridUpdated(stair - static_cast<int>(getLocal3DPosition().z));
         }
     }
-}
-
-void IsometricMap::generateTopologicalRenderGraph() {
-    currentSortingOrder = 0;
-    const Array &children { get_children() };
-    for (int i = 0; i < children.size(); i++) {
-        auto *positionable = cast_to<IsometricPositionable>(children[i]);
-        if (positionable) {
-            positionable->setRendered(false);
-        }
-    }
-    for (int i = 0; i < children.size(); i++) {
-        auto *positionable = cast_to<IsometricPositionable>(children[i]);
-        if (positionable) {
-            if (!positionable->isRendered()) {
-                renderIsoNode(positionable);
-            }
-        }
-    }
-}
-
-void IsometricMap::renderIsoNode(IsometricPositionable *isoNode) {
-    isoNode->setRendered(true);
-    int maxZSize { 0 };
-    const Array &isoNodes { getPositionableBehind(isoNode) };
-    for (int i = 0; i < isoNodes.size(); i++) {
-        auto *positionable = cast_to<IsometricPositionable>(isoNodes[i]);
-        if (positionable) {
-            if (!positionable->isRendered()) {
-                renderIsoNode(positionable);
-            }
-            int positionableZOrderSize { positionable->getZOrderSize() };
-            maxZSize = positionableZOrderSize >= maxZSize ? positionableZOrderSize : maxZSize;
-        }
-    }
-    currentSortingOrder += maxZSize;
-    isoNode->set_z_index(currentSortingOrder);
-    currentSortingOrder += 1;
-}
-
-Array IsometricMap::getPositionableBehind(IsometricPositionable *isoNode) {
-    Array isoNodes;
-    const Array &children { get_children() };
-    for (int i = 0; i < children.size(); i++) {
-        auto *positionable = cast_to<IsometricPositionable>(children[i]);
-        if (positionable && positionable != isoNode) {
-            if (IsometricServer::doHexagoneOverlap(isoNode->getHexagoneCoordinates(), positionable->getHexagoneCoordinates())
-            && IsometricServer::isBoxInFront(isoNode->getAABB(), positionable->getAABB())) {
-                isoNodes.append(positionable);
-            }
-        }
-    }
-    return isoNodes;
 }
 
 Array IsometricMap::getFlattenPositionables(const Vector3 &offset) {
@@ -128,7 +82,7 @@ Array IsometricMap::getFlattenPositionables(const Vector3 &offset) {
         auto *positionable = cast_to<IsometricPositionable>(children[i]);
         if (positionable) {
             if (auto *map = cast_to<IsometricMap>(positionable)) {
-                const Array &innerPositionables = map->getFlattenPositionables(offset + map->getPosition3D());
+                const Array &innerPositionables = map->getFlattenPositionables(offset + map->getLocal3DPosition());
                 for (int j = 0; j < innerPositionables.size(); j++) {
                     auto *innerPositionable = cast_to<IsometricPositionable>(innerPositionables[j]);
                     if (innerPositionable) {
@@ -137,7 +91,7 @@ Array IsometricMap::getFlattenPositionables(const Vector3 &offset) {
                 }
             } else {
                 auto *duplicatePositionable = cast_to<IsometricPositionable>(positionable->duplicate());
-                duplicatePositionable->setPosition3D(offset + positionable->getPosition3D());
+                duplicatePositionable->setLocal3DPosition(duplicatePositionable->getLocal3DPosition() + offset);
                 positionables.append(duplicatePositionable);
             }
         }
@@ -183,9 +137,9 @@ void IsometricMap::insertMapAsFlatten(IsometricMap* map, const Vector3 &offset) 
     for (int i = 0; i < children.size(); i++) {
         if (auto *positionable = cast_to<IsometricPositionable>(children[i])) {
             if (auto *m = cast_to<IsometricMap>(positionable)) {
-                insertMapAsFlatten(m, offset + m->getPosition3D());
+                insertMapAsFlatten(m, offset + m->getLocal3DPosition());
             } else {
-                const AABB &aabb {positionable->getPosition3D() + offset, positionable->getSize3D()};
+                const AABB &aabb {positionable->getLocal3DPosition() + offset, positionable->getSize3D()};
                 editionGrid3D.insertBox(aabb, map);
             }
         }
@@ -235,11 +189,11 @@ bool IsometricMap::areMapElementsOverlapping(Vector3 position, IsometricMap* map
     for (int i = 0; i < array.size(); i++) {
         if (auto *positionable {cast_to<IsometricPositionable>(array[i])}) {
             if (auto *childMap {cast_to<IsometricMap>(positionable)}) {
-                if (areMapElementsOverlapping(position + childMap->getPosition3D(), childMap)) {
+                if (areMapElementsOverlapping(position + childMap->getLocal3DPosition(), childMap)) {
                     return true;
                 }
             } else {
-                if (isOverlappingAABB({position + positionable->getPosition3D(), positionable->getSize3D()})) {
+                if (isOverlappingAABB({position + positionable->getLocal3DPosition(), positionable->getSize3D()})) {
                     return true;
                 }
             }

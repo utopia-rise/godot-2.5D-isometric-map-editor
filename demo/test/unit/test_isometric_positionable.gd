@@ -11,8 +11,8 @@ func after_all():
 func test_assert_set_position():
 	var expected_value = Vector3(3.0, 2.0, 2.0)
 	var expected_iso_position = (Vector2(128, 6.465302) * 1000).round()
-	test_positionable.position3d = expected_value
-	assert_eq(test_positionable.position3d, expected_value, "Position should be " + str(expected_value) + ".")
+	test_positionable.local_3D_position = expected_value
+	assert_eq(test_positionable.local_3D_position, expected_value, "Position should be " + str(expected_value) + ".")
 	assert_eq((test_positionable.iso_position * 1000).round(), expected_iso_position, "iso_position should be " + str(expected_iso_position) + ".")
 
 func test_assert_hexagone_coordinates():

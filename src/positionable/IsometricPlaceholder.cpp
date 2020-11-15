@@ -60,7 +60,7 @@ String IsometricPlaceholder::get_class() const {
 }
 
 void IsometricPlaceholder::drawPoints() {
-    const Vector3 &position3D {getPosition3D() };
+    const Vector3 &position3D {getLocal3DPosition() };
     const Vector3 &size { getSize3D() };
 
     int debugZ { getDebugZ() };
@@ -158,7 +158,7 @@ void IsometricPlaceholder::setMapSize(const Vector3 &size) {
 }
 
 void IsometricPlaceholder::onGridUpdated(int stair) {
-    setDebugZ(stair - static_cast<int>(getPosition3D().z));
+    setDebugZ(stair - static_cast<int>(getLocal3DPosition().z));
     update();
 }
 

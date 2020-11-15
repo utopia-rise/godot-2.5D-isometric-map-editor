@@ -16,7 +16,7 @@ func _init():
 func _recalibrate_from_parent() -> void:
 	._recalibrate_from_parent()
 	var size = parent.size3d
-	var position = parent.position3d
+	var position = parent.get_global_3D_position()
 	var shape_radius = sqrt(size.x * size.x + size.y * size.y) * 0.5
 	var shape_height = size.z - 2 * shape_radius
 	collision_shape.global_transform = Transform(Basis(Vector3(1, 0, 0), Vector3(0, 1, 0), Vector3(0, 0, 1)), Vector3(position.x + size.x * 0.5, position.z + 0.5 * size.z, position.y + size.y * 0.5))
